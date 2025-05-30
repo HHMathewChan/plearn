@@ -12,6 +12,7 @@ backend/package-lock.json # (Optional: include if you want exact dependency lock
 # === PostgreSQL data or logs ===
 pgdata/
 *.sql~
+sql/run-time.sql
 
 # === React frontend (optional) ===
 frontend/node_modules/
