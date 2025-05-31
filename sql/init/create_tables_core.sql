@@ -21,7 +21,7 @@ CREATE TABLE CopyrightOwner (
     type CopyrightOwnerType NOT NULL,
     contact_email EmailAddress,
     license_type LicenseType NOT NULL,
-    license_url URL
+    license_url URLPath
 );
 
 CREATE TABLE Course (
@@ -36,7 +36,7 @@ CREATE TABLE CourseContent (
     course_id UUID NOT NULL,
     title ContentTitle NOT NULL,
     content_type VARCHAR(50) NOT NULL,
-    content_url URL NOT NULL UNIQUE
+    content_url URLPath NOT NULL UNIQUE
 );
 
 CREATE TABLE Enrolment (
