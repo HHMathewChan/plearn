@@ -5,3 +5,5 @@
 
 -- Step two: recreate
 \i init/02_create_domains.sql
+\i init/02a_create_sequences.sql
+\i init/03_create_tables.sql
