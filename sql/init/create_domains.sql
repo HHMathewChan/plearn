@@ -68,8 +68,8 @@ CHECK (VALUE ~ '^STR[0-9]{4}[0-9]+$');
 -- DOMAIN: TopicName
 CREATE DOMAIN TopicName AS TEXT;
 
--- DOMAIN: URL
-CREATE DOMAIN URL AS TEXT
+-- DOMAIN: URLPath
+CREATE DOMAIN URLPath AS TEXT
 CHECK (VALUE ~ '^https?:\/\/');
 
 -- DOMAIN: UserRole
