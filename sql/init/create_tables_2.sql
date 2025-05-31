@@ -1,86 +1,85 @@
--- Join Tables
-
-CREATE TABLE HasStudentProfileIn (
-    student_code StudentCode NOT NULL,
-    user_id UUID NOT NULL,
-    PRIMARY KEY (student_code, user_id)
-);
-
-CREATE TABLE KeepCourseProgressWith (
-    course_progress_id UUID NOT NULL,
-    student_code StudentCode NOT NULL,
-    PRIMARY KEY (course_progress_id, student_code)
-);
-
-CREATE TABLE KeepContentProgressWith (
-    content_progress_id UUID NOT NULL,
-    student_code StudentCode NOT NULL,
-    PRIMARY KEY (content_progress_id, student_code)
-);
-
-CREATE TABLE LogCourseProgressAt (
-    course_id UUID NOT NULL,
-    course_progress_id UUID NOT NULL,
-    PRIMARY KEY (course_id, course_progress_id)
-);
-
-CREATE TABLE ChooseLearningModeWith (
-    learning_mode_id UUID NOT NULL,
-    student_code StudentCode NOT NULL,
-    PRIMARY KEY (learning_mode_id, student_code)
-);
-
-CREATE TABLE InterestedIn (
-    chosen_topic_id UUID NOT NULL,
-    student_code StudentCode NOT NULL,
-    PRIMARY KEY (chosen_topic_id, student_code)
-);
-
-CREATE TABLE LogContentProgressAt (
-    course_content_id UUID NOT NULL,
-    content_progress_id UUID NOT NULL,
-    PRIMARY KEY (course_content_id, content_progress_id)
-);
-
-CREATE TABLE HasTopicReferenceTo (
-    chosen_topic_id UUID NOT NULL,
-    topic_id UUID NOT NULL,
-    PRIMARY KEY (chosen_topic_id, topic_id)
-);
-
-CREATE TABLE RelateContentAround (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    topic_id UUID NOT NULL,
-    course_content_id UUID NOT NULL
-);
-
-CREATE TABLE EnrolsIn (
-    student_code StudentCode NOT NULL,
-    enrolment_id UUID NOT NULL,
-    PRIMARY KEY (student_code, enrolment_id)
-);
-
-CREATE TABLE RelateCourseAround (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    topic_id UUID NOT NULL,
-    enrolment_id UUID NOT NULL,
-    UNIQUE (topic_id, enrolment_id)
-);
-
-CREATE TABLE HasCourseReferenceTo (
-    course_id UUID NOT NULL,
-    course_progress_id UUID NOT NULL,
-    PRIMARY KEY (course_id, course_progress_id)
-);
-
+-- Comprises (Course <-> CourseContent)
 CREATE TABLE Comprises (
-    course_id UUID NOT NULL,
-    course_content_id UUID NOT NULL,
-    PRIMARY KEY (course_id, course_content_id)
+    course_id UUID,
+    course_content_id UUID
 );
 
-CREATE TABLE HasCopyrightFor (
-    course_id UUID NOT NULL,
-    copyright_owner_id UUID NOT NULL,
-    PRIMARY KEY (course_id, copyright_owner_id)
+-- EnrolsIn (Student <-> Enrolment)
+CREATE TABLE EnrolsIn (
+    student_code StudentCode,
+    enrolment_id UUID
+);
+
+-- HasCourseReferenceTo (Course <-> CourseProgress)
+CREATE TABLE HasCourseReferenceTo (
+    course_id UUID,
+    course_progress_id UUID
+);
+
+-- HasLearningModeFor (Student <-> LearningMode)
+CREATE TABLE HasLearningModeFor (
+    learning_mode_id UUID,
+    student_code StudentCode
+);
+
+-- HasStudentProfileIn (User <-> Student)
+CREATE TABLE HasStudentProfileIn (
+    student_code StudentCode,
+    user_id UUID
+);
+
+-- HasTopicReferenceTo (Topic <-> ChosenTopic)
+CREATE TABLE HasTopicReferenceTo (
+    chosen_topic_id UUID,
+    topic_id UUID
+);
+
+-- InterestedIn (ChosenTopic <-> Student)
+CREATE TABLE InterestedIn (
+    chosen_topic_id UUID,
+    student_code StudentCode
+);
+
+-- HasContentProgressFor (ContentProgress <-> Student)
+CREATE TABLE HasContentProgressFor (
+    content_progress_id UUID,
+    student_code StudentCode
+);
+
+-- HasCourseProgressFor (CourseProgress <-> Student)
+CREATE TABLE HasCourseProgressFor (
+    course_progress_id UUID,
+    student_code StudentCode
+);
+
+-- LogContentProgressAt (CourseContent <-> ContentProgress)
+CREATE TABLE LogContentProgressAt (
+    course_content_id UUID,
+    content_progress_id UUID
+);
+
+-- LogCourseProgressAt (Course <-> CourseProgress)
+CREATE TABLE LogCourseProgressAt (
+    course_id UUID,
+    course_progress_id UUID
+);
+
+-- OwnCourseBy (Course <-> CopyrightOwner)
+CREATE TABLE OwnCourseBy (
+    course_id UUID,
+    copyright_owner_id UUID
+);
+
+-- LabelContentWith (Topic <-> CourseContent)
+CREATE TABLE LabelContentWith (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic_id UUID,
+    course_content_id UUID
+);
+
+-- LabelCourseWith (Topic <-> Enrolment)
+CREATE TABLE LabelCourseWith (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic_id UUID,
+    enrolment_id UUID
 );
