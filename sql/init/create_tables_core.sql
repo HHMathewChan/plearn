@@ -8,10 +8,10 @@ CREATE TABLE ChosenTopic (
 
 CREATE TABLE CourseProgress (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    student_id StudentCode NOT NULL,
+    student_id UUID NOT NULL,
     course_id UUID NOT NULL,
     status ProgressStatus NOT NULL,
-    date_completed DATE,
+    date_completed TIMESTAMP,
     last_updated TIMESTAMP NOT NULL
 );
 
