@@ -62,7 +62,7 @@ CREATE TABLE Topic (
     name TopicName NOT NULL
 );
 
-CREATE TABLE User (
+CREATE TABLE "User" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name PersonNames NOT NULL,
     email EmailAddress NOT NULL UNIQUE,
