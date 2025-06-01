@@ -21,7 +21,7 @@ ALTER TABLE HasLearningModeFor
 -- HasStudentProfileIn
 ALTER TABLE HasStudentProfileIn
     ADD FOREIGN KEY (student_code) REFERENCES Student(student_code),
-    ADD FOREIGN KEY (user_id) REFERENCES User(id);
+    ADD FOREIGN KEY (platform_user_id) REFERENCES PlatformUser(id);
 
 -- HasTopicReferenceTo
 ALTER TABLE HasTopicReferenceTo
