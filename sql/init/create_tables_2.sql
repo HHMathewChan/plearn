@@ -22,10 +22,10 @@ CREATE TABLE HasLearningModeFor (
     student_code StudentCode PRIMARY KEY
 );
 
--- HasStudentProfileIn (User <-> Student)
+-- HasStudentProfileIn (PlatformUser <-> Student)
 CREATE TABLE HasStudentProfileIn (
     student_code StudentCode UNIQUE NOT NULL,
-    user_id UUID PRIMARY KEY
+    platform_user_id UUID PRIMARY KEY
 );
 
 -- HasTopicReferenceTo (Topic <-> ChosenTopic)
