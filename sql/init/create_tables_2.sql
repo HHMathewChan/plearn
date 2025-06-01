@@ -22,6 +22,12 @@ CREATE TABLE HasCourseProgressFor (
     student_code StudentCode NOT NULL
 );
 
+--HasCoursrReferenceTo (Course <-> Enrolment)
+CREATE TABLE HasCourseReferenceTo (
+    enrolment_id UUID PRIMARY KEY,
+    course_id UUID NOT NULL
+);
+
 -- HasLearningModeFor (Student <-> LearningMode)
 CREATE TABLE HasLearningModeFor (
     learning_mode_id UUID NOT NULL,
