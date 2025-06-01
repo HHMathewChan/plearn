@@ -61,9 +61,11 @@ ALTER TABLE OwnCourseBy
 -- LabelContentWith
 ALTER TABLE LabelContentWith
     ADD FOREIGN KEY (topic_id) REFERENCES Topic(id),
-    ADD FOREIGN KEY (course_content_id) REFERENCES CourseContent(id);
+    ADD FOREIGN KEY (course_content_id) REFERENCES CourseContent(id),
+    ADD UNIQUE (topic_id, course_content_id);
 
 -- LabelCourseWith
 ALTER TABLE LabelCourseWith
     ADD FOREIGN KEY (topic_id) REFERENCES Topic(id),
-    ADD FOREIGN KEY (enrolment_id) REFERENCES Enrolment(id);
+    ADD FOREIGN KEY (course_id) REFERENCES Course(id),
+    ADD UNIQUE (topic_id, course_id);
