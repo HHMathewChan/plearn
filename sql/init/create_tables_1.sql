@@ -47,6 +47,15 @@ CREATE TABLE Enrolment (
     enrolled_at TIMESTAMP NOT NULL
 );
 
+CREATE TABLE PlatformUser (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name PersonNames NOT NULL,
+    email EmailAddress NOT NULL UNIQUE,
+    password_hash PasswordHash NOT NULL,
+    role UserRole NOT NULL,
+    registered_at TIMESTAMP NOT NULL
+);
+
 CREATE TABLE LearningMode (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     mode_name ModeName NOT NULL UNIQUE,
@@ -60,13 +69,4 @@ CREATE TABLE Student (
 CREATE TABLE Topic (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TopicName NOT NULL
-);
-
-CREATE TABLE "User" (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name PersonNames NOT NULL,
-    email EmailAddress NOT NULL UNIQUE,
-    password_hash PasswordHash NOT NULL,
-    role UserRole NOT NULL,
-    registered_at TIMESTAMP NOT NULL
 );
