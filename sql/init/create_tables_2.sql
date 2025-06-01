@@ -77,9 +77,9 @@ CREATE TABLE LabelContentWith (
     course_content_id UUID NOT NULL
 );
 
--- LabelCourseWith (Topic <-> Enrolment)
+-- LabelCourseWith (Topic <-> Course)
 CREATE TABLE LabelCourseWith (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     topic_id UUID NOT NULL,
-    enrolment_id UUID NOT NULL
+    course_id UUID NOT NULL
 );
