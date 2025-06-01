@@ -6,10 +6,10 @@ CREATE TABLE ChosenTopic (
     topic_id UUID NOT NULL
 );
 
-CREATE TABLE CourseProgress (
+CREATE TABLE ContentProgress (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     student_id UUID NOT NULL,
-    course_id UUID NOT NULL,
+    content_id UUID NOT NULL,
     status ProgressStatus NOT NULL,
     date_completed TIMESTAMP,
     last_updated TIMESTAMP NOT NULL
@@ -37,6 +37,15 @@ CREATE TABLE CourseContent (
     title ContentTitle NOT NULL,
     content_type VARCHAR(50) NOT NULL,
     content_url URLPath NOT NULL UNIQUE
+);
+
+CREATE TABLE CourseProgress (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_id UUID NOT NULL,
+    course_id UUID NOT NULL,
+    status ProgressStatus NOT NULL,
+    date_completed TIMESTAMP,
+    last_updated TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Enrolment (
