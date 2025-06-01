@@ -1,0 +1,1 @@
+DROP SEQUENCE IF EXISTS student_code_seq;
