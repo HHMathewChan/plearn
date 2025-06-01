@@ -10,10 +10,16 @@ CREATE TABLE EnrolsIn (
     enrolment_id UUID PRIMARY KEY
 );
 
--- HasCourseReferenceTo (Course <-> CourseProgress)
-CREATE TABLE HasCourseReferenceTo (
-    course_id UUID NOT NULL,
-    course_progress_id UUID PRIMARY KEY
+-- HasContentProgressFor (ContentProgress <-> Student)
+CREATE TABLE HasContentProgressFor (
+    content_progress_id UUID PRIMARY KEY,
+    student_code StudentCode NOT NULL
+);
+
+-- HasCourseProgressFor (CourseProgress <-> Student)
+CREATE TABLE HasCourseProgressFor (
+    course_progress_id UUID PRIMARY KEY,
+    student_code StudentCode NOT NULL
 );
 
 -- HasLearningModeFor (Student <-> LearningMode)
@@ -40,16 +46,18 @@ CREATE TABLE InterestedIn (
     student_code StudentCode NOT NULL
 );
 
--- HasContentProgressFor (ContentProgress <-> Student)
-CREATE TABLE HasContentProgressFor (
-    content_progress_id UUID PRIMARY KEY,
-    student_code StudentCode NOT NULL
+-- LabelContentWith (Topic <-> CourseContent)
+CREATE TABLE LabelContentWith (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic_id UUID NOT NULL,
+    course_content_id UUID NOT NULL
 );
 
--- HasCourseProgressFor (CourseProgress <-> Student)
-CREATE TABLE HasCourseProgressFor (
-    course_progress_id UUID PRIMARY KEY,
-    student_code StudentCode NOT NULL
+-- LabelCourseWith (Topic <-> Course)
+CREATE TABLE LabelCourseWith (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic_id UUID NOT NULL,
+    course_id UUID NOT NULL
 );
 
 -- LogContentProgressAt (CourseContent <-> ContentProgress)
@@ -68,18 +76,4 @@ CREATE TABLE LogCourseProgressAt (
 CREATE TABLE OwnCourseBy (
     course_id UUID NOT NULL,
     copyright_owner_id UUID PRIMARY KEY
-);
-
--- LabelContentWith (Topic <-> CourseContent)
-CREATE TABLE LabelContentWith (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    topic_id UUID NOT NULL,
-    course_content_id UUID NOT NULL
-);
-
--- LabelCourseWith (Topic <-> Course)
-CREATE TABLE LabelCourseWith (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    topic_id UUID NOT NULL,
-    course_id UUID NOT NULL
 );
