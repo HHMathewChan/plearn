@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS generate_student_code();
