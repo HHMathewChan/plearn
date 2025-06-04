@@ -25,6 +25,14 @@ app.get('/api/students', async (request, response) => {
   }
 });
 
+// login endpoint
+app.use('/login', (request, response) => {
+  console.log('Received a request to /login');
+  response.send({
+    token:'test123'
+  })
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
