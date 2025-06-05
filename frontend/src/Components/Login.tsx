@@ -25,6 +25,7 @@ const Login: React.FC<LoginProps> = ({ setToken }) => {
   }
 
   return(
+    // dipslay a simple login form
     <div className="flex flex-col items-center">
       <h1>Please Log In</h1>
       <form onSubmit={handleSubmit}>
