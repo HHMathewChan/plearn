@@ -11,7 +11,7 @@ const LandingPage = () => {
             <button onClick={() => navigate('/login')}>Login</button>
         </div>
         < div>
-            <button>Register</button>
+            <button onClick={() => navigate('/register')}>Register</button>
         </div>
     </div>
   );
