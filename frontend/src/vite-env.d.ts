@@ -5,6 +5,6 @@ type LoginProps = {
 
 // credentials type for login
 type Credentials = {
-  username: string;
+  email: string;
   password: string;
 };
