@@ -25,13 +25,25 @@ app.get('/api/students', async (request, response) => {
   }
 });
 
-// login endpoint
-app.use('/login', (request, response) => {
-  console.log('Received a request to /login');
-  response.send({
-    token:'test123'
-  })
+// Endpoint to validate loin credentials, assuming a simple email and password check
+app.post('/api/validate', async (request, response) => {
+  const { email, password } = request.body;
+  console.log(`Login attempt with email: ${email}, password: ${password}`);
+  try {
+    // Here you would typically check the credentials against a database
+    if (email === 'admin@gmail.com' && password === 'password') {
+      console.log('Login successful');
+      response.json({ token: 'test123' });
+    } else {
+      console.log('Invalid credentials');
+      response.status(401).json({ error: 'Invalid credentials' });
+    }
+  } catch (err) {
+    console.error('Error during login:', err);
+    response.status(500).json({ error: 'Internal server error' });
+  }
 });
+
 
 // Start server
 app.listen(port, () => {
