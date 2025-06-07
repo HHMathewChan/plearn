@@ -4,7 +4,7 @@ import { useState } from "react";
 /* this is the implemntation of the login use case, which is a functional component that handles user login.
 It includes a form for the user to enter their email and password, and it sends a request to the server to validate the user's credentials. 
 If the login is successful, it stores the token in session storage and redirects the user to the student home page. */
-async function RequestLogin(credentials:Credentials) {
+async function requestLogin(credentials:Credentials) {
     try {
         const response = await fetch('http://localhost:3001/api/validate', {
             method: 'POST',
@@ -47,7 +47,7 @@ const Login = () => {
         console.log("Submitting login details:", loginDetails);
         try {
             console.log("Login details:", loginDetails);
-            const token = await RequestLogin(loginDetails);
+            const token = await requestLogin(loginDetails);
             sessionStorage.setItem('token', token);
             setToken(token); // Update the token state to trigger rendering
         } catch (error) {
