@@ -28,6 +28,7 @@ async function requestLogin(credentials:Credentials) {
     }        
 }
 
+//This login represent the class that handles the login use case.
 const Login = () => {
     const [loginDetails, setLoginDetails] = useState({
         email: "", //This is for email property starts as an empty string, not define its type
