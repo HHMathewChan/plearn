@@ -22,8 +22,8 @@ router.get('/api/students', async (request, response, next) => {
   try {
     const students = await database.any('SELECT * FROM student');
     response.json(students);
-  } catch (err) {
-    response.status(500).json({ error: err.message });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
   }
 });
 
@@ -40,8 +40,8 @@ router.post('/api/validate', async (request, response) => {
       console.log('Invalid credentials');
       response.status(401).json({ error: 'Invalid credentials' });
     }
-  } catch (err) {
-    console.error('Error during login:', err);
+  } catch (error) {
+    console.error('Error during login:', error);
     response.status(500).json({ error: 'Internal server error' });
   }
 });
