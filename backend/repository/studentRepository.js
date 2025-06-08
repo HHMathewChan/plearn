@@ -1,9 +1,9 @@
 const database = require('../database');
 
-const getAllStudents = async () => {
+const queryAllStudents = async () => {
   return database.any('SELECT * FROM student');
 };
 
 module.exports = {
-  getAllStudents,
+  queryAllStudents,
 };
