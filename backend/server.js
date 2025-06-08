@@ -4,10 +4,12 @@ const cors = require('cors');
 const db = require('./db'); // Import the db instance from db.js
 
 const app = express();
+const router = express.Router();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(router);
 
 const port = process.env.PORT || 3001;
 
@@ -16,7 +18,7 @@ const port = process.env.PORT || 3001;
  * and returns them as a JSON response.
  * If an error occurs, it returns a 500 status with the error message.
  */
-app.get('/api/students', async (request, response) => {
+router.get('/api/students', async (request, response, next) => {
   try {
     const students = await db.any('SELECT * FROM student');
     response.json(students);
@@ -26,7 +28,7 @@ app.get('/api/students', async (request, response) => {
 });
 
 // Endpoint to validate loin credentials, assuming a simple email and password check
-app.post('/api/validate', async (request, response) => {
+router.post('/api/validate', async (request, response) => {
   const { email, password } = request.body;
   console.log(`Login attempt with email: ${email}, password: ${password}`);
   try {
