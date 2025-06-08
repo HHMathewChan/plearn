@@ -1,4 +1,4 @@
-const db = require('../database');
+const database = require('../database');
 
 const getAllStudents = async () => {
   return db.any('SELECT * FROM student');
