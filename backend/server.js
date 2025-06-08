@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); 
-const db = require('./db'); // Import the db instance from db.js
+const database = require('./database');
 
 const app = express();
 const router = express.Router();
@@ -20,7 +20,7 @@ const port = process.env.PORT || 3001;
  */
 router.get('/api/students', async (request, response, next) => {
   try {
-    const students = await db.any('SELECT * FROM student');
+    const students = await database.any('SELECT * FROM student');
     response.json(students);
   } catch (err) {
     response.status(500).json({ error: err.message });
