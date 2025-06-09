@@ -8,6 +8,7 @@ Thumbs.db
 node_modules/
 backend/.env
 backend/package-lock.json # (Optional: include if you want exact dependency locking)
+backend/scripts 
 
 # === PostgreSQL data or logs ===
 pgdata/
