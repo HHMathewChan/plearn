@@ -42,3 +42,4 @@ coverage/
 # === Mac auto backup files ===
 *.localized
 backend/test.restbook
+Mathew on plearn.session.sql
