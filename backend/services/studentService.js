@@ -1,7 +1,7 @@
-const studentRepo = require('../repositories/studentRepository');
+const studentRepository = require('../repositories/studentRepository');
 
 const getAllStudents = async () => {
-  return await studentRepo.queryAllStudents();
+  return await studentRepository.queryAllStudents();
 };
 
 module.exports = {
