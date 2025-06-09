@@ -62,7 +62,7 @@ CREATE TABLE PlatformUser (
     email EmailAddress NOT NULL UNIQUE,
     password_hash PasswordHash NOT NULL,
     role UserRole NOT NULL,
-    registered_at TIMESTAMP NOT NULL
+    registered_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE LearningMode (
