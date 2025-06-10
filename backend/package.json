@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "jest __tests__"
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^2.8.5",
