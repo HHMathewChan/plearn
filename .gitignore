@@ -30,6 +30,7 @@ yarn-error.log*
 # === Coverage / Testing (if added) ===
 coverage/
 .env.test
+*.test.js
 
 # === Heroku or deployment ===
 *.tgz
