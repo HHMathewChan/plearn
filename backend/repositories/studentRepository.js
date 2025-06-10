@@ -6,8 +6,10 @@ const queryAllStudents = async () => {
 
 // create a new student and return the student_code
 const createStudent = async () => {
-  return database.any(
-    'INSERT INTO student DEFAULT VALUES RETURNING student_code');
+  const result = await database.one(
+    'INSERT INTO student DEFAULT VALUES RETURNING student_code'
+  );
+  return result.student_code;
 };
 
 module.exports = {
