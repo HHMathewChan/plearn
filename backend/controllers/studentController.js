@@ -15,16 +15,16 @@ const getAllStudents = async (request, response) => {
  * assign the parameter needed from request body to variable
  */
 const registerStudent = async (request, response) => {
-  console.log("registerStudent called");
-  console.log("Raw request body:", request.body);
+  // console.log("registerStudent called");
+  // console.log("Raw request body:", request.body);
   
   try {
     const { name, email, password, role } = request.body;
     
     // Validate and sanitize name
     const cleanName = validateName(name);
-    console.log("Original name:", JSON.stringify(name));
-    console.log("Cleaned name:", JSON.stringify(cleanName));
+    // console.log("Original name:", JSON.stringify(name));
+    // console.log("Cleaned name:", JSON.stringify(cleanName));
     
     const student = await studentService.registerStudent({
       name: cleanName,
