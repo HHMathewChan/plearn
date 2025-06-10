@@ -31,15 +31,15 @@ const getAllStudents = async () => {
 const registerStudent = async ({name, email, password, role}) => {
   const password_hash = password;
   const student_code = await studentRepository.createStudent();
-  console.log("createStudent successful");
-  console.log("student_code", student_code);
+  // console.log("createStudent successful");
+  // console.log("student_code", student_code);
   const platform_user_id = await platformUserRepository.createPlatformUser(name, email, password_hash, role);
-  console.log("platformUser is created");
-  console.log("platform_user_id", platform_user_id);
+  // console.log("platformUser is created");
+  // console.log("platform_user_id", platform_user_id);
   await hasStudentProfileInRepository.createHasStudentProfileIn(student_code, platform_user_id);
-  console.log("HasStudentProfileIn is created");
-  console.log("student_code", student_code);
-  console.log("About to return student_code");
+  // console.log("HasStudentProfileIn is created");
+  // console.log("student_code", student_code);
+  // console.log("About to return student_code");
   return student_code;
 };
 
