@@ -55,7 +55,7 @@ CREATE DOMAIN PasswordHash AS TEXT;
 
 -- DOMAIN: PersonNames
 CREATE DOMAIN PersonNames AS VARCHAR(100)
-CHECK (VALUE ~ '^[A-Za-z ]+$');
+CHECK (VALUE ~ '^[A-Za-z][A-Za-z ]*$');
 
 -- DOMAIN: ProgressStatus
 CREATE DOMAIN ProgressStatus AS TEXT
