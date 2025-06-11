@@ -43,8 +43,25 @@ const registerStudent = async ({name, email, password, role}) => {
   return student_code;
 };
 
+/**
+ * verfy if the student role user login by comparing the email and password
+ * and return the student_code and platform_user_id if the login is successful
+ */
+const verifyStudentLogin = async (email, password) => {
+  // assuming password will be hashed in the future
+  const password_hash = await platformUserRepository.getPasswordByEmail(email);
+  if (password_hash === password) {
+    const platform_user = await platformUserRepository.getUserByEmail(email);
+    const platform_user_id = platform_user.id;
+    const student_code = await hasStudentProfileInRepository.getStudentCodeByPlatformUserId(platform_user_id);
+    return {student_code, platform_user_id};
+  } else {
+    throw new Error('Invalid email or password');
+  }
+}
 
 module.exports = {
   getAllStudents,
-  registerStudent
+  registerStudent,
+  verifyStudentLogin
 };
