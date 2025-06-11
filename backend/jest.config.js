@@ -1,9 +1,9 @@
 module.exports = {
   testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/*.test.js'],
-  transform: {
-    '^.+\\.js$': 'babel-jest',
-  },
+  testMatch: [
+    '**/__tests__/**/*.test.js',
+    '**/*.test.js' // Add this line to find tests anywhere
+  ],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
