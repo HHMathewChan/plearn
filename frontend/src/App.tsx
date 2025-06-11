@@ -3,7 +3,7 @@ import StudentHome from './Pages/StudentHome';
 import LandingPage from './Pages/LandingPage';
 import Login from './UseCases/Login';
 import ProtectedRoute from './Components/ProtectedRoute';
-import Register from './UseCases/Register';
+import RegisterFacade from './UseCases/RegisterFacade';
 
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterFacade />} />
           {/* Protected route for student home */}
           <Route 
             path="/student-home" 
