@@ -15,8 +15,9 @@ const getAllStudents = async (request, response) => {
  * assign the parameter needed from request body to variable
  */
 const registerStudent = async (request, response) => {
-  // console.log("registerStudent called");
-  // console.log("Raw request body:", request.body);
+  // for debugging purpose
+  console.log("registerStudent called");
+  console.log("Raw request body:", request.body);
   
   try {
     const { name, email, password, role } = request.body;
@@ -38,7 +39,28 @@ const registerStudent = async (request, response) => {
     response.status(500).json({ error: error.message });
   }
 }
+
+/**
+ * handlers for the verifyStudentLogin function
+ * assign the parameter needed from request body to variable
+ */
+const verifyStudentLogin = async (request, response) => {
+  // for debugging purpose
+  console.log("verifyStudentLogin called");
+  console.log("Raw request body:", request.body);
+  
+  try {
+    const { email, password } = request.body;
+    const result = await studentService.verifyStudentLogin(email, password);
+    response.status(200).json(result);
+  } catch (error) {
+    console.log("Error details:", error.message);
+    response.status(401).json({ error: error.message });
+  }
+}
+
 module.exports = {
   getAllStudents,
-  registerStudent
+  registerStudent,
+  verifyStudentLogin
 };
