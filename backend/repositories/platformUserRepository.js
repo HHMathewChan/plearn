@@ -54,6 +54,38 @@ const createPlatformUser = async (name, email, password_hash, role) => {
     return result.id;
 }
 
+/** 
+ * retrieve the password associated with the user’s email
+ * */ 
+const getPasswordByEmail = async (email) => {
+    // for debugging purpose
+    // console.log("getPasswordByEmail called");
+    // console.log("email:", email);
+    // console.log("email type:", typeof email);
+    const result = await database.one(
+        `SELECT password_hash FROM platformuser WHERE email = $1`,
+        [email]
+    );
+    return result.password_hash;
+}
+
+/**
+ * retrive the user by email
+ * @param {string} email - The email of the user to retrieve.
+ * @returns {Promise<Object>} - The user object containing id, name, email, password_hash, role, and registered_at.
+ */
+const getUserByEmail = async (email) => {
+    const result = await database.one(
+        `SELECT id, name, email, password_hash, role, registered_at 
+         FROM platformuser 
+         WHERE email = $1`,
+        [email]
+    );
+    return result;
+}
+
 module.exports = {
     createPlatformUser,
+    getPasswordByEmail,
+    getUserByEmail
 }
