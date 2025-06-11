@@ -25,16 +25,15 @@ const RegisterFacade = () => {
     const [shouldRedirect, setShouldRedirect] = useState(false);
 
     useEffect(() => {
-        if (isRegistered && responseMessage) {
-            // Display message for 2 seconds before redirecting
-            const timer = setTimeout(() => {
+        if (responseMessage) {
+            // Show browser alert and will block user interaction until they click "OK"
+            window.alert(responseMessage);
+            if (isRegistered) {
                 setShouldRedirect(true);
-            }, 12000);
-
-            return () => clearTimeout(timer);
+            }
         }
     }, [isRegistered, responseMessage]);
-
+    // Redirect to login page if registration is successful
     if (shouldRedirect) {
         return <Navigate to="/login" replace={true} />;
     }
@@ -43,19 +42,7 @@ const RegisterFacade = () => {
         <div className="max-w-md mx-auto mt-10">
             <h2 className="text-2xl font-bold mb-4">Register</h2>
             
-            {/* Display response message */}
-            {responseMessage && (
-                <div className={`p-3 mb-4 rounded ${
-                    isRegistered 
-                        ? 'bg-green-100 text-green-700 border border-green-300' 
-                        : 'bg-red-100 text-red-700 border border-red-300'
-                }`}>
-                    {responseMessage}
-                </div>
-            )}
-
             <form onSubmit={handleSubmit} className="space-y-4">
-                {/* ...existing form code... */}
                 <input
                     type="email"
                     name="email"
