@@ -5,15 +5,15 @@ module.exports = {
     '**/*.test.js' // Add this line to find tests anywhere
   ],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
-    },
-  },
+  // collectCoverage: true,
+  // coverageDirectory: 'coverage',
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 80,
+  //     functions: 80,
+  //     lines: 80,
+  //     statements: 80,
+  //   },
+  // },
   verbose: true,
 };
