@@ -47,13 +47,13 @@ const registerPlatformUser = async (request, response) => {
     // console.log("Original name:", JSON.stringify(name));
     // console.log("Cleaned name:", JSON.stringify(cleanName));
 
-    const platformUserId = await platformUserService.registerPlatformUser({
+    const studentCode = await platformUserService.registerPlatformUser({
       name: cleanName,
       email,
       password,
       role
     });
-    response.status(201).json({ platform_user_id: platformUserId });
+    response.status(201).json({ student_code: studentCode });
   } catch (error) {
     console.log("Error details:", error.message);
     response.status(500).json({ error: error.message });
