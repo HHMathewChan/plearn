@@ -12,3 +12,6 @@
 \i /Users/mathewchan/plearn/sql/init/create_sequences.sql
 \i /Users/mathewchan/plearn/sql/init/create_functions.sql
 \i /Users/mathewchan/plearn/sql/init/triggers/all_xxxcode_trg.sql
+
+-- Step three: insert initial data
+\i /Users/mathewchan/plearn/sql/seed/insert_sample_data.sql
