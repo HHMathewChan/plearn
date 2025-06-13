@@ -75,13 +75,20 @@ const getPasswordByEmail = async (email) => {
  * @returns {Promise<Object>} - The user object containing id, name, email, password_hash, role, and registered_at.
  */
 const getUserByEmail = async (email) => {
-    const result = await database.one(
-        `SELECT id, name, email, password_hash, role, registered_at 
-         FROM platformuser 
-         WHERE email = $1`,
-        [email]
-    );
-    return result;
+    try {
+        const result = await database.one(
+            `SELECT id as platform_user_id, name, email, password_hash, role, registered_at 
+             FROM platformuser 
+             WHERE email = $1`,
+            [email]
+        );
+        return result;
+    } catch (error) {
+        if (error.message === 'No data returned from the query.') {
+            return null;
+        }
+        throw error;
+    }
 }
 
 module.exports = {
