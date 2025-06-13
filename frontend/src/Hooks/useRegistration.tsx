@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { RegisterDetails } from '../Types/RegisterUCType';
-import RegisterStudent from '../Services/PlatformUserService';
+import RegisterPlatformUser from '../Services/PlatformUserService';
 
 /**
  * Custom hook for managing student registration.
@@ -32,7 +32,7 @@ export const useRegistration = () => {
         setResponseMessage(""); // Clear previous message
 
         try {
-            const response = await RegisterStudent(registerDetails);
+            const response = await RegisterPlatformUser(registerDetails);
             setResponseMessage(`Registration successful! Your student code is: ${response.student_code}`);
             setIsRegistered(true);
         } catch (error) {
