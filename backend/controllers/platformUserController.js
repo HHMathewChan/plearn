@@ -30,6 +30,37 @@ const verifyPlatformUserLogin = async (request, response) => {
   }
 };
 
+/**
+ * handlers for the registerPlatformUser function
+ * assign the parameter needed from request body to variable
+ */
+const registerPlatformUser = async (request, response) => {
+  // for debugging purpose
+  console.log("registerPlatformUser called");
+  console.log("Raw request body:", request.body);
+
+  try {
+    const { name, email, password, role } = request.body;
+
+    // Validate and sanitize name
+    const cleanName = validateName(name);
+    // console.log("Original name:", JSON.stringify(name));
+    // console.log("Cleaned name:", JSON.stringify(cleanName));
+
+    const platformUserId = await platformUserService.registerPlatformUser({
+      name: cleanName,
+      email,
+      password,
+      role
+    });
+    response.status(201).json({ platform_user_id: platformUserId });
+  } catch (error) {
+    console.log("Error details:", error.message);
+    response.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   verifyPlatformUserLogin,
+  registerPlatformUser,
 };
