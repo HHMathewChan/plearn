@@ -1,6 +1,6 @@
 import type { AuthenticationResponse, Credentials } from '../Types/AuthenticationType';
 
-const API_BASE_URL = 'http://localhost:3001/api/student-routes';
+const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
 
 /**
  * Implement AuthToken class using an object literal that manages the authentication token in session storage.
@@ -13,7 +13,7 @@ export const AuthToken = {
 
 export async function LoginRequest(credentials: Credentials): Promise<AuthenticationResponse> {
     try{
-        const response = await fetch(`${API_BASE_URL}/students/email`, {
+        const response = await fetch(`${API_BASE_URL}/platform-users/email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
