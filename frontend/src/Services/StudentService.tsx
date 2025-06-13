@@ -1,11 +1,13 @@
 import type {RegisterDetails} from '../Types/RegisterUCType';
 
+const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
+
 /**
  * 
  * @returns response object containing student_code which is a string
  */
 const RegisterStudent = async (details: RegisterDetails) => {
-    const response = await fetch('http://localhost:3001/api/student-routes/students', {
+    const response = await fetch(`${API_BASE_URL}/platform-users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
