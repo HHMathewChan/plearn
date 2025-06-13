@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { RegisterDetails } from '../Types/RegisterUCType';
-import RegisterStudent from '../Services/StudentService';
+import RegisterStudent from '../Services/PlatformUserService';
 
 /**
  * Custom hook for managing student registration.
