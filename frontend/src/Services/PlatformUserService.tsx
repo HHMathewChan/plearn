@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
  * 
  * @returns response object containing student_code which is a string
  */
-const RegisterStudent = async (details: RegisterDetails) => {
+const RegisterPlatformUser = async (details: RegisterDetails) => {
     const response = await fetch(`${API_BASE_URL}/platform-users`, {
         method: 'POST',
         headers: {
@@ -22,4 +22,4 @@ const RegisterStudent = async (details: RegisterDetails) => {
     return response.json();
 };
 
-export default RegisterStudent;
+export default RegisterPlatformUser;
