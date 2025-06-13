@@ -36,6 +36,29 @@ async function verifyPlatformUserLogin(email, password) {
   };
 }
 
+/**
+ * Register a new platform user
+ * @param {Object} userData
+ *  User data containing name, email, password, and role.
+ */
+const registerPlatformUser = async (userData) => {
+  const { name, email, password, role } = userData;
+  // If the role is student, create a student profile
+  // otherwise, there should be error happened
+  if (role !== 'student') {
+    throw new Error('Only student role is supported for registration at the moment');
+  }
+  // assuming password will be hashed in the future
+  const password_hash = password;
+  const platform_user_id = await platformUserRepository.createPlatformUser(name, email, password_hash, role);
+  // create a student profile
+  const student_code = await studentRepository.createStudent();
+  await hasStudentProfileInRepository.createHasStudentProfileIn(student_code, platform_user_id);
+  // return student_code
+  return student_code;
+};
+
 module.exports = {
   verifyPlatformUserLogin,
+  registerPlatformUser,
 };
