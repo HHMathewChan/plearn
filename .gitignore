@@ -47,3 +47,4 @@ coverage/
 *.localized
 backend/test.restbook
 Mathew on plearn.session.sql
+plearn.code-workspace
