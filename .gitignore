@@ -3,7 +3,7 @@
 Thumbs.db
 .idea/
 .vscode/
-.workspace
+.code-workspace
 
 # === Node.js backend ===
 node_modules/
@@ -47,4 +47,3 @@ coverage/
 *.localized
 backend/test.restbook
 Mathew on plearn.session.sql
-plearn.code-workspace
