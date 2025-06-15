@@ -10,6 +10,7 @@ backend/.env
 backend/package-lock.json # (Optional: include if you want exact dependency locking)
 backend/scripts 
 backend/__tests__/
+backend/courseResources/
 
 # === PostgreSQL data or logs ===
 pgdata/
