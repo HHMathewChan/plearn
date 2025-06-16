@@ -16,24 +16,19 @@ const database = require('../database');
  */
 const getCopyrightOwnerByCourseId = async (courseId) => {
     try {
-        // Query to get a copyright owner for a specific course using the course ID from the OwnCourseBy table
-        const result = await database.query(
+        // Use .oneOrNone() since 0 or 1 relationship is expected
+        const result = await database.oneOrNone(
             'SELECT owncourseby.copyright_owner_id FROM owncourseby ' +
             'WHERE owncourseby.course_id = $1',
             [courseId]
         );
         
-        console.log('Query result for course ID', courseId, ':', result);
-        
-        // With pg-promise, result is directly the array of rows
-        if (result.length === 0) {
+        if (!result) {
             throw new Error('No copyright owner found for the given course ID');
         }
-        // Return the copyright owner ID
-        return result[0].copyright_owner_id;
+        return result.copyright_owner_id;
     }
     catch (error) {
-        // Log the error and rethrow it
         console.error('Error fetching copyright owner by course ID:', error);
         throw error;
     }
