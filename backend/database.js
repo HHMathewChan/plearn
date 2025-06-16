@@ -12,4 +12,14 @@ const database = pgp({
   password: process.env.POSTGRES_PASSWORD,
 });
 
+// Test database connection
+// database.connect()
+//   .then(obj => {
+//     console.log('Database connection successful');
+//     obj.done(); // success, release connection
+//   })
+//   .catch(error => {
+//     console.error('Database connection failed:', error);
+//   });
+
 module.exports = database;
