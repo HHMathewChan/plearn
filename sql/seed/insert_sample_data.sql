@@ -49,3 +49,14 @@ INSERT INTO contentprogress (id, student_id, content_id, status, date_completed,
 -- CopyrightOwner
 INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license_url) VALUES
 ('b3b1c7e2-8888-4e1a-9c1a-bbbb88888888', 'OpenCourseWare', 'institution', 'info@ocw.org', 'OER', 'https://ocw.org/license');
+-- Additional CopyrightOwner examples
+INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license_url) VALUES
+('b3b1c7e2-9999-4e1a-9c1a-cccc99999999', 'Creative Commons Foundation', 'institution', 'info@creativecommons.org', 'CC', 'https://creativecommons.org/licenses/by-sa/4.0/'),
+('b3b1c7e2-aaaa-4e1a-9c1a-ddddaaaaaaaa', 'MIT OpenCourseWare', 'institution', 'ocw-help@mit.edu', 'CC', 'https://ocw.mit.edu/terms/'),
+('b3b1c7e2-bbbb-4e1a-9c1a-eeeebbbbbbbb', 'Khan Academy', 'institution', 'content@khanacademy.org', 'CC', 'https://www.khanacademy.org/about/tos#cc-license'),
+('b3b1c7e2-cccc-4e1a-9c1a-ffffcccccccc', 'FreeCodeCamp', 'institution', 'team@freecodecamp.org', 'CC', 'https://github.com/freeCodeCamp/freeCodeCamp/blob/main/LICENSE.md');
+
+-- OwnCourseBy
+INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
+('b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'b3b1c7e2-8888-4e1a-9c1a-bbbb88888888'),
+('b3b1c7e2-2222-4e1a-9c1a-bbbb22222222', 'b3b1c7e2-9999-4e1a-9c1a-cccc99999999');
