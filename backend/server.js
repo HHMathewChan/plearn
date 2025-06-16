@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const platformUserRoutes = require('./routes/platformUserRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/platform-user-routes', platformUserRoutes);
+app.use('/api/course-routes', courseRoutes);
 
 // Start server
 app.listen(port, () => {
