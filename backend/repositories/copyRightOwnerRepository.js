@@ -18,22 +18,14 @@ const database = require('../database');
  */
 const getCopyrightOwnerById = async (copyrightOwnerId) => {
     try {
-        // Query to get a copyright owner by their ID
-        const result = await database.query(
+        // Use .one() since exactly one copyright owner by ID is expected
+        const result = await database.one(
             'SELECT * FROM copyrightowner WHERE id = $1',
             [copyrightOwnerId]
         );
         
-        console.log('Query result for copyright owner ID', copyrightOwnerId, ':', result);
-        
-        // With pg-promise, result is directly the array of rows
-        if (result.length === 0) {
-            throw new Error('No copyright owner found for the given ID');
-        }
-        // Return the copyright owner object
-        return result[0];
+        return result;
     } catch (error) {
-        // Log the error and rethrow it
         console.error('Error fetching copyright owner by ID:', error);
         throw error;
     }
