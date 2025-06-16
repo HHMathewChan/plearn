@@ -19,19 +19,11 @@ const database = require('../database');
  */
 async function getAllCourses() {
   try {
-    console.log('Attempting to query courses table...');
-    const courses = await database.query('SELECT * FROM course');
-    console.log('Query successful, found', courses.length, 'courses');
+    // Use .any() since 0 or more courses are expected
+    const courses = await database.any('SELECT * FROM course');
     return courses;
   } catch (error) {
     console.error('Database query failed:', error);
-    console.error('Error details:', {
-      code: error.code,
-      message: error.message,
-      detail: error.detail,
-      hint: error.hint,
-      position: error.position
-    });
     throw new Error(`Error fetching courses: ${error.message}`);
   }
 }
