@@ -17,3 +17,23 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+-- aim: to allow enrollment_code to auto increment
+-- precondition 1: enrollment_code_seq is created
+-- postcondition 1: trg_generate_enrolment_code can be triggered
+CREATE OR REPLACE FUNCTION generate_enrolment_code()
+RETURNS TRIGGER AS $$
+DECLARE
+    seq_number TEXT;
+    next_seq INT;
+    this_year TEXT;
+    prefix TEXT;
+BEGIN
+    next_seq := nextval('enrolment_code_seq');  -- Pulls the next number
+    seq_number := next_seq::TEXT;
+    prefix := 'ENR';
+    this_year := TO_CHAR(NOW(), 'YYYY');
+    NEW.enrolment_code := prefix || this_year || seq_number;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
