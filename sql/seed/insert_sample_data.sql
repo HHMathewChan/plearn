@@ -7,7 +7,7 @@ INSERT INTO platformuser (id, name, email, password_hash, role, registered_at) V
 
 -- Student
 INSERT INTO student (student_code) VALUES
-('STR20250001');
+('STR20251');
 
 -- Topic
 INSERT INTO topic (id, name) VALUES
@@ -16,8 +16,8 @@ INSERT INTO topic (id, name) VALUES
 
 -- ChosenTopic
 INSERT INTO chosentopic (id, interest_level, knowledge_proficiency, student_id, topic_id) VALUES
-('b3b1c7e2-cccc-4e1a-9c1a-cccccccccccc', 'high', 'novice', 'STR20250001', 'b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa'),
-('b3b1c7e2-dddd-4e1a-9c1a-dddddddddddd', 'medium', 'intermediate', 'STR20250001', 'b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb');
+('b3b1c7e2-cccc-4e1a-9c1a-cccccccccccc', 'high', 'novice', 'STR20251', 'b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa'),
+('b3b1c7e2-dddd-4e1a-9c1a-dddddddddddd', 'medium', 'intermediate', 'STR20251', 'b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb');
 
 -- LearningMode
 INSERT INTO learningmode (id, mode_name, description) VALUES
@@ -30,8 +30,8 @@ INSERT INTO course (id, course_code, title, description) VALUES
 ('b3b1c7e2-2222-4e1a-9c1a-bbbb22222222', 'CRS-PY101', 'Python for Beginners', 'Learn Python from scratch');
 
 -- Enrolment
-INSERT INTO enrolment (id, enrolment_code, student_id, course_id, enrolled_at) VALUES
-('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'ENR-2025-0001', 'STR20250001', 'b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', NOW());
+INSERT INTO enrolment (id, enrolment_code, student_code, course_id, enrolled_at) VALUES
+('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'ENR20251', 'STR20251', 'b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', NOW());
 
 -- CourseContent
 INSERT INTO coursecontent (id, course_id, title, content_type, content_url) VALUES
