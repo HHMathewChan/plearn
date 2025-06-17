@@ -1,8 +1,10 @@
 import { BrowserRouter,Routes, Route} from 'react-router-dom';
 import StudentHome from './Pages/StudentHome';
 import LandingPage from './Pages/LandingPage';
+import CoursePage from './Pages/CoursePage';
 import { LoginFacade } from './UseCases/LoginFacade';
 import ProtectedRoute from './Components/ProtectedRoute';
+import ProtectedLayout from './Components/ProtectedLayout';
 import RegisterFacade from './UseCases/RegisterFacade';
 
 
@@ -11,15 +13,31 @@ function App() {
     <div  className="p-5">
       <BrowserRouter>
         <Routes>
+          {/* Public routes */}
+          {/* The following routes are for the landing page */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginFacade />} />
           <Route path="/register" element={<RegisterFacade />} />
-          // Protected route for student home 
-          <Route 
-            path="/student-home" 
+          {/* The following routes is protected */}
+          {/* This route is for the student home page */}
+          <Route
+            path="/student-home"
             element={
               <ProtectedRoute>
-                <StudentHome />
+                <ProtectedLayout>
+                  <StudentHome />
+                </ProtectedLayout>
+              </ProtectedRoute>
+            }
+          />
+          {/* This route is for the course page */}
+          <Route
+            path="/courses"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout>
+                  <CoursePage />
+                </ProtectedLayout>
               </ProtectedRoute>
             }
           />
