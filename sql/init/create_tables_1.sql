@@ -51,7 +51,7 @@ CREATE TABLE CourseProgress (
 CREATE TABLE Enrolment (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     enrolment_code EnrolmentCode NOT NULL UNIQUE,
-    student_id StudentCode NOT NULL,
+    student_code StudentCode NOT NULL,
     course_id UUID NOT NULL,
     enrolled_at TIMESTAMP NOT NULL
 );
