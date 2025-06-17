@@ -22,7 +22,7 @@ CREATE TABLE HasCourseProgressFor (
     student_code StudentCode NOT NULL
 );
 
---HasCoursrReferenceTo (Course <-> Enrolment)
+-- HasCourseReferenceTo (Course <-> Enrolment)
 CREATE TABLE HasCourseReferenceTo (
     enrolment_id UUID PRIMARY KEY,
     course_id UUID NOT NULL
