@@ -32,7 +32,7 @@ CHECK (VALUE ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 
 -- DOMAIN: EnrolmentCode
 CREATE DOMAIN EnrolmentCode AS VARCHAR(20)
-CHECK (VALUE ~ '^ENR-[0-9]{4}-[0-9]+$');
+CHECK (VALUE ~ '^ENR[0-9]{4}[0-9]+$');
 
 -- DOMAIN: InterestLevel
 CREATE DOMAIN InterestLevel AS TEXT
