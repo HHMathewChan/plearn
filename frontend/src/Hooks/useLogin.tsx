@@ -66,6 +66,7 @@ export const useLogin = () => {
         handleLogout,
         userId: UserData.getUserId(),
         userRole: UserData.getUserRole(),
+        studentCode: UserData.getStudentCode(),
         hasCompleteSession: AuthService.hasCompleteSession()
     };
 }
