@@ -1,5 +1,3 @@
-console.log('courseService.js file is being loaded');
-
 /**
  * This handles the course service logic.
  */
@@ -7,9 +5,6 @@ const courseRepository = require('../repositories/courseRepository');
 const ownCourseByRepository = require('../repositories/ownCourseByRepository');
 const copyRightOwnerRepository = require('../repositories/copyRightOwnerRepository');
 
-console.log('All repositories loaded successfully');
-
-// need to review the copyright owner and course jsdoc
 /**
  * @typedef {Object} CopyrightOwner
  * @property {number} id - The unique identifier for the copyright owner.
@@ -71,12 +66,6 @@ const getAllCoursesMetadata = async () => {
     }
 };
 
-console.log('getAllCoursesMetadata function defined:', typeof getAllCoursesMetadata);
-
-console.log('About to export module');
-
 module.exports = {
     getAllCoursesMetadata
 };
-
-console.log('Module exported, exports:', module.exports);
