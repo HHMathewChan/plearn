@@ -4,9 +4,13 @@ type Credentials = {
 };
 
 type AuthenticationResponse = {
-    token: string;
-    student_code?: string;
     platform_user_id?: string;
+    role_code?: string;
+    role?: string;
+    token: string;
+    status?: string;
+    message?: string;
+    error?: string;
 };
 
 export type { Credentials, AuthenticationResponse };
