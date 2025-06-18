@@ -7,7 +7,8 @@ INSERT INTO platformuser (id, name, email, password_hash, role, registered_at) V
 
 -- Student
 INSERT INTO student (student_code) VALUES
-('STR20251');
+('STR20251'),
+('STR20252');
 
 -- Topic
 INSERT INTO topic (id, name) VALUES
