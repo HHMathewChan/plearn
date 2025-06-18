@@ -27,9 +27,18 @@ export const UserData = {
     getUserRole() { 
         return sessionStorage.getItem("userRole"); 
     },
-    setUserData(userId: string, role: string) {
+    setStudentCode(studentCode: string) {
+        return sessionStorage.setItem("studentCode", studentCode);
+    },
+    getStudentCode() {
+        return sessionStorage.getItem("studentCode");
+    },
+    setUserData(userId: string, role: string, studentCode?: string) {
         this.setUserId(userId);
         this.setUserRole(role);
+        if (studentCode) {
+            this.setStudentCode(studentCode);
+        }
     },
     removeUserId() { 
         return sessionStorage.removeItem("userId"); 
@@ -37,13 +46,17 @@ export const UserData = {
     removeUserRole() { 
         return sessionStorage.removeItem("userRole"); 
     },
+    removeStudentCode() {
+        return sessionStorage.removeItem("studentCode");
+    },
     removeUserData() {
         this.removeUserId();
         this.removeUserRole();
+        this.removeStudentCode();
     },
     // Check if user data exists
     hasUserData(): boolean {
-        return this.getUserId() !== null && this.getUserRole() !== null;
+        return this.getUserId() !== null && this.getUserRole() !== null && this.getStudentCode() !== null;
     }
 };
 
@@ -69,10 +82,11 @@ export const AuthService = {
     async login(credentials: Credentials): Promise<string> {
         const data = await LoginRequest(credentials);
         AuthToken.set(data.token);
-        
-        // Store user ID and role using the separate UserData object
+
+        // Store user ID, role and role_code using the separate UserData object
+        // studentCode will be the role_code given that the user role is student
         if (data.platform_user_id && data.role) {
-            UserData.setUserData(data.platform_user_id, data.role);
+            UserData.setUserData(data.platform_user_id, data.role, data.role_code);
         }
         
         return data.token;
@@ -89,7 +103,9 @@ export const AuthService = {
     getUserRole(): string | null {
         return UserData.getUserRole();
     },
-    
+    getStudentCode(): string | null {
+        return UserData.getStudentCode();
+    },    
     // Check if user has complete authentication data
     hasCompleteSession(): boolean {
         return this.isAuthenticated() && UserData.hasUserData();
