@@ -53,7 +53,7 @@ CREATE TABLE Enrolment (
     enrolment_code EnrolmentCode NOT NULL UNIQUE,
     student_code StudentCode NOT NULL,
     course_id UUID NOT NULL,
-    enrolled_at TIMESTAMP NOT NULL
+    enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE PlatformUser (
