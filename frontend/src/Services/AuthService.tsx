@@ -12,20 +12,20 @@ export const AuthToken = {
 };
 
 /**
- * Implement UserData class using an object literal to manage user information in session storage.
+ * Implement PlatformUserData class using an object literal to manage platform user information in session storage.
  */
-export const UserData = {
-    setUserId(userId: string) { 
-        return sessionStorage.setItem("userId", userId); 
+export const PlatformUserData = {
+    setPlatformUserId(platformUserId: string) { 
+        return sessionStorage.setItem("platformUserId", platformUserId); 
     },
-    getUserId() { 
-        return sessionStorage.getItem("userId"); 
+    getPlatformUserId() { 
+        return sessionStorage.getItem("platformUserId"); 
     },
-    setUserRole(role: string) { 
-        return sessionStorage.setItem("userRole", role); 
+    setPlatformUserRole(role: string) { 
+        return sessionStorage.setItem("platformUserRole", role); 
     },
-    getUserRole() { 
-        return sessionStorage.getItem("userRole"); 
+    getPlatformUserRole() { 
+        return sessionStorage.getItem("platformUserRole"); 
     },
     setStudentCode(studentCode: string) {
         return sessionStorage.setItem("studentCode", studentCode);
@@ -33,30 +33,30 @@ export const UserData = {
     getStudentCode() {
         return sessionStorage.getItem("studentCode");
     },
-    setUserData(userId: string, role: string, studentCode?: string) {
-        this.setUserId(userId);
-        this.setUserRole(role);
+    setPlatformUserData(platformUserId: string, role: string, studentCode?: string) {
+        this.setPlatformUserId(platformUserId);
+        this.setPlatformUserRole(role);
         if (studentCode) {
             this.setStudentCode(studentCode);
         }
     },
-    removeUserId() { 
-        return sessionStorage.removeItem("userId"); 
+    removePlatformUserId() { 
+        return sessionStorage.removeItem("platformUserId"); 
     },
-    removeUserRole() { 
-        return sessionStorage.removeItem("userRole"); 
+    removePlatformUserRole() { 
+        return sessionStorage.removeItem("platformUserRole"); 
     },
     removeStudentCode() {
         return sessionStorage.removeItem("studentCode");
     },
-    removeUserData() {
-        this.removeUserId();
-        this.removeUserRole();
+    removePlatformUserData() {
+        this.removePlatformUserId();
+        this.removePlatformUserRole();
         this.removeStudentCode();
     },
-    // Check if user data exists
-    hasUserData(): boolean {
-        return this.getUserId() !== null && this.getUserRole() !== null && this.getStudentCode() !== null;
+    // Check if platform user data exists
+    hasPlatformUserData(): boolean {
+        return this.getPlatformUserId() !== null && this.getPlatformUserRole() !== null && this.getStudentCode() !== null;
     }
 };
 
@@ -76,44 +76,44 @@ export async function LoginRequest(credentials: Credentials): Promise<Authentica
 }
 
 /**
- * Implements the login service class in an object literal that handles user authentication.
+ * Implements the login service class in an object literal that handles platform user authentication.
  */
 export const AuthService = {
     async login(credentials: Credentials): Promise<string> {
         const data = await LoginRequest(credentials);
         AuthToken.set(data.token);
 
-        // Store user ID, role and role_code using the separate UserData object
-        // studentCode will be the role_code given that the user role is student
+        // Store platform user ID, role and role_code using the separate PlatformUserData object
+        // studentCode will be the role_code given that the platform user role is student
         if (data.platform_user_id && data.role) {
-            UserData.setUserData(data.platform_user_id, data.role, data.role_code);
+            PlatformUserData.setPlatformUserData(data.platform_user_id, data.role, data.role_code);
         }
         
         return data.token;
     },
     isAuthenticated(): boolean {
-        // Check if the token exists in session storage, if it does, the user is authenticated.
+        // Check if the token exists in session storage, if it does, the platform user is authenticated.
         return AuthToken.get() !== null;
     },
     
-    // Methods to get user data via UserData object
-    getUserId(): string | null {
-        return UserData.getUserId();
+    // Methods to get platform user data via PlatformUserData object
+    getPlatformUserId(): string | null {
+        return PlatformUserData.getPlatformUserId();
     },
-    getUserRole(): string | null {
-        return UserData.getUserRole();
+    getPlatformUserRole(): string | null {
+        return PlatformUserData.getPlatformUserRole();
     },
     getStudentCode(): string | null {
-        return UserData.getStudentCode();
+        return PlatformUserData.getStudentCode();
     },    
-    // Check if user has complete authentication data
+    // Check if platform user has complete authentication data
     hasCompleteSession(): boolean {
-        return this.isAuthenticated() && UserData.hasUserData();
+        return this.isAuthenticated() && PlatformUserData.hasPlatformUserData();
     },
     
     // Logout method to clear all data
     logout(): void {
         AuthToken.remove();
-        UserData.removeUserData();
+        PlatformUserData.removePlatformUserData();
     }
 };
