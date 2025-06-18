@@ -4,6 +4,7 @@ Thumbs.db
 .idea/
 .vscode/
 .code-workspace
+.github/
 
 # === Node.js backend ===
 node_modules/
