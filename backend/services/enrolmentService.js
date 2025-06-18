@@ -3,7 +3,7 @@
  */
 const enrolmentRepository = require('../repositories/enrolmentRepository');
 const enrolsInRepository = require('../repositories/enrolsInRepository');
-const hasCourseReferenceRepository = require('../repositories/hasCourseReferenceRepository');
+const hasCourseReferenceToRepository = require('../repositories/hasCourseReferenceToRepository');
 
 /**
  * A student enroled in a course.
@@ -14,12 +14,19 @@ const hasCourseReferenceRepository = require('../repositories/hasCourseReference
  */
 const studentEnrolsCourse = async (enrolmentData) => {
     const { student_code, course_id } = enrolmentData;
+    
+    console.log(`[studentEnrolsCourse] Processing enrolment for student_code: "${student_code}", course_id: "${course_id}"`);
+    
     // Create a new enrolment record, assign the returned id and enrolment_code to the enrolment object
     const enrolmentResponse = await enrolmentRepository.createEnrolment(student_code, course_id);
-    // Create a new record in the enrolsIn table to link the enrolment with the course
-    await enrolsInRepository.createEnrolsIn(enrolmentResponse.enrolment_code, course_id);
-    // Create a new record in the hasCourseReference table to link the enrolment with the course
-    await hasCourseReferenceRepository.createHasCourseReference(enrolmentResponse.enrolment_code, course_id);
+    
+    // Create a new record in the enrolsIn table to link the STUDENT with the ENROLMENT
+    // Note: Pass student_code and enrolment_id (not enrolment_code)
+    await enrolsInRepository.createEnrolsIn(student_code, enrolmentResponse.id);
+    
+    // Create a new record in the hasCourseReferenceTo table to link the enrolment with the course
+    await hasCourseReferenceToRepository.createHasCourseReferenceTo(enrolmentResponse.id, course_id);
+
     // Return the enrolment object
     return {
         id: enrolmentResponse.id,
