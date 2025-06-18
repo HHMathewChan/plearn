@@ -4,7 +4,7 @@
  * This is implementation of the business layer of the login use case. 
  */
 import { useState } from 'react';
-import {AuthService} from '../Services/AuthService';
+import { AuthService, UserData } from '../Services/AuthService';
 import type { Credentials } from '../Types/AuthenticationType';
 
 export const useLogin = () => {
@@ -29,7 +29,7 @@ export const useLogin = () => {
 
     //handle the submit of the login form
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault(); // Prevent the default form submission behaviour
         setIsLoading(true); // Set loading state to true
         setError(null); // Reset any previous error
 
@@ -38,6 +38,8 @@ export const useLogin = () => {
             const token = await AuthService.login(loginDetails);
             setIsAuthenticated(true); // Update authentication status
             console.log('Login successful, token:', token);
+            console.log('User ID:', UserData.getUserId());
+            console.log('User role:', UserData.getUserRole());
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed'); // Set error message if login fails
             setIsAuthenticated(false); // Ensure authentication status is false on error
@@ -46,12 +48,24 @@ export const useLogin = () => {
         }
     };
 
+    // Logout handler
+    const handleLogout = () => {
+        AuthService.logout();
+        setIsAuthenticated(false);
+        setloginDetails({ email: '', password: '' });
+        setError(null);
+    };
+
     return {
         loginDetails,
         isAuthenticated,
         isLoading,
         error,
         handleChange,
-        handleSubmit
+        handleSubmit,
+        handleLogout,
+        userId: UserData.getUserId(),
+        userRole: UserData.getUserRole(),
+        hasCompleteSession: AuthService.hasCompleteSession()
     };
 }
