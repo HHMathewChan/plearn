@@ -1,4 +1,4 @@
-import NavigationBar from "./Navigationbar";
+import NavigationBar from "./NavigationBar";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;
