@@ -59,9 +59,9 @@ const createPlatformUser = async (name, email, password_hash, role) => {
  * */ 
 const getPasswordByEmail = async (email) => {
     // for debugging purpose
-    // console.log("getPasswordByEmail called");
-    // console.log("email:", email);
-    // console.log("email type:", typeof email);
+    console.log("getPasswordByEmail called");
+    console.log("email:", email);
+    console.log("email type:", typeof email);
     const result = await database.one(
         `SELECT password_hash FROM platformuser WHERE email = $1`,
         [email]
@@ -76,6 +76,19 @@ const getPasswordByEmail = async (email) => {
  */
 const getUserByEmail = async (email) => {
     try {
+        console.log("Searching for user with email:", email);
+        
+        // Add a query to check if any users exist at all
+        const userCount = await database.one('SELECT COUNT(*) as count FROM platformuser');
+        console.log("Total users in database:", userCount.count);
+        
+        // Check if the specific email exists (case-insensitive)
+        const emailCheck = await database.oneOrNone(
+            'SELECT email FROM platformuser WHERE LOWER(email) = LOWER($1)',
+            [email]
+        );
+        console.log("Email found (case-insensitive):", emailCheck);
+        
         const result = await database.one(
             `SELECT id as platform_user_id, name, email, password_hash, role, registered_at 
              FROM platformuser 
@@ -84,6 +97,7 @@ const getUserByEmail = async (email) => {
         );
         return result;
     } catch (error) {
+        console.log("Database error:", error.message);
         if (error.message === 'No data returned from the query.') {
             return null;
         }
