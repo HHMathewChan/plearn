@@ -4,30 +4,42 @@ const hasStudentProfileInRepository = require('../repositories/hasStudentProfile
 const {generateToken} = require('./jwtService');
 
 /**
- * verfify a platform user login by comparing the email and password
+ * verify a platform user login by comparing the email and password
  * and return the platform_user_id, the code that corresponds to the user role and JWT token if the login is successful
  */
-
 async function verifyPlatformUserLogin(email, password) {
   // for debugging purpose
   console.log("in file:platformUserService.js, verifyPlatformUserLogin called");
+  
   const platform_user = await platformUserRepository.getUserByEmail(email);
+  
+  // To handle null user properly
   if (!platform_user) {
-    throw new Error('User not found');
+    console.log("User not found for email:", email);
+    throw new Error('Invalid email or password');
   }
 
   // assuming password will be hashed in the future
   const password_hash = platform_user.password_hash;
-    if (password_hash !== password) {
-        throw new Error('Invalid email or password');
-    }
+  if (password_hash !== password) {
+    console.log("Password mismatch for user:", email);
+    throw new Error('Invalid email or password');
+  }
+
   // Find the user code corresponding to their role
-  // first we need to get the role from the platform_user object
   const role = platform_user.role;
-  // if the role is a student, we need to get the student_code
-  const role_code = await hasStudentProfileInRepository.getStudentCodeByPlatformUserId(platform_user.platform_user_id);
-  // if the role is not a student, we just return an empty string, but at the moment we only have student role
+  
+  //since role_code will change, so use let instead of const
+  let role_code;
+  try {
+    role_code = await hasStudentProfileInRepository.getStudentCodeByPlatformUserId(platform_user.platform_user_id);
+  } catch (error) {
+    console.log("Error getting student code:", error.message);
+    throw new Error('User profile incomplete');
+  }
+
   const token = generateToken({ id: platform_user.platform_user_id, role: platform_user.role });
+  
   return {
     platform_user_id: platform_user.platform_user_id,
     role_code: role_code,
