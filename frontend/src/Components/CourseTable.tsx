@@ -4,14 +4,11 @@
  * The component uses the `useCourses` hook to fetch and manage course data.
  */
 import { useCourses } from "../Hooks/useCourses";
+import { useEnrolment } from "../Hooks/useEnrolment";
 
 const CourseTable: React.FC = () => {
   const { courses, loading, error } = useCourses();
-
-  const handleEnrol = (courseId: string, courseTitle: string) => {
-    // TODO: Implement enrolment logic
-    console.log(`Enrolling in course: ${courseTitle} (ID: ${courseId})`);
-  };
+  const { enrol, enrolStatus } = useEnrolment();
 
   if (loading) {
     return (
@@ -59,31 +56,31 @@ const CourseTable: React.FC = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {courses.map((course_with_owner, index) => (
-            <tr key={course_with_owner.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+          {courses.map((courseWithOwner, index) => (
+            <tr key={courseWithOwner.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{course_with_owner.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{course_with_owner.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900">{courseWithOwner.title}</h3>
+                  <p className="text-sm text-gray-600 mt-1">{courseWithOwner.description}</p>
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {course_with_owner.course_code}
+                {courseWithOwner.course_code}
               </td>
               <td className="px-6 py-4 text-sm text-gray-500">
                 <div className="space-y-1">
                   <div>
-                    <span className="font-medium">Owner:</span> {course_with_owner.copyrightOwner.name} ({course_with_owner.copyrightOwner.type})
+                    <span className="font-medium">Owner:</span> {courseWithOwner.copyrightOwner.name} ({courseWithOwner.copyrightOwner.type})
                   </div>
                   <div>
-                    <span className="font-medium">Licence:</span> {course_with_owner.copyrightOwner.license_type}
-                    {course_with_owner.copyrightOwner.license_url && (
+                    <span className="font-medium">Licence:</span> {courseWithOwner.copyrightOwner.license_type}
+                    {courseWithOwner.copyrightOwner.license_url && (
                       <a
-                        href={course_with_owner.copyrightOwner.license_url}
+                        href={courseWithOwner.copyrightOwner.license_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 underline ml-1 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
-                        aria-label={`View licence details for ${course_with_owner.title}`}
+                        aria-label={`View licence details for ${courseWithOwner.title}`}
                       >
                         Details
                       </a>
@@ -93,12 +90,16 @@ const CourseTable: React.FC = () => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button
-                  onClick={() => handleEnrol(course_with_owner.id, course_with_owner.title)}
+                  onClick={() => enrol(courseWithOwner.id)}
+                  disabled={enrolStatus[courseWithOwner.id] === "Processing..."}
                   className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colours"
-                  aria-label={`Enrol in ${course_with_owner.title}`}
+                  aria-label={`Enrol in ${courseWithOwner.title}`}
                 >
-                  Enrol
+                  {enrolStatus[courseWithOwner.id] === "Enrolled!" ? "Enrolled" : "Enrol"}
                 </button>
+                {enrolStatus[courseWithOwner.id] && enrolStatus[courseWithOwner.id] !== "Enrolled!" && ( 
+                  <span>{enrolStatus[courseWithOwner.id]}</span>
+                )}
               </td>
             </tr>
           ))}
