@@ -61,3 +61,8 @@ INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license
 INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
 ('b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'b3b1c7e2-8888-4e1a-9c1a-bbbb88888888'),
 ('b3b1c7e2-2222-4e1a-9c1a-bbbb22222222', 'b3b1c7e2-9999-4e1a-9c1a-cccc99999999');
+
+--hasStudentProfileIn
+INSERT INTO hasstudentprofilein (student_code, platform_user_id) VALUES
+('STR20251', 'b3b1c7e2-1111-4e1a-9c1a-111111111111'),
+('STR20252', 'b3b1c7e2-2222-4e1a-9c1a-222222222222');
