@@ -1,7 +1,5 @@
 /**
- * This file is for the useLogin hook.
- * It handles all the logic and status related to platform user login.
- * This is implementation of the business layer of the login use case. 
+ * This file is for the hooks that manage the login form state and logic.
  */
 import { useState } from 'react';
 import { AuthService } from '../Services/AuthService';
