@@ -2,7 +2,7 @@ import { BrowserRouter,Routes, Route} from 'react-router-dom';
 import StudentHome from './Pages/StudentHome';
 import LandingPage from './Pages/LandingPage';
 import CoursePage from './Pages/CoursePage';
-import { LoginFacade } from './UseCases/LoginFacade';
+import { LoginFacade } from './Facades/LoginFacade';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ProtectedLayout from './Components/ProtectedLayout';
 import RegisterFacade from './UseCases/RegisterFacade';
