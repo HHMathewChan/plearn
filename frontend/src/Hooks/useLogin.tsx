@@ -4,7 +4,8 @@
  * This is implementation of the business layer of the login use case. 
  */
 import { useState } from 'react';
-import { AuthService, PlatformUserData } from '../Services/AuthService';
+import { AuthService } from '../Services/AuthService';
+import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 import type { Credentials } from '../Types/AuthenticationType';
 
 export const useLogin = () => {
@@ -38,8 +39,8 @@ export const useLogin = () => {
             const token = await AuthService.login(loginDetails);
             setIsAuthenticated(true); // Update authentication status
             console.log('Login successful, token:', token);
-            console.log('Platform User ID:', PlatformUserData.getPlatformUserId());
-            console.log('Platform User role:', PlatformUserData.getPlatformUserRole());
+            console.log('Platform User ID:', PlatformUserRepository.getPlatformUserId());
+            console.log('Platform User role:', PlatformUserRepository.getPlatformUserRole());
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed'); // Set error message if login fails
             setIsAuthenticated(false); // Ensure authentication status is false on error
@@ -64,9 +65,9 @@ export const useLogin = () => {
         handleChange,
         handleSubmit,
         handleLogout,
-        platformUserId: PlatformUserData.getPlatformUserId(),
-        platformUserRole: PlatformUserData.getPlatformUserRole(),
-        studentCode: PlatformUserData.getStudentCode(),
+        platformUserId: PlatformUserRepository.getPlatformUserId(),
+        platformUserRole: PlatformUserRepository.getPlatformUserRole(),
+        studentCode: PlatformUserRepository.getStudentCode(),
         hasCompleteSession: AuthService.hasCompleteSession()
     };
 }
