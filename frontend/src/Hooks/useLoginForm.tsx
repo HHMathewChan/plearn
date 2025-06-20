@@ -8,7 +8,7 @@ import { AuthService } from '../Services/AuthService';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 import type { Credentials } from '../Types/AuthenticationType';
 
-export const useLogin = () => {
+export const useLoginForm = () => {
     const [loginDetails, setloginDetails] = useState<Credentials>({
         email: '',
         password: '' 
