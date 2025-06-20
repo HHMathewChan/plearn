@@ -49,14 +49,6 @@ export const useLoginForm = () => {
         }
     };
 
-    // Logout handler
-    const handleLogout = () => {
-        AuthService.logout();
-        setIsAuthenticated(false);
-        setloginDetails({ email: '', password: '' });
-        setError(null);
-    };
-
     return {
         loginDetails,
         isAuthenticated,
@@ -64,7 +56,6 @@ export const useLoginForm = () => {
         error,
         handleChange,
         handleSubmit,
-        handleLogout,
         platformUserId: PlatformUserRepository.getPlatformUserId(),
         platformUserRole: PlatformUserRepository.getPlatformUserRole(),
         studentCode: PlatformUserRepository.getStudentCode(),
