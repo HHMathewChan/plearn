@@ -7,7 +7,7 @@ const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
 /**
  * Handles login API requests to the backend authentication service.
  */
-async function LoginRequest(credentials: Credentials): Promise<AuthenticationResponse> {
+export async function LoginRequest(credentials: Credentials): Promise<AuthenticationResponse> {
     try {
         const response = await fetch(`${API_BASE_URL}/platform-users/email`, {
             method: 'POST',
