@@ -2,23 +2,38 @@
  * This file provides a simplified interface for the login functionality, encapsulating the complexity of the underlying services and hooks.
  * It combines the hooks and the LoginForm component to provide a complete login experience.
  * It is the entry point for the login use case in the application.
+ * It handle the presentation logic.
  */
-import { Navigate } from 'react-router-dom';
 import { useLoginForm } from '../Hooks/useLoginForm';
 import { LoginForm } from '../Components/LoginForm';
+import { useLoginFacade } from '../Hooks/useLoginFacade';
+import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const LoginFacade: React.FC = () => {
     const { loginDetails,
-            isAuthenticated, 
             isLoading,
             error,
+            authResponse,
             handleChange,
             handleSubmit
         } = useLoginForm();
-    
-    // Redirect to the Correct page if the user is already authenticated
-    if (isAuthenticated) {
-        return <Navigate to="/student-home" replace={true} />;
+
+    const { isAuthenticated, updateAuthenticationState } = useLoginFacade();
+
+    // Update the authentication state when the authResponse changes
+    useEffect(() => {
+        if (authResponse) {
+            updateAuthenticationState();
+        }
+    }, [authResponse, updateAuthenticationState]);
+
+    // if isAuthenticated Redirect to the corresponding page based on the user role
+    if (isAuthenticated && authResponse) {
+        if (authResponse?.role === 'student') {
+            return <Navigate to="/student-home" replace={true} />;
+        }
+        // Add more role-based redirects here if needed
     }
 
     return (
