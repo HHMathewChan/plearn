@@ -4,7 +4,7 @@
  * It is the entry point for the login use case in the application.
  */
 import { Navigate } from 'react-router-dom';
-import { useLogin } from '../Hooks/useLogin';
+import { useLoginForm } from '../Hooks/useLoginForm';
 import { LoginForm } from '../Components/LoginForm';
 
 export const LoginFacade: React.FC = () => {
@@ -14,7 +14,7 @@ export const LoginFacade: React.FC = () => {
             error,
             handleChange,
             handleSubmit
-        } = useLogin();
+        } = useLoginForm();
     
     // Redirect to the Correct page if the user is already authenticated
     if (isAuthenticated) {
