@@ -3,17 +3,17 @@
  */
 import { useState } from 'react';
 import { AuthService } from '../Services/AuthService';
-import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
-import type { Credentials } from '../Types/AuthenticationType';
+import type { Credentials,AuthenticationResponse } from '../Types/AuthenticationType';
+import { Login } from '../UseCases/Login';
 
 export const useLoginForm = () => {
     const [loginDetails, setloginDetails] = useState<Credentials>({
         email: '',
         password: '' 
     });
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(AuthService.isAuthenticated());
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [authResponse, setAuthResponse] = useState<AuthenticationResponse | null>(null);
 
     //handle change in the input fields
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,15 +33,11 @@ export const useLoginForm = () => {
         setError(null); // Reset any previous error
 
         try {
-            // Call the login method from AuthService with the current loginDetails
-            const token = await AuthService.login(loginDetails);
-            setIsAuthenticated(true); // Update authentication status
-            console.log('Login successful, token:', token);
-            console.log('Platform User ID:', PlatformUserRepository.getPlatformUserId());
-            console.log('Platform User role:', PlatformUserRepository.getPlatformUserRole());
+            // Call the login function with current loginDetails
+            const response = await Login(loginDetails);
+            setAuthResponse(response);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed'); // Set error message if login fails
-            setIsAuthenticated(false); // Ensure authentication status is false on error
         } finally {
             setIsLoading(false); // Reset loading state
         }
@@ -49,14 +45,11 @@ export const useLoginForm = () => {
 
     return {
         loginDetails,
-        isAuthenticated,
         isLoading,
         error,
+        authResponse,
         handleChange,
         handleSubmit,
-        platformUserId: PlatformUserRepository.getPlatformUserId(),
-        platformUserRole: PlatformUserRepository.getPlatformUserRole(),
-        studentCode: PlatformUserRepository.getStudentCode(),
         hasCompleteSession: AuthService.hasCompleteSession()
     };
-}
+};
