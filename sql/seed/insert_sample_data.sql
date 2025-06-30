@@ -2,7 +2,7 @@
 
 -- PlatformUser
 INSERT INTO platformuser (id, name, email, password_hash, role, registered_at) VALUES
-('b3b1c7e2-1111-4e1a-9c1a-111111111111', 'Alice Smith', 'alice@example.com', 'hashed_pw_1', 'student', NOW()),
+('b3b1c7e2-1111-4e1a-9c1a-111111111111', 'Alice Smith', 'alice@example.com', 'hashed_pw_1', 'student', NOW());
 -- ('b3b1c7e2-2222-4e1a-9c1a-222222222222', 'Bob Tutor', 'bob@example.com', 'hashed_pw_2', 'tutor', NOW());
 
 -- Student
