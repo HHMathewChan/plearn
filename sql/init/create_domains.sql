@@ -21,7 +21,7 @@ CHECK (VALUE IN ('individual', 'institution', 'third_party'));
 
 -- DOMAIN: CourseCode
 CREATE DOMAIN CourseCode AS VARCHAR(20)
-CHECK (VALUE ~ '^CRS-[A-Z]{2,5}[0-9]{3}$');
+CHECK (VALUE ~ '^CRS[0-9]+$');
 
 -- DOMAIN: CourseTitle
 CREATE DOMAIN CourseTitle AS VARCHAR(150);
