@@ -12,10 +12,10 @@ const hasCourseReferenceToRepository = require('../repositories/hasCourseReferen
  * @propperty {string} enrolmentResponse.id - The unique identifier for the enrolment.
  * @propperty {string} enrolmentResponse.enrolment_code - The unique code for
  */
-const studentEnrolsCourse = async (enrolmentData) => {
+const enrols = async (enrolmentData) => {
     const { student_code, course_id } = enrolmentData;
     
-    console.log(`[studentEnrolsCourse] Processing enrolment for student_code: "${student_code}", course_id: "${course_id}"`);
+    console.log(`[enrols] Processing enrolment for student_code: "${student_code}", course_id: "${course_id}"`);
     
     // Create a new enrolment record, assign the returned id and enrolment_code to the enrolment object
     const enrolmentResponse = await enrolmentRepository.createEnrolment(student_code, course_id);
@@ -35,5 +35,5 @@ const studentEnrolsCourse = async (enrolmentData) => {
 };
 
 module.exports = {
-    studentEnrolsCourse
+    enrols
 };
