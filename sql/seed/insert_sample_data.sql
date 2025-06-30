@@ -35,8 +35,8 @@ INSERT INTO enrolment (id, enrolment_code, student_code, course_id, enrolled_at)
 
 -- CourseContent
 INSERT INTO coursecontent (id, course_id, title, content_type, content_url) VALUES
-('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 01: Radiation History to the Present', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS3/mit22_01_s24_radiation_history.pdf'),
-('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS3/mit22_01_s24_radiation_utilizing_tech.pdf');
+('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 01: Radiation History to the Present', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS1/mit22_01_s24_radiation_history.pdf'),
+('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS1/mit22_01_s24_radiation_utilizing_tech.pdf');
 
 -- CopyrightOwner
 INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license_url) VALUES
