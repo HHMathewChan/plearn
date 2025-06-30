@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://localhost:3001/api/enrolment-routes';
 
-export async function enrolsInCourse(studentCode: string, courseId: string): Promise<any> {
+export async function enrols(studentCode: string, courseId: string): Promise<any> {
     const response = await fetch(`${API_BASE_URL}/enrolments`, {
         method: 'POST',
         headers: {
