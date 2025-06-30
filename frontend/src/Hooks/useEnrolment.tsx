@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { enrolsInCourse } from "../Services/EnrolmentService";
+import { enrols } from "../Services/EnrolmentService";
 import { PlatformUserRepository } from "../Repositories/PlatformUserRepository";
 
 export function useEnrolment() {
@@ -11,7 +11,7 @@ export function useEnrolment() {
       if (!studentCode) throw new Error("Not authenticated as a student.");
 
       setEnrolStatus(previousDetails => ({ ...previousDetails, [courseId]: "Processing..." }));
-      await enrolsInCourse(studentCode, courseId);
+      await enrols(studentCode, courseId);
 
       setEnrolStatus(previousDetails => ({ ...previousDetails, [courseId]: "Enrolled!" }));
 
