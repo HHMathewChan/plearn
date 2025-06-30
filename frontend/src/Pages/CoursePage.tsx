@@ -10,12 +10,9 @@ const CoursePage: React.FC = () => {
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Available Courses</h1>
 
-      {/* course page content will be included here, such as:
-          - Course filters
-          - Search functionality
-          - Course categories
-          - Featured courses section
-          - etc.
+      {/* Content relevant to course will be included here, such as:
+      - available courses
+      - enrolled courses
       */}
       
       <CourseTable />
