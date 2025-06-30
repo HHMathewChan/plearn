@@ -36,8 +36,6 @@ const studentEnrolsCourse = async (request, response) => {
   }
 };
 
-// ...existing code...
-
 module.exports = {
   studentEnrolsCourse
 };
