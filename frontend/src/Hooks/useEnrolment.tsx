@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { enrolsInCourse } from "../Services/EnrolmentService";
-import { AuthService } from "../Services/AuthService";
+import { PlatformUserRepository } from "../Repositories/PlatformUserRepository";
 
 export function useEnrolment() {
   const [enrolStatus, setEnrolStatus] = useState<{ [courseId: string]: string }>({});
 
   const enrol = async (courseId: string) => {
     try {
-      const studentCode = AuthService.getStudentCode();
+      const studentCode = PlatformUserRepository.getStudentCode();
       if (!studentCode) throw new Error("Not authenticated as a student.");
 
       setEnrolStatus(previousDetails => ({ ...previousDetails, [courseId]: "Processing..." }));
