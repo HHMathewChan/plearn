@@ -39,12 +39,15 @@ INSERT INTO coursecontent (id, course_id, title, content_type, content_url) VALU
 ('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS3/mit22_01_s24_radiation_utilizing_tech.pdf');
 
 -- CopyrightOwner
--- INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license_url) VALUES
--- ('b3b1c7e2-8888-4e1a-9c1a-bbbb88888888', 'OpenCourseWare', 'institution', 'info@ocw.org', 'OER', 'https://ocw.org/license');
+INSERT INTO copyrightowner (id, name, type, contact_email, license_type, license_url) VALUES
+('b3b1c7e2-8888-4e1a-9c1a-bbbb88888888', 'OpenCourseWare', 'institution', 'info@ocw.org', 'OER', 'https://ocw.org/license'),
+('b3b1c7e2-9999-4e1a-9c1a-cccc99999999', 'Creative Commons Foundation', 'institution', 'contact@creativecommons.org', 'CC', 'https://creativecommons.org/licenses/by-sa/4.0/');
+
 
 -- OwnCourseBy
--- INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
--- ('b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'b3b1c7e2-8888-4e1a-9c1a-bbbb88888888'),
+INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
+('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'b3b1c7e2-8888-4e1a-9c1a-bbbb88888888'),
+('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-9999-4e1a-9c1a-cccc99999999');
 
 --hasStudentProfileIn
 INSERT INTO hasstudentprofilein (student_code, platform_user_id) VALUES
