@@ -5,7 +5,7 @@ const enrolmentService = require('../services/enrolmentService');
 const { sanitiseText } = require('../validation/textSanitiser');
 
 /**
- * handlers for the studentEnrolsCourse function
+ * handlers for the enrols function
  * assign the parameter needed from request body to variable
  * @param {object} request - The request object containing the enrolment data.
  * @param {object} response - The response object to send the result.
@@ -13,9 +13,9 @@ const { sanitiseText } = require('../validation/textSanitiser');
  * @propperty {string} enrolmentResponse.id - The unique identifier for the enrolment.
  * @propperty {string} enrolmentResponse.enrolment_code - The unique code for the enrolment.
  */
-const studentEnrolsCourse = async (request, response) => {
+const enrols = async (request, response) => {
   // for debugging purpose
-  console.log("studentEnrolsCourse called");
+  console.log("enrols called");
   console.log("Raw request body:", request.body);
 
   try {
@@ -25,7 +25,7 @@ const studentEnrolsCourse = async (request, response) => {
     const sanitisedStudentCode = sanitiseText(student_code || '');
     const sanitisedCourseId = sanitiseText(course_id || '');
     
-    const enrolmentResponse = await enrolmentService.studentEnrolsCourse({
+    const enrolmentResponse = await enrolmentService.enrols({
       student_code: sanitisedStudentCode,
       course_id: sanitisedCourseId
     });
@@ -37,5 +37,5 @@ const studentEnrolsCourse = async (request, response) => {
 };
 
 module.exports = {
-  studentEnrolsCourse
+  enrols
 };
