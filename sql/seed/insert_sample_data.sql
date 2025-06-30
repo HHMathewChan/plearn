@@ -27,8 +27,8 @@ INSERT INTO learningmode (id, mode_name, description) VALUES
 
 -- Course
 INSERT INTO course (id, course_code, title, description) VALUES
-('b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'CRS-JS101', 'JavaScript Fundamentals - Level 1', 'Introductory JavaScript course'),
-('b3b1c7e2-2222-4e1a-9c1a-bbbb22222222', 'CRS-PY101', 'Python for Beginners', 'Learn Python from scratch');
+('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'CRS1', 'Introduction to Nuclear Engineering and Ionizing Radiation', 'This course provides an introduction to nuclear science and its engineering applications. It describes basic nuclear models, radioactivity, nuclear reactions, and kinematics; covers the interaction of ionizing radiation with matter, with an emphasis on radiation detection, radiation shielding, and radiation effects on human health; and presents energy systems based on fission and fusion nuclear reactions, as well as industrial and medical applications of nuclear science.'),
+('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'CRS2', 'Energy Economics', 'This course explores the theoretical and empirical perspectives on individual and industrial demand for energy, energy supply, energy markets, and public policies affecting energy markets. It discusses aspects of the oil, natural gas, electricity, and nuclear power sectors and examines energy tax, price regulation, deregulation, energy efficiency and policies for controlling emission.');
 
 -- Enrolment
 INSERT INTO enrolment (id, enrolment_code, student_code, course_id, enrolled_at) VALUES
@@ -36,8 +36,8 @@ INSERT INTO enrolment (id, enrolment_code, student_code, course_id, enrolled_at)
 
 -- CourseContent
 INSERT INTO coursecontent (id, course_id, title, content_type, content_url) VALUES
-('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'Intro to JS', 'video', 'https://example.com/js-intro'),
-('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-2222-4e1a-9c1a-bbbb22222222', 'Python Basics', 'text', 'https://example.com/py-basics');
+('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 01: Radiation History to the Present', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS3/mit22_01_s24_radiation_history.pdf'),
+('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', '/Users/mathewchan/plearn/backend/courseResources/CRS3/mit22_01_s24_radiation_utilizing_tech.pdf');
 
 -- CourseProgress
 INSERT INTO courseprogress (id, student_id, course_id, status, date_completed, last_updated) VALUES
