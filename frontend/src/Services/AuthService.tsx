@@ -58,10 +58,6 @@ export const AuthService = {
         return PlatformUserRepository.getPlatformUserRole();
     },
     
-    getStudentCode(): string | null {
-        return PlatformUserRepository.getStudentCode();
-    },
-    
     hasCompleteSession(): boolean {
         return this.isAuthenticated() && PlatformUserRepository.hasPlatformUserData();
     },
