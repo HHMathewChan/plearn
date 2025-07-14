@@ -1,10 +1,6 @@
 /**
  * This file is the implementation of the login use case in the application.
  * This will trigger by the handle submit of the login form.
- * It will call the AuthService to authenticate the user and manage the session.
- * It will set the platform user data in the PlatformUserRepository.
- * It will ask the AuthService if the user is authenticated and has a complete session.
- * It will ask the PlatformUserRepository to set the platform user data
  * I will redirect the user to the student home page if the user is authenticated.
  */
 import { LoginRequest } from "../Services/AuthService";
