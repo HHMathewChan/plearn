@@ -36,8 +36,8 @@ export const useLoginForm = () => {
             // Call the login function with current loginDetails
             const response = await Login(loginDetails);
             setAuthResponse(response);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Login failed'); // Set error message if login fails
+        } catch (error) {
+            setError(error instanceof Error ? error.message : 'Login failed'); // Set error message if login fails
         } finally {
             setIsLoading(false); // Reset loading state
         }
