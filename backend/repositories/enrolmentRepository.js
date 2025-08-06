@@ -47,6 +47,44 @@ const createEnrolment = async (student_code, course_id) => {
     }
 }
 
+/**
+ * Get an enrolment record by its ID.
+ * @function getEnrolmentById
+ * @param {string} enrolment_id - The unique identifier for the enrolment (UUID)
+ * @returns {Promise<Object>} A promise that resolves to the enrolment object
+ * @property {string} id - The unique identifier for the enrolment
+ * @property {string} enrolment_code - The unique code for the enrolment
+ * @property {string} student_code - The student code associated with the enrolment
+ * @property {string} course_id - The course ID associated with the enrolment
+ * @property {Date} enrolled_at - The timestamp when the enrolment was created
+ * @throws {Error} Throws an error if no enrolment is found with the given ID
+ */
+const getEnrolmentById = async (enrolment_id) => {
+    try {
+        console.log(`[getEnrolmentById] Querying enrolment with ID: "${enrolment_id}"`);
+        
+        // Use .one() since exactly one enrolment is expected
+        const enrolment = await database.one(
+            'SELECT * FROM enrolment WHERE id = $1',
+            [enrolment_id]
+        );
+        
+        console.log(`[getEnrolmentById] Successfully found enrolment:`, enrolment);
+        return enrolment;
+    } catch (error) {
+        console.error(`[getEnrolmentById] Error fetching enrolment with ID: "${enrolment_id}"`);
+        
+        if (error.message === 'No data returned from the query.') {
+            console.error(`[getEnrolmentById] No enrolment found with ID: "${enrolment_id}"`);
+            throw new Error(`Enrolment not found with ID: ${enrolment_id}`);
+        }
+        
+        console.error(`[getEnrolmentById] Full error details:`, error);
+        throw new Error(`Error fetching enrolment: ${error.message}`);
+    }
+};
+
 module.exports = {
-    createEnrolment
+    createEnrolment,
+    getEnrolmentById,
 };
