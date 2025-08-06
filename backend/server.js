@@ -5,6 +5,7 @@ const platformUserRoutes = require('./routes/platformUserRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const enrolmentRoutes = require('./routes/enrolmentRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const courseContentRoutes = require('./routes/courseContentRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -18,6 +19,7 @@ app.use('/api/platform-user-routes', platformUserRoutes);
 app.use('/api/course-routes', courseRoutes);
 app.use('/api/enrolment-routes', enrolmentRoutes);
 app.use('/api/student-routes', studentRoutes);
+app.use('/api/course-content-routes', courseContentRoutes);
 
 // Start server
 app.listen(port, () => {
