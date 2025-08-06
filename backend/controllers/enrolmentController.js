@@ -36,6 +36,35 @@ const enrols = async (request, response) => {
   }
 };
 
+/**
+ * Get all enrolled courses for a student.
+ * @function getEnrolledCoursesByStudentCode
+ * @param {object} request - The request object containing the student_code.
+ * @param {object} response - The response object to send the result.
+ * @returns {Promise<void>} A promise that resolves when the courses are fetched.
+ * @throws {Error} Throws an error if there's a database connection or query issue.
+ * @property {Array<object>} courses - An array of course objects.
+ * @property {string} course.id - The unique identifier for the course.
+ * @property {string} course.course_code - The unique code for the course.
+ * @property {string} course.title - The title of the course.
+ * @property {string} course.description - A brief description of the course.
+ */
+const getEnrolledCoursesByStudentCode = async (request, response) => {
+  try {
+    const { student_code } = request.params;
+    
+    // Sanitise the input string
+    const sanitisedStudentCode = sanitiseText(student_code || '');
+    
+    const courses = await enrolmentService.getEnrolledCoursesByStudentCode(sanitisedStudentCode);
+    response.status(200).json(courses);
+  } catch (error) {
+    console.log("Error details:", error.message);
+    response.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
-  enrols
+  enrols,
+  getEnrolledCoursesByStudentCode
 };
