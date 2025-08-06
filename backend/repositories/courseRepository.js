@@ -28,6 +28,40 @@ async function getAllCourses() {
   }
 }
 
+/**
+ * Get a specific course by its ID.
+ * @function getCourseById
+ * @param {string} courseId - The unique identifier for the course (UUID)
+ * @returns {Promise<Course>} A promise that resolves to the course object
+ * @throws {Error} Throws an error if no course is found with the given ID
+ * @see {@link Course}
+ */
+async function getCourseById(courseId) {
+  try {
+    console.log(`[getCourseById] Querying course with ID: "${courseId}"`);
+    
+    // Use .one() since exactly one course is expected
+    const course = await database.one(
+      'SELECT * FROM course WHERE id = $1',
+      [courseId]
+    );
+    
+    console.log(`[getCourseById] Successfully found course:`, course);
+    return course;
+  } catch (error) {
+    console.error(`[getCourseById] Error fetching course with ID: "${courseId}"`);
+    
+    if (error.message === 'No data returned from the query.') {
+      console.error(`[getCourseById] No course found with ID: "${courseId}"`);
+      throw new Error(`Course not found with ID: ${courseId}`);
+    }
+    
+    console.error(`[getCourseById] Full error details:`, error);
+    throw new Error(`Error fetching course: ${error.message}`);
+  }
+}
+
 module.exports = {
   getAllCourses,
+  getCourseById, 
 };
