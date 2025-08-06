@@ -4,6 +4,7 @@
 const enrolmentRepository = require('../repositories/enrolmentRepository');
 const enrolsInRepository = require('../repositories/enrolsInRepository');
 const hasCourseReferenceToRepository = require('../repositories/hasCourseReferenceToRepository');
+const courseRepository = require('../repositories/courseRepository');
 
 /**
  * A student enroled in a course.
@@ -34,6 +35,50 @@ const enrols = async (enrolmentData) => {
     };
 };
 
+/**
+ * Get all enrolled courses for a student.
+ * @function getEnrolledCoursesByStudentCode
+ * @param {string} student_code - The unique identifier for the student.
+ * @returns {Promise<Array<object>>} A promise that resolves to an array of course objects
+ * @throws {Error} Throws an error if there's a database connection or query issue.
+ * @property {string} course.id - The unique identifier for the course.
+ * @property {string} course.course_code - The unique code for the course.
+ * @property {string} course.title - The title of the course.
+ * @property {string} course.description - A brief description of the course.
+ */
+const getEnrolledCoursesByStudentCode = async (student_code) => {
+    try {
+        console.log(`[getEnrolledCoursesByStudentCode] Fetching enrolment IDs for student_code: "${student_code}"`);
+        
+        // Get all enrolment IDs for the student
+        const enrolmentIds = await enrolsInRepository.getEnrolmentIdsByStudentCode(student_code);
+        
+        if (enrolmentIds.length === 0) {
+            console.log(`[getEnrolledCoursesByStudentCode] No enrolments found for student_code: "${student_code}"`);
+            return [];
+        }
+        
+        console.log(`[getEnrolledCoursesByStudentCode] Found enrolment IDs:`, enrolmentIds);
+        
+        // Fetch course details for each enrolment ID
+        const courses = await Promise.all(enrolmentIds.map(async (enrolmentId) => {
+            //First get the enrolment record to extract the course_id
+            const enrolmentRecord = await enrolmentRepository.getEnrolmentById(enrolmentId);
+            // Then get the course details using the course_id
+            const course = await courseRepository.getCourseById(enrolmentRecord.course_id);
+            return course;
+        }));
+        
+        console.log(`[getEnrolledCoursesByStudentCode] Successfully fetched courses for student_code: "${student_code}"`);
+        return courses;
+    } catch (error) {
+        console.error(`[getEnrolledCoursesByStudentCode] Error fetching enrolled courses for student_code: "${student_code}"`);
+        console.error(`[getEnrolledCoursesByStudentCode] Full error details:`, error);
+        throw error;
+    }
+};
+
 module.exports = {
-    enrols
+    enrols,
+    getEnrolledCoursesByStudentCode
 };
