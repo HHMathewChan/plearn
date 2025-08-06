@@ -43,6 +43,36 @@ const createEnrolsIn = async (student_code, enrolment_id) => {
     }
 };
 
+/**
+ * Get all enrolment IDs for a specific student.
+ * @function getEnrolmentIdsByStudentCode
+ * @param {string} student_code - The unique identifier for the student.
+ * @returns {Promise<Array<string>>} A promise that resolves to an array of enrolment IDs.
+ * @throws {Error} Throws an error if there's a database connection or query issue.
+ */
+const getEnrolmentIdsByStudentCode = async (student_code) => {
+    try {
+        console.log(`[getEnrolmentIdsByStudentCode] Querying enrolments for student_code: "${student_code}"`);
+        
+        // Use .any() since 0 or more enrolments are expected for a student
+        const result = await database.any(
+            'SELECT enrolment_id FROM enrolsIn WHERE student_code = $1',
+            [student_code]
+        );
+
+        // Extract just the enrolment_id values from the result objects by calling an arrow function named row which returns the enrolment_id.
+        const enrolmentIds = result.map(row => row.enrolment_id);
+        
+        console.log(`[getEnrolmentIdsByStudentCode] Found ${enrolmentIds.length} enrolment(s) for student_code: "${student_code}"`);
+        return enrolmentIds;
+    } catch (error) {
+        console.error(`[getEnrolmentIdsByStudentCode] Error fetching enrolments for student_code: "${student_code}"`);
+        console.error(`[getEnrolmentIdsByStudentCode] Full error details:`, error);
+        throw new Error(`Error fetching enrolments for student: ${error.message}`);
+    }
+};
+
 module.exports = {
-    createEnrolsIn
+    createEnrolsIn,
+    getEnrolmentIdsByStudentCode
 };
