@@ -1,0 +1,60 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import CourseContentTable from "../Components/CourseContentTable";
+import { useCourses } from "../Hooks/useCourses";
+
+/**
+ * Page component for displaying course content.
+ * Shows detailed course content in a table format with access controls.
+ */
+const CourseContentPage: React.FC = () => {
+    const { courseId } = useParams<{ courseId: string }>();
+    const navigate = useNavigate();
+    const { courses } = useCourses();
+    const [courseTitle, setCourseTitle] = useState<string>("");
+
+    useEffect(() => {
+        if (!courseId) {
+            navigate('/courses');
+            return;
+        }
+
+        // Find the course title from the courses data
+        const course = courses.find(c => c.id === courseId);
+        if (course) {
+            setCourseTitle(course.title);
+        }
+    }, [courseId, courses, navigate]);
+
+    if (!courseId) {
+        return null;
+    }
+
+    return (
+        <div className="max-w-7xl mx-auto p-6">
+            {/* Header Section */}
+            <div className="mb-6">
+                <button
+                    onClick={() => navigate('/courses')}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium mb-4 inline-flex items-centre"
+                >
+                    ← Back to Courses
+                </button>
+                <h1 className="text-3xl font-bold text-gray-900">
+                    {courseTitle || 'Course Content'}
+                </h1>
+                <p className="mt-2 text-gray-600">
+                    Access your course materials and track your progress
+                </p>
+            </div>
+
+            {/* Course Content Section */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Course Materials</h2>
+                <CourseContentTable courseId={courseId} courseTitle={courseTitle} />
+            </div>
+        </div>
+    );
+};
+
+export default CourseContentPage;
