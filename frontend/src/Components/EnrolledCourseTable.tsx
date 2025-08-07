@@ -1,4 +1,5 @@
 import { useEnrolledCourses } from "../Hooks/useEnrolledCourses";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Component displaying enrolled courses in a table format.
@@ -6,6 +7,7 @@ import { useEnrolledCourses } from "../Hooks/useEnrolledCourses";
  */
 const EnrolledCoursesTable: React.FC = () => {
     const { enrolledCourses, loading, error } = useEnrolledCourses();
+    const navigate = useNavigate();
 
     if (loading) {
         return (
@@ -103,9 +105,7 @@ const EnrolledCoursesTable: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button
                                     onClick={() => {
-                                        // Placeholder for navigation to course content
-                                        console.log(`Navigating to course: ${course.id}`);
-                                        // TODO: Implement navigation to course content
+                                        navigate(`/courses/${course.id}`);
                                     }}
                                     className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colours"
                                     aria-label={`Go to ${course.title} course`}
