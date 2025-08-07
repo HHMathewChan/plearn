@@ -45,7 +45,6 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                 <caption className="sr-only">Course content for {courseTitle}</caption>
                 <thead className="bg-green-50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content ID</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content Link</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
@@ -54,7 +53,6 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                 <tbody className="bg-white divide-y divide-gray-200">
                     {courseContent.map((content) => (
                         <tr key={content.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{content.id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{content.title}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700 underline">
                                 <a
