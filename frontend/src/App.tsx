@@ -6,6 +6,7 @@ import { LoginFacade } from './Facades/LoginFacade';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ProtectedLayout from './Components/ProtectedLayout';
 import RegisterFacade from './UseCases/RegisterFacade';
+import CourseContentPage from './Pages/CourseContentPage';
 
 
 function App() {
@@ -41,6 +42,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+           {/* This route is for the course content page */}
+        < Route
+          path="/courses/:courseId"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout>
+                <CourseContentPage />
+              </ProtectedLayout>
+            </ProtectedRoute>
+          }
+        />
         </Routes>
       </BrowserRouter>
     </div>
