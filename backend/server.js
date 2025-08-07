@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const platformUserRoutes = require('./routes/platformUserRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const enrolmentRoutes = require('./routes/enrolmentRoutes');
@@ -20,6 +21,9 @@ app.use('/api/course-routes', courseRoutes);
 app.use('/api/enrolment-routes', enrolmentRoutes);
 app.use('/api/student-routes', studentRoutes);
 app.use('/api/course-content-routes', courseContentRoutes);
+
+// Serve course resources statically
+app.use('/course-resources', express.static(path.join(__dirname, 'courseResources')));
 
 // Start server
 app.listen(port, () => {
