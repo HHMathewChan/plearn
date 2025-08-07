@@ -56,13 +56,14 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{content.title}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700 underline">
                                 <a
-                                    href={content.content_url}
+                                    href={`http://localhost:3001/course-resources/${content.content_url.replace(/^.*courseResources\//, '')}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`Open content: ${content.title}`}
                                 >
                                     View Content
                                 </a>
+                                
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 {/* Placeholder for future action button */}
