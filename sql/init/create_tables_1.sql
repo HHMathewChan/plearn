@@ -40,7 +40,6 @@ CREATE TABLE CourseContent (
 
 CREATE TABLE CourseProgress (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    student_id UUID NOT NULL,
     course_id UUID NOT NULL,
     status ProgressStatus NOT NULL,
     date_completed TIMESTAMP,
