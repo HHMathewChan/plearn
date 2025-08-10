@@ -15,7 +15,7 @@ INSERT INTO student (student_code) VALUES
 -- ('b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb', 'Python');
 
 -- ChosenTopic
--- INSERT INTO chosentopic (id, interest_level, knowledge_proficiency, student_id, topic_id) VALUES
+-- INSERT INTO chosentopic (id, interest_level, knowledge_proficiency, student_code, topic_id) VALUES
 -- ('b3b1c7e2-cccc-4e1a-9c1a-cccccccccccc', 'high', 'novice', 'STR20251', 'b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa'),
 -- ('b3b1c7e2-dddd-4e1a-9c1a-dddddddddddd', 'medium', 'intermediate', 'STR20251', 'b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb');
 
