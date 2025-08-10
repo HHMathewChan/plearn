@@ -2,7 +2,7 @@ CREATE TABLE ChosenTopic (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     interest_level InterestLevel NOT NULL,
     knowledge_proficiency KnowledgeProficiency NOT NULL,
-    student_id StudentCode NOT NULL,
+    student_code StudentCode NOT NULL,
     topic_id UUID NOT NULL
 );
 
@@ -40,6 +40,7 @@ CREATE TABLE CourseContent (
 
 CREATE TABLE CourseProgress (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_code StudentCode NOT NULL,
     course_id UUID NOT NULL,
     status ProgressStatus NOT NULL,
     date_completed TIMESTAMP,
