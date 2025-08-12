@@ -115,7 +115,5 @@ module.exports = {
     getAllContentProgress,
     getContentProgressStatus,
     createContentProgress,
-    completeContentProgress,
-    uncompleteContentProgress,
     updateContentProgress
 };
