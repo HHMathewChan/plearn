@@ -62,14 +62,18 @@ async function createContentProgress(studentCode, contentId) {
 
 /**
  * Update a content progress record
- * @param {string} contentProgressId - The ID of the content progress item.
+ * @param {string} studentCode - The code identifying the student.
  * @param {string} contentId - The ID of the content item.
  * @param {string} status - The new status of the content progress.
  * @param {Date|null} dateCompleted - The date the content was completed, or null if not completed.
  * @param {Date} lastUpdated - The date the content progress was last updated.
  * @returns {Promise<Object|null>} - The updated content progress record, or null if not found.
  */
-async function updateContentProgress(contentProgressId, contentId, status) {
+async function updateContentProgress(studentCode, contentId, status) {
+    // First, find the content progress id
+    const contentProgressId = await hasContentProgressForRepository.getContentProgressId(studentCode, contentId);
+    // for debugging
+    console.log("Found content progress ID:", contentProgressId);
     // If the status is "not_started", we call the uncompleteContentProgress function
     if (status === "not_started") {
         return uncompleteContentProgress(contentProgressId, contentId);
