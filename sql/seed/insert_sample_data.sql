@@ -2,12 +2,13 @@
 
 -- PlatformUser
 INSERT INTO platformuser (id, name, email, password_hash, role, registered_at) VALUES
-('b3b1c7e2-1111-4e1a-9c1a-111111111111', 'Alice Smith', 'alice@example.com', 'hashed_pw_1', 'student', NOW());
--- ('b3b1c7e2-2222-4e1a-9c1a-222222222222', 'Bob Tutor', 'bob@example.com', 'hashed_pw_2', 'tutor', NOW());
+('b3b1c7e2-1111-4e1a-9c1a-111111111111', 'Alice Smith', 'alice@example.com', 'hashed_pw_1', 'student', NOW()),
+('b3b1c7e2-2222-4e1a-9c1a-222222222222', 'Benjamin Lee', 'benjamin.lee@example.com', 'hashed_pw_2', 'student', NOW());
 
 -- Student
 INSERT INTO student (student_code) VALUES
-('STR20251');
+('STR20251'),
+('STR20252');
 
 -- Topic
 -- INSERT INTO topic (id, name) VALUES
@@ -51,4 +52,15 @@ INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
 
 --hasStudentProfileIn
 INSERT INTO hasstudentprofilein (student_code, platform_user_id) VALUES
-('STR20251', 'b3b1c7e2-1111-4e1a-9c1a-111111111111');
+('STR20251', 'b3b1c7e2-1111-4e1a-9c1a-111111111111'),
+('STR20252', 'b3b1c7e2-2222-4e1a-9c1a-222222222222');
+
+--contentProgress
+INSERT INTO contentprogress (id, content_id, status, date_completed, last_updated) VALUES
+('2551e09a-625d-44bb-81a9-4106a735e6ec', 'b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'not_started', NULL, NOW()),
+('e65147de-e92b-4744-a426-c1bfd5137aab', 'b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'not_started', NULL, NOW());
+
+--hasContentProgress
+INSERT INTO hascontentprogressfor (student_code, content_progress_id) VALUES
+('STR20251', '2551e09a-625d-44bb-81a9-4106a735e6ec'),
+('STR20251', 'e65147de-e92b-4744-a426-c1bfd5137aab');
