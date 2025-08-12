@@ -59,31 +59,7 @@ async function createContentProgress(req, res) {
     }
 }
 
-/**
- * Marks a content item as completed for a student.
- */
-async function completeContentProgress(req, res) {
-    try {
-        const { content_progress_id, content_id } = req.body;
-        // for debugging
-        console.log("Completing content progress for ID:", content_progress_id, "with content ID:", content_id);
-        // sanitise the input
-        const sanitisedContentProgressId = sanitiseText(content_progress_id);
-        const sanitisedContentId = sanitiseText(content_id);
-        // for debugging
-        console.log("Completing content progress for ID after sanitisation:", sanitisedContentProgressId, "with content ID:", sanitisedContentId);
-        const updatedProgress = await contentProgressService.completeContentProgress(sanitisedContentProgressId, sanitisedContentId);
-        if (!updatedProgress) {
-            return res.status(404).json({ message: 'Content progress not found.' });
-        }
-        res.status(200).json(updatedProgress);
-    } catch (error) {
-        console.error('Error completing content progress:', error);
-        res.status(500).json({ message: 'Failed to complete content progress.' });
-    }
-}
-
-/**
+ /**
  * Update the content progress status for a student.
  */
 async function updateContentProgress(req, res) {
@@ -112,6 +88,5 @@ module.exports = {
     getAllContentProgress,
     getContentProgressStatus,
     createContentProgress,
-    completeContentProgress,
     updateContentProgress
 };
