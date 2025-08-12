@@ -60,6 +60,24 @@ async function createContentProgress(studentCode, contentId) {
     return contentProgressID;
 }
 
+/**
+ * Update a content progress record
+ * @param {string} contentProgressId - The ID of the content progress item.
+ * @param {string} contentId - The ID of the content item.
+ * @param {string} status - The new status of the content progress.
+ * @param {Date|null} dateCompleted - The date the content was completed, or null if not completed.
+ * @param {Date} lastUpdated - The date the content progress was last updated.
+ * @returns {Promise<Object|null>} - The updated content progress record, or null if not found.
+ */
+async function updateContentProgress(contentProgressId, contentId, status) {
+    // If the status is "not_started", we call the uncompleteContentProgress function
+    if (status === "not_started") {
+        return uncompleteContentProgress(contentProgressId, contentId);
+    }
+    //otherwise, call the completeContentProgress function
+    return completeContentProgress(contentProgressId, contentId);
+}
+
  /**
  * Marks a content item as completed for a student.
  * @param {string} studentCode - The code identifying the student.
@@ -76,10 +94,28 @@ async function completeContentProgress(contentProgressId, contentId) {
     return updatedContentProgress;
 }
 
+/**
+ * Marks a content item as not started for a student.
+ * @param {string} studentCode - The code identifying the student.
+ * @param {string} contentProgressId - The ID of the content progress item.
+ * @returns {Promise<Object|null>} - The updated content progress record, or null if not found.
+ */
+async function uncompleteContentProgress(contentProgressId, contentId) {
+    // Update the content progress status to 'not_started'
+    // set completed_at to null
+    const dateCompleted = null;
+    // set last_update to now
+    const lastUpdated = new Date();
+    const updatedContentProgress = await contentProgressRepository.updateContentProgress(contentProgressId, contentId, 'not_started', dateCompleted, lastUpdated);
+    return updatedContentProgress;
+}
+
 
 module.exports = {
     getAllContentProgress,
     getContentProgressStatus,
     createContentProgress,
     completeContentProgress,
+    uncompleteContentProgress,
+    updateContentProgress
 };
