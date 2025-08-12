@@ -5,6 +5,6 @@ const contentProgressController = require('../controllers/contentProgressControl
 router.get('/:student_code', contentProgressController.getAllContentProgress);
 router.get('/status/:content_progress_id', contentProgressController.getContentProgressStatus);
 router.post('/', contentProgressController.createContentProgress);
-router.put('/complete', contentProgressController.completeContentProgress);
+router.put('/', contentProgressController.updateContentProgress);
 
 module.exports = router;
