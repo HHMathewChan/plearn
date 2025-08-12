@@ -7,6 +7,7 @@ const courseRoutes = require('./routes/courseRoutes');
 const enrolmentRoutes = require('./routes/enrolmentRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const courseContentRoutes = require('./routes/courseContentRoutes');
+const contentProgressRoutes = require('./routes/contentProgressRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -21,6 +22,7 @@ app.use('/api/course-routes', courseRoutes);
 app.use('/api/enrolment-routes', enrolmentRoutes);
 app.use('/api/student-routes', studentRoutes);
 app.use('/api/course-content-routes', courseContentRoutes);
+app.use('/api/content-progress-routes', contentProgressRoutes);
 
 // Serve course resources statically
 app.use('/course-resources', express.static(path.join(__dirname, 'courseResources')));
