@@ -37,12 +37,14 @@ async function createContentProgress(contentId, status, date_completed, last_upd
 async function updateContentProgress(contentProgressId, contentId, status, dateCompleted, lastUpdate) {
     // for debugging
     console.log("At contentProgressRepository - Updating content progress for ID:", contentProgressId);
-    await database.query(
+    const result = await database.query(
         `UPDATE ContentProgress
          SET content_id = $2 ,status = $3, date_completed = $4, last_updated = $5
-         WHERE id = $1`,
+         WHERE id = $1
+         RETURNING *`,
         [contentProgressId, contentId, status, dateCompleted, lastUpdate]
     );
+    return result;
 }
 
 module.exports = {
