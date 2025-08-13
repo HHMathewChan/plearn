@@ -1,12 +1,14 @@
 import React from "react";
 import { useCourseContent } from "../Hooks/useCourseContent";
+import { ContentProgressTickbox } from "./ContentProgressTickbox";
 
 type CourseContentTableProps = {
     courseId: string;
     courseTitle: string;
+    studentCode: string;
 }
 
-const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, courseTitle }) => {
+const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, courseTitle, studentCode }) => {
     const { courseContent, loading, error } = useCourseContent(courseId);
 
     if (loading) {
@@ -66,13 +68,11 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                                 
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                {/* Placeholder for future action button */}
-                                <button
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colours"
-                                    disabled
-                                >
-                                    Coming Soon
-                                </button>
+                                <ContentProgressTickbox
+                                    studentCode={studentCode}
+                                    contentId={content.id}
+                                    className="justify-center"
+                                />
                             </td>
                         </tr>
                     ))}
