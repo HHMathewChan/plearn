@@ -114,10 +114,21 @@ async function uncompleteContentProgress(contentProgressId, contentId) {
     return updatedContentProgress;
 }
 
+/**
+ * Check If a student has a content progress for a content
+ * @param {string} studentCode - The code identifying the student.
+ * @param {string} contentId - The ID of the content item.
+ * @returns {Promise<boolean>} - True if the student has progress, false otherwise.
+ */
+async function hasContentProgress(studentCode, contentId) {
+    const contentProgressId = await hasContentProgressForRepository.getContentProgressId(studentCode, contentId);
+    return contentProgressId !== null;
+}
 
 module.exports = {
     getAllContentProgress,
     getContentProgressStatus,
     createContentProgress,
-    updateContentProgress
+    updateContentProgress,
+    hasContentProgress
 };
