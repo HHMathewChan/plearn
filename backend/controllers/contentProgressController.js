@@ -26,8 +26,8 @@ async function getAllContentProgress(req, res) {
  */
 async function getContentProgressStatus(req, res) {
     try {
-        const { content_progress_id } = req.params;
-        const status = await contentProgressService.getContentProgressStatus(content_progress_id);
+        const { student_code, content_id, content_progress_id } = req.body;
+        const status = await contentProgressService.getContentProgressStatus(student_code, content_id, content_progress_id);
         if (status === null) {
             return res.status(404).json({ message: 'Content progress not found.' });
         }
