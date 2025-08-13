@@ -84,9 +84,57 @@ async function updateContentProgress(req, res) {
     }
 }
 
+/**
+ * Checks if a student has content progress for a specific content item.
+ * @param {string} student_code - The code identifying the student.
+ * @param {string} content_id - The ID of the content item.
+ * @returns {Promise<boolean>} - True if the student has progress, false otherwise.
+ */
+async function hasContentProgress(req, res) {
+    try {
+        const { student_code, content_id } = req.body;
+        // for debugging
+        console.log("Checking content progress for student:", student_code, "with content ID:", content_id);
+        // sanitise the input
+        const sanitisedStudentCode = sanitiseText(student_code);
+        const sanitisedContentId = sanitiseText(content_id);
+        // for debugging
+        console.log("Checking content progress for student after sanitisation:", sanitisedStudentCode, "with content ID:", sanitisedContentId);
+        const hasProgress = await contentProgressService.hasContentProgress(sanitisedStudentCode, sanitisedContentId);
+        res.status(200).json({ hasProgress });
+    } catch (error) {
+        console.error('Error checking content progress:', error);
+        res.status(500).json({ message: 'Failed to check content progress.' });
+    }
+}
+
+/**
+ *  A function to called different content progress controllers based on the action parameter in the body.
+ */
+async function contentProgressController(req, res) {
+    const { action } = req.body;
+    // for debugging
+    console.log("Content progress action:", action);
+    switch (action) {
+        case 'getAll':
+            return getAllContentProgress(req, res);
+        case 'getStatus':
+            return getContentProgressStatus(req, res);
+        case 'create':
+            return createContentProgress(req, res);
+        case 'update':
+            return updateContentProgress(req, res);
+        case 'hasContentProgress':
+            return hasContentProgress(req, res);
+        default:
+            return res.status(400).json({ message: 'Invalid action.' });
+    }
+}
+
 module.exports = {
     getAllContentProgress,
     getContentProgressStatus,
     createContentProgress,
-    updateContentProgress
+    updateContentProgress,
+    contentProgressController
 };
