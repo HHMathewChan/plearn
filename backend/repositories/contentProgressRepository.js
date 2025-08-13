@@ -4,7 +4,7 @@
 const database = require('../database');
 
 async function getContentProgress(contentProgressId) {
-    const result = await database.query(
+    const result = await database.oneOrNone(
         'SELECT * FROM ContentProgress WHERE id = $1',
         [contentProgressId]
     );
