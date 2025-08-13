@@ -30,12 +30,26 @@ async function getAllContentProgress(studentCode) {
 
 /**
  * Retrieves the status of a specific content progress record by content progress ID.
- * @param {string} contentProgressId - The UUID of the content progress item.
- * @returns {Promise<string|null>} - The status of the content progress, or null if not found.
+ * Either passing the content progress ID directly or passing student code and content id.
+  * @param {string} studentCode - The code identifying the student.
+  * @param {string} contentId - The ID of the content item.
+  * @param {string} contentProgressId - The UUID of the content progress item.
+  * @returns {Promise<string|null>} - The status of the content progress, or null if not found.
  */
-async function getContentProgressStatus(contentProgressId) {
+async function getContentProgressStatus(studentCode, contentId, contentProgressId) {
+    // If contentProgressId is null or undefined, fall back to studentCode and contentId
+    // First, find the content progress id
+    if (contentProgressId == null) {
+        const contentProgressId = await hasContentProgressForRepository.getContentProgressId(studentCode, contentId);
+        const contentProgress = await contentProgressRepository.getContentProgress(contentProgressId);
+        // for debugging
+        console.log(" At getContentProgressStatus - Fetched content progress status:", contentProgress.status );
+        return contentProgress ? contentProgress.status : null;
+    }
+    else {
     const contentProgress = await contentProgressRepository.getContentProgress(contentProgressId);
     return contentProgress ? contentProgress.status : null;
+    }
 }
 
 /**
