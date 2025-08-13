@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CourseContentTable from "../Components/CourseContentTable";
 import { useCourses } from "../Hooks/useCourses";
+import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 
 /**
  * Page component for displaying course content.
@@ -12,6 +13,7 @@ const CourseContentPage: React.FC = () => {
     const navigate = useNavigate();
     const { courses } = useCourses();
     const [courseTitle, setCourseTitle] = useState<string>("");
+    const studentCode = PlatformUserRepository.getStudentCode();
 
     useEffect(() => {
         if (!courseId) {
@@ -28,6 +30,16 @@ const CourseContentPage: React.FC = () => {
 
     if (!courseId) {
         return null;
+    }
+
+    if (!studentCode) {
+        return (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4" role="alert">
+                <div className="text-red-800">
+                    <strong>Error:</strong> Student information is missing. Please log in again.
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -51,7 +63,7 @@ const CourseContentPage: React.FC = () => {
             {/* Course Content Section */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800">Course Materials</h2>
-                <CourseContentTable courseId={courseId} courseTitle={courseTitle} />
+                <CourseContentTable courseId={courseId} courseTitle={courseTitle} studentCode={studentCode} />
             </div>
         </div>
     );
