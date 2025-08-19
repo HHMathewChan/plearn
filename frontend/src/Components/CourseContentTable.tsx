@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCourseContent } from "../Hooks/useCourseContent";
 import { ContentProgressTickbox } from "./ContentProgressTickbox";
+import { getContentProgress, createContentProgress } from "../Services/ContentProgressService";
 
 type CourseContentTableProps = {
     courseId: string;
@@ -10,6 +11,11 @@ type CourseContentTableProps = {
 
 const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, courseTitle, studentCode }) => {
     const { courseContent, loading, error } = useCourseContent(courseId);
+
+    // track current status per content id
+    const [statusMap, setStatusMap] = useState<Record<string, string | null>>({});
+    // track loading state per content id for the "Check status" button
+    const [checkingMap, setCheckingMap] = useState<Record<string, boolean>>({});
 
     if (loading) {
         return (
@@ -40,6 +46,36 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
         );
     }
 
+    const handleCheckStatus = async (contentId: string) => {
+        try {
+            setCheckingMap(prev => ({ ...prev, [contentId]: true }));
+
+            // Try to get existing status
+            const status = await getContentProgress(studentCode, contentId);
+
+            if (status == null) {
+                // Ask user if they'd like to create a new progress record
+                const shouldCreate = window.confirm("No progress record found. Create a new content progress record?");
+                if (!shouldCreate) {
+                    setStatusMap(prev => ({ ...prev, [contentId]: null }));
+                    return;
+                }
+
+                // Create then re-fetch status
+                await createContentProgress(studentCode, contentId);
+                const newStatus = await getContentProgress(studentCode, contentId);
+                setStatusMap(prev => ({ ...prev, [contentId]: newStatus }));
+            } else {
+                setStatusMap(prev => ({ ...prev, [contentId]: status }));
+            }
+        } catch (err) {
+            console.error("Error checking/creating content progress:", err);
+            window.alert("An error occurred while checking content progress. See console for details.");
+        } finally {
+            setCheckingMap(prev => ({ ...prev, [contentId]: false }));
+        }
+    };
+
     return (
         <div className="overflow-x-auto mt-8">
             <h2 className="text-2xl font-bold mb-4 text-centre text-gray-900">{courseTitle}</h2>
@@ -50,6 +86,8 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content Link</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check status</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current status</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -65,7 +103,6 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                                 >
                                     View Content
                                 </a>
-                                
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <ContentProgressTickbox
@@ -73,6 +110,20 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                                     contentId={content.id}
                                     className="justify-center"
                                 />
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button
+                                    type="button"
+                                    className="inline-flex items-centre px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+                                    onClick={() => handleCheckStatus(content.id)}
+                                    disabled={!!checkingMap[content.id]}
+                                    aria-label={`Check status for ${content.title}`}
+                                >
+                                    {checkingMap[content.id] ? 'Checking…' : 'Check status'}
+                                </button>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                {statusMap[content.id] ?? '—'}
                             </td>
                         </tr>
                     ))}
