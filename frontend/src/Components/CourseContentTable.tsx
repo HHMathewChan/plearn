@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useCourseContent } from "../Hooks/useCourseContent";
-import { ContentProgressTickbox } from "./ContentProgressTickbox";
 import { getContentProgress, createContentProgress } from "../Services/ContentProgressService";
 
 type CourseContentTableProps = {
@@ -85,7 +84,6 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content Link</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check status</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current status</th>
                     </tr>
@@ -103,13 +101,6 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                                 >
                                     View Content
                                 </a>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <ContentProgressTickbox
-                                    studentCode={studentCode}
-                                    contentId={content.id}
-                                    className="justify-center"
-                                />
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button
