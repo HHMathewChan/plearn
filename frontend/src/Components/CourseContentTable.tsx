@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useCourseContent } from "../Hooks/useCourseContent";
-import { getContentProgress, createContentProgress } from "../Services/ContentProgressService";
+import { getContentProgress, createContentProgress,updateContentProgress } from "../Services/ContentProgressService";
 
 type CourseContentTableProps = {
     courseId: string;
@@ -75,6 +75,24 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
         }
     };
 
+    const handleUpdateStatus = async (contentId: string, newStatus: 'complete' | 'not_started') => {
+        try {
+            setCheckingMap(prev => ({ ...prev, [contentId]: true }));
+
+            // Update the status
+            await updateContentProgress(studentCode, contentId, newStatus);
+
+            // Refresh the current status
+            const updatedStatus = await getContentProgress(studentCode, contentId);
+            setStatusMap(prev => ({ ...prev, [contentId]: updatedStatus }));
+        } catch (err) {
+            console.error("Error updating content progress:", err);
+            window.alert("An error occurred while updating content progress. See console for details.");
+        } finally {
+            setCheckingMap(prev => ({ ...prev, [contentId]: false }));
+        }
+    };
+
     return (
         <div className="overflow-x-auto mt-8">
             <h2 className="text-2xl font-bold mb-4 text-centre text-gray-900">{courseTitle}</h2>
@@ -115,6 +133,27 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                 {statusMap[content.id] ?? '—'}
+                            </td>
+                            {/* button for update status */}
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                                    onClick={() => handleUpdateStatus(content.id, 'complete')}
+                                    disabled={!!checkingMap[content.id]}
+                                    aria-label={`Mark ${content.title} as complete`}
+                                >
+                                    Mark as Complete
+                                </button>
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                                    onClick={() => handleUpdateStatus(content.id, 'not_started')}
+                                    disabled={!!checkingMap[content.id]}
+                                    aria-label={`Mark ${content.title} as not started`}
+                                >
+                                    Mark as Not Started
+                                </button>
                             </td>
                         </tr>
                     ))}
