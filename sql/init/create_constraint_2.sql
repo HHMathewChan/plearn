@@ -13,10 +13,25 @@ ALTER TABLE HasCourseReferenceTo
     ADD FOREIGN KEY (course_id) REFERENCES Course(id),
     ADD FOREIGN KEY (course_progress_id) REFERENCES CourseProgress(id);
 
+-- HasFinalQuizFor
+ALTER TABLE HasFinalQuizFor
+    ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
+    ADD FOREIGN KEY (course_id) REFERENCES Course(id);
+
 -- HasLearningModeFor
 ALTER TABLE HasLearningModeFor
     ADD FOREIGN KEY (learning_mode_id) REFERENCES LearningMode(id),
     ADD FOREIGN KEY (student_code) REFERENCES Student(student_code);
+
+-- HasQuestionFor
+ALTER TABLE HasQuestionFor
+    ADD FOREIGN KEY (question_id) REFERENCES Question(id),
+    ADD FOREIGN KEY (question_option_id) REFERENCES QuestionOption(id);
+
+-- HasQuestionOptionFor
+ALTER TABLE HasQuestionOptionFor
+    ADD FOREIGN KEY (question_option_id) REFERENCES QuestionOption(id),
+    ADD FOREIGN KEY (question_id) REFERENCES Question(id);
 
 -- HasStudentProfileIn
 ALTER TABLE HasStudentProfileIn
