@@ -55,6 +55,12 @@ CREATE TABLE Enrolment (
     enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE FinalQuiz (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    course_id UUID NOT NULL,
+    title ContentTitle NOT NULL
+);
+
 CREATE TABLE PlatformUser (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name PersonNames NOT NULL,
@@ -62,6 +68,19 @@ CREATE TABLE PlatformUser (
     password_hash PasswordHash NOT NULL,
     role UserRole NOT NULL,
     registered_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Question (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    question_text TEXT NOT NULL,
+    correct_option_id UUID NOT NULL,
+    difficulty QuestionDifficulty NOT NULL
+);
+
+CREATE TABLE QuestionOption (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    question_id UUID,
+    option_text TEXT NOT NULL
 );
 
 CREATE TABLE LearningMode (
