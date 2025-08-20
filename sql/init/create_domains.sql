@@ -61,6 +61,10 @@ CHECK (VALUE ~ '^[A-Za-z][A-Za-z ]*$');
 CREATE DOMAIN ProgressStatus AS TEXT
 CHECK (VALUE IN ('not_started', 'in_progress', 'completed'));
 
+-- DOMAIN: QuestionDifficulty
+CREATE DOMAIN QuestionDifficulty AS TEXT
+CHECK (VALUE IN ('easy', 'medium', 'hard'));
+
 -- DOMAIN: StudentCode
 CREATE DOMAIN StudentCode AS VARCHAR(20)
 CHECK (VALUE ~ '^STR[0-9]{4}[0-9]+$');
