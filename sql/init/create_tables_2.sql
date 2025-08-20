@@ -28,10 +28,28 @@ CREATE TABLE HasCourseReferenceTo (
     course_id UUID NOT NULL
 );
 
+-- HasFinalQuizFor (FinalQuiz <-> Course)
+CREATE TABLE HasFinalQuizFor (
+    final_quiz_id UUID PRIMARY KEY,
+    course_id UUID NOT NULL
+);
+
 -- HasLearningModeFor (Student <-> LearningMode)
 CREATE TABLE HasLearningModeFor (
     learning_mode_id UUID NOT NULL,
     student_code StudentCode PRIMARY KEY
+);
+
+-- HasQuestionFor (Question <-> QuestionOption)
+CREATE TABLE HasQuestionFor (
+    question_option_id UUID PRIMARY KEY,
+    question_id UUID NOT NULL
+);
+
+-- HasQuestionOptionFor (Question <-> QuestionOption)
+CREATE TABLE HasQuestionOptionFor (
+    question_option_id UUID PRIMARY KEY,
+    question_id UUID NOT NULL
 );
 
 -- HasStudentProfileIn (PlatformUser <-> Student)
