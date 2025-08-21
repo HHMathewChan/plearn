@@ -40,10 +40,10 @@ CREATE TABLE HasLearningModeFor (
     student_code StudentCode PRIMARY KEY
 );
 
--- HasQuestionFor (Question <-> QuestionOption)
+-- HasQuestionFor (Question <-> FinalQuiz)
 CREATE TABLE HasQuestionFor (
-    question_option_id UUID PRIMARY KEY,
-    question_id UUID NOT NULL
+    question_id UUID PRIMARY KEY,
+    final_quiz_id UUID NOT NULL
 );
 
 -- HasQuestionOptionFor (Question <-> QuestionOption)
