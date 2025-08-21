@@ -15,3 +15,4 @@
 
 -- Step three: insert initial data
 \i /Users/mathewchan/plearn/sql/seed/insert_sample_data.sql
+\i /Users/mathewchan/plearn/sql/seed/insert_final_quiz_related.sql
