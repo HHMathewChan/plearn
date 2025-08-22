@@ -96,3 +96,19 @@ CREATE TABLE Topic (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TopicName NOT NULL
 );
+
+CREATE TABLE QuizAttempt (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    score QuizScore,
+    started_at TIMESTAMP NOT NULL,
+    completed_at TIMESTAMP,
+    attempt_count AttemptNumber NOT NULL,
+    attempt_status AttemptStatus NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE StudentAnswer (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    selected_option_id UUID NOT NULL,
+    is_correct Boolean
+);
