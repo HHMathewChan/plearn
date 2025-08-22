@@ -84,3 +84,18 @@ ALTER TABLE LabelCourseWith
     ADD FOREIGN KEY (topic_id) REFERENCES Topic(id),
     ADD FOREIGN KEY (course_id) REFERENCES Course(id),
     ADD UNIQUE (topic_id, course_id);
+
+-- LogActiveQuizAttemptForStudentAt
+ALTER TABLE LogActiveQuizAttemptForStudentAt
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
+    ADD FOREIGN KEY (student_code) REFERENCES Student(student_code);
+
+-- LogAnswerForAttemptWith
+ALTER TABLE LogAnswerForAttemptWith
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
+    ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
+
+-- LogAnswerForFinalQuizWith
+ALTER TABLE LogAnswerForFinalQuizWith
+    ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
+    ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
