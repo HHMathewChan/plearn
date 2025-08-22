@@ -42,6 +42,13 @@ const CourseContentPage: React.FC = () => {
         );
     }
 
+    {/*logic to handle the take final quiz button*/}
+    const handleTakeFinalQuiz = () => {
+    // Placeholder action — replace with navigation or service call later
+    // eslint-disable-next-line no-alert
+    alert('Take final quiz — placeholder');
+    };
+
     return (
         <div className="max-w-7xl mx-auto p-6">
             {/* Header Section */}
@@ -64,6 +71,16 @@ const CourseContentPage: React.FC = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold mb-4 text-gray-800">Course Materials</h2>
                 <CourseContentTable courseId={courseId} courseTitle={courseTitle} studentCode={studentCode} />
+            </div>
+
+            {/*Final quiz button */}
+            <div className="mt-6">
+                <button
+                    onClick={handleTakeFinalQuiz}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                    Take Final Quiz
+                </button>
             </div>
         </div>
     );
