@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import CourseContentTable from "../Components/CourseContentTable";
 import { useCourses } from "../Hooks/useCourses";
@@ -42,13 +42,6 @@ const CourseContentPage: React.FC = () => {
         );
     }
 
-    {/*logic to handle the take final quiz button*/}
-    const handleTakeFinalQuiz = () => {
-    // Placeholder action — replace with navigation or service call later
-    // eslint-disable-next-line no-alert
-    alert('Take final quiz — placeholder');
-    };
-
     return (
         <div className="max-w-7xl mx-auto p-6">
             {/* Header Section */}
@@ -73,14 +66,15 @@ const CourseContentPage: React.FC = () => {
                 <CourseContentTable courseId={courseId} courseTitle={courseTitle} studentCode={studentCode} />
             </div>
 
-            {/*Final quiz button */}
+            {/* Final quiz button */}
             <div className="mt-6">
                 <button
-                    onClick={handleTakeFinalQuiz}
+                    onClick={() => navigate(`/final-quiz/${courseId}`)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    aria-label={`Take final quiz for ${courseTitle}`}
                 >
                     Take Final Quiz
-                </button>
+                </button>                
             </div>
         </div>
     );
