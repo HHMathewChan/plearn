@@ -7,6 +7,7 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import ProtectedLayout from './Components/ProtectedLayout';
 import RegisterFacade from './UseCases/RegisterFacade';
 import CourseContentPage from './Pages/CourseContentPage';
+import FinalQuizPage from './Pages/FinalQuizPage';
 
 
 function App() {
@@ -49,6 +50,17 @@ function App() {
             <ProtectedRoute>
               <ProtectedLayout>
                 <CourseContentPage />
+              </ProtectedLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* This route is for the final quiz page */}
+        <Route
+          path="/final-quiz/:courseId"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout>
+                <FinalQuizPage />
               </ProtectedLayout>
             </ProtectedRoute>
           }
