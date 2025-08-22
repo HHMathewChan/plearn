@@ -78,3 +78,23 @@ CREATE DOMAIN URLPath AS TEXT;
 -- DOMAIN: UserRole
 CREATE DOMAIN UserRole AS TEXT
 CHECK (VALUE IN ('student', 'tutor', 'admin'));
+
+-- DOMAIN: AttemptStatus
+CREATE DOMAIN AttemptStatus AS TEXT
+CHECK (VALUE IN (
+    'not_started',
+    'in_progress',
+    'completed',
+    'abandoned',
+    'timed_out',
+    'graded',
+    'pending_review')
+);
+
+CREATE DOMAIN AttemptNumber AS SMALLINT
+CHECK (VALUE >= 1);
+
+-- DOMAIN: QuizScore
+--  numeric with two decimals constrained to 0–100
+CREATE DOMAIN QuizScore AS NUMERIC(5,2) 
+CHECK (VALUE >= 0 AND VALUE <= 100);
