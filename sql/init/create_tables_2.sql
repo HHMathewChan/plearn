@@ -101,3 +101,21 @@ CREATE TABLE OwnCourseBy (
     course_id UUID NOT NULL,
     copyright_owner_id UUID PRIMARY KEY
 );
+
+-- LogActiveQuizAttemptForStudentAt (QuizAttempt <-> Student)
+CREATE TABLE LogActiveQuizAttemptForStudentAt (
+    quiz_attempt_id UUID NOT NULL,
+    student_code StudentCode PRIMARY KEY
+);
+
+-- LogAnswerForAttemptWith (QuizAttempt <-> StudentAnswer)
+CREATE TABLE LogAnswerForAttemptWith (
+    quiz_attempt_id UUID NOT NULL,
+    student_answer_id UUID PRIMARY KEY
+);
+
+-- LogAnswerForFinalQuizWith (FinalQuiz <-> StudentAnswer)
+CREATE TABLE LogAnswerForFinalQuizWith (
+    final_quiz_id UUID NOT NULL,
+    student_answer_id UUID PRIMARY KEY
+);
