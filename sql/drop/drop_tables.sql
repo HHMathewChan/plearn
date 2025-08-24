@@ -1,7 +1,10 @@
 -- Drop Join Tables in reverse alphabetical order
-DROP TABLE IF EXISTS LogAnswerForFinalQuizWith CASCADE;
+DROP TABLE IF EXISTS LogPastAttemptForFinalQuizWith CASCADE;
+DROP TABLE IF EXISTS LogPastAttemptForStudentAt CASCADE;
+DROP TABLE IF EXISTS LogActiveAttemptForFinalQuizWith CASCADE;
+DROP TABLE IF EXISTS LogAnswerForOptionWith CASCADE;
 DROP TABLE IF EXISTS LogAnswerForAttemptWith CASCADE;
-DROP TABLE IF EXISTS LogActiveQuizAttemptForStudentAt CASCADE;
+DROP TABLE IF EXISTS LogActiveAttemptForStudentAt CASCADE;
 DROP TABLE IF EXISTS OwnCourseBy CASCADE;
 DROP TABLE IF EXISTS LogCourseProgressAt CASCADE;
 DROP TABLE IF EXISTS LogContentProgressAt CASCADE;
