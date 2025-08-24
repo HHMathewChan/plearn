@@ -95,7 +95,12 @@ ALTER TABLE LogAnswerForAttemptWith
     ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
     ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
 
--- LogAnswerForFinalQuizWith
-ALTER TABLE LogAnswerForFinalQuizWith
-    ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
+-- LogAnswerForOptionWith
+ALTER TABLE LogAnswerForOptionWith
+    ADD FOREIGN KEY (question_option_id) REFERENCES QuestionOption(id),
     ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
+
+--LogActiveAttemptForFinalQuizWith
+ALTER TABLE LogActiveAttemptForFinalQuizWith
+    ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id);
