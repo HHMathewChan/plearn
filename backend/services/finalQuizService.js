@@ -3,7 +3,7 @@
  */
 const hasFinalQuizForRepo = require('../repositories/hasFinalQuizForRepository');
 const hasQuestionForRepo = require('../repositories/hasQuestionForRepository');
-const questionOptionRepo = require('../repositories/QuestionOptionRepository');
+const questionOptionRepo = require('../repositories/questionOptionRepository');
 const finalQuizRepo = require('../repositories/finalQuizRepository');
 const questionRepo = require('../repositories/questionRepository');
 
