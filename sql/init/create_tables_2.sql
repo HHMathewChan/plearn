@@ -102,9 +102,9 @@ CREATE TABLE OwnCourseBy (
     copyright_owner_id UUID PRIMARY KEY
 );
 
--- LogActiveQuizAttemptForStudentAt (QuizAttempt <-> Student)
-CREATE TABLE LogActiveQuizAttemptForStudentAt (
-    quiz_attempt_id UUID NOT NULL,
+-- LogActiveAttemptForStudentAt (QuizAttempt <-> Student)
+CREATE TABLE LogActiveAttemptForStudentAt (
+    quiz_attempt_id UUID UNIQUE NOT NULL,
     student_code StudentCode PRIMARY KEY
 );
 
@@ -114,8 +114,27 @@ CREATE TABLE LogAnswerForAttemptWith (
     student_answer_id UUID PRIMARY KEY
 );
 
--- LogAnswerForFinalQuizWith (FinalQuiz <-> StudentAnswer)
-CREATE TABLE LogAnswerForFinalQuizWith (
-    final_quiz_id UUID NOT NULL,
+-- LogAnswerForOptionWith (QuestionOption <-> StudentAnswer)
+CREATE TABLE LogAnswerForOptionWith (
+    question_option_id UUID NOT NULL,
     student_answer_id UUID PRIMARY KEY
+);
+
+--LogActiveAttemptForFinalQuizWith (FinalQuiz <-> QuizAttempt)
+-- final_quiz_id is unique as there can be only one active attempt for a final quiz
+CREATE TABLE LogActiveAttemptForFinalQuizWith (
+    final_quiz_id UUID UNIQUE NOT NULL,
+    quiz_attempt_id UUID PRIMARY KEY
+);
+
+--LogPastAttemptForStudentAt (QuizAttempt <-> Student)
+CREATE TABLE LogPastAttemptForStudentAt (
+    quiz_attempt_id UUID PRIMARY KEY,
+    student_code StudentCode NOT NULL
+);
+
+--LogPastAttemptForFinalQuizWith (FinalQuiz <-> QuizAttempt)
+CREATE TABLE LogPastAttemptForFinalQuizWith (
+    final_quiz_id UUID NOT NULL,
+    quiz_attempt_id UUID PRIMARY KEY
 );
