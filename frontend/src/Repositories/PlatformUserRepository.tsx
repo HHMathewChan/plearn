@@ -10,6 +10,7 @@ const STUDENT_CODE_KEY = 'studentCode';
 /**
  * Repository pattern implementation for managing platform user data storage.
  * Handles all platform user data persistence operations.
+ * This should be called from the service layer.
  */
 export const PlatformUserRepository = {
     setPlatformUserId(platformUserId: string): void {
