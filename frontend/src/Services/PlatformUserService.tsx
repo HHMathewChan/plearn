@@ -1,4 +1,5 @@
 import type {RegisterDetails} from '../Types/RegisterUCType';
+import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 
 const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
 
@@ -20,6 +21,15 @@ const RegisterPlatformUser = async (details: RegisterDetails) => {
     }
     
     return response.json();
+};
+
+/**
+ * Service layer for platform user operations.
+ * Encapsulates business logic and interacts with the repository layer.
+ */
+export const getStudentCode = () => {
+    // Add any business logic or validation here if needed
+    return PlatformUserRepository.getStudentCode();
 };
 
 export default RegisterPlatformUser;
