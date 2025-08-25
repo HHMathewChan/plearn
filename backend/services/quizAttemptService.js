@@ -1,11 +1,10 @@
 const quizAttemptRepository = require('../repositories/quizAttemptRepository');
-const studentAnswerRepository = require('../repositories/studentAnswerRepository');
-const logAnswerForOptionWithRepository = require('../repositories/logAnswerForOptionWithRepository');
 const logActiveAttemptForFinalQuizWithRepository = require('../repositories/logActiveAttemptForFinalQuizWithRepository');
 const logActiveAttemptForStudentAtRepository = require('../repositories/logActiveAttemptForStudentAtRepository');
 const logAnswerForAttemptWithRepository = require('../repositories/logAnswerForAttemptWithRepository.js');
 const logPastAttemptForFinalQuizWithRepository = require('../repositories/logPastAttemptForFinalQuizWithRepository');
 const logPastAttemptForStudentAtRepository = require('../repositories/logPastAttemptForStudentAtRepository');
+const studentAnswerService = require('./studentAnswerService.js')
 
 /**
  * Find all past quiz attempts for the student for a final quiz
@@ -26,10 +25,13 @@ const getQuizAttemptsForStudent = async (studentCode, finalQuizId) => {
 
 /**
  * create a active quiz attempt.
+ * @param {string} studentCode - The code of the student.
+ * @param {number} finalQuizId - The ID of the final quiz.
+ * @returns {Promise<Object>} - The created quiz attempt.
  */
 const createQuizAttempt = async (studentCode, finalQuizId) => {
     // for debugging
-    console.log('At quizAttemptService, Creating quiz attempt for:', { studentCode, finalQuizId });
+    console.log('At quizAttemptService, createQuizAttempt is called for:', { studentCode, finalQuizId });
     // first create the quiz attempt
     // initial all attempt data
     const score = 0;
@@ -54,6 +56,53 @@ const createQuizAttempt = async (studentCode, finalQuizId) => {
 }
 
 /**
+ * The function including all logic for student attempt a final quiz.
+ * @param {string} studentCode - The code of the student.
+ * @param {number} finalQuizId - The ID of the final quiz.
+ * @returns {Promise<Object>} - An object containing the quiz attempt and associated student answers.
+ */
+const attemptFinalQuiz = async (studentCode, finalQuizId) => {
+    // for debugging
+    console.log('At quizAttemptService, attemptFinalQuiz is called for:', { studentCode, finalQuizId });
+    // Create a new quiz attempt
+    const quizAttempt = await createQuizAttempt(studentCode, finalQuizId);
+    // for debugging
+    console.log('At quizAttemptService, attemptFinalQuiz, Created quiz attempt:', quizAttempt);
+    // Create student answers for the quiz attempt
+    const studentAnswers = await studentAnswerService.createStudentAnswersAndRelatedForQuizAttempt(quizAttempt[0].id, finalQuizId);
+    return {
+        quizAttempt,
+        studentAnswers
+    };
+}
+
+/**
+ * Find all student answers for a quiz attempt.
+ * @param {number} quizAttemptId - The ID of the quiz attempt.
+ * @returns {Promise<Array>} - An array of student answers for the quiz attempt.
+ */
+const getStudentAnswersForQuizAttempt = async (quizAttemptId) => {
+    return await logAnswerForAttemptWithRepository.getLogEntriesForQuizAttempt(quizAttemptId);
+}
+
+/**
+ * Calculate the score for a quiz attempt.
+ * @param {number} quizAttemptId - The ID of the quiz attempt.
+ * @returns {Promise<number>} - The calculated score for the quiz attempt.
+ */
+const calculateScoreForQuizAttempt = async (quizAttemptId) => {
+    const studentAnswers = await getStudentAnswersForQuizAttempt(quizAttemptId);
+    let score = 0;
+    for (const studentAnswer of studentAnswers) {
+        const isCorrect = await studentAnswerService.markStudentAnswerAndMore(studentAnswer.id);
+        if (isCorrect) {
+            score++;
+        }
+    }
+    return score;
+}
+
+/**
  * Complete a quiz attempt.
  */
 const completeQuizAttempt = async (finalQuizId, studentCode) => {
@@ -64,11 +113,11 @@ const completeQuizAttempt = async (finalQuizId, studentCode) => {
     const activeQuizAttemptID = activeQuizAttemptLink.quiz_attempt_id;
     // for debugging
     console.log('At quizAttemptService, Found active quiz attempt ID:', activeQuizAttemptID);
+    // calculate the score for this attempt
+    const score = await calculateScoreForQuizAttempt(activeQuizAttemptID);
     const completedAt = new Date();
     const attemptStatus = 'completed';
     const updatedAt = new Date();
-    // set score to 90 for tesing
-    const score = 90;
     const quizAttempt = await quizAttemptRepository.updateQuizAttempt(activeQuizAttemptID, score, completedAt, attemptStatus, updatedAt);
     // create past attempt record
     await logPastAttemptForFinalQuizWithRepository.createRecord(finalQuizId, activeQuizAttemptID);
@@ -82,5 +131,7 @@ const completeQuizAttempt = async (finalQuizId, studentCode) => {
 module.exports = {
     getQuizAttemptsForStudent,
     createQuizAttempt,
-    completeQuizAttempt
+    completeQuizAttempt,
+    getStudentAnswersForQuizAttempt,
+    attemptFinalQuiz
 };
