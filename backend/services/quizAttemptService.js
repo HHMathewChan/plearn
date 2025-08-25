@@ -5,6 +5,7 @@ const logAnswerForAttemptWithRepository = require('../repositories/logAnswerForA
 const logPastAttemptForFinalQuizWithRepository = require('../repositories/logPastAttemptForFinalQuizWithRepository');
 const logPastAttemptForStudentAtRepository = require('../repositories/logPastAttemptForStudentAtRepository');
 const studentAnswerService = require('./studentAnswerService.js')
+const hasFinalQuizForRepository = require ('../repositories/hasFinalQuizForRepository');
 
 /**
  * Find all past quiz attempts for the student for a final quiz
@@ -58,12 +59,16 @@ const createQuizAttempt = async (studentCode, finalQuizId) => {
 /**
  * The function including all logic for student attempt a final quiz.
  * @param {string} studentCode - The code of the student.
- * @param {number} finalQuizId - The ID of the final quiz.
+ * @param {number} courseId - The ID of the course.
  * @returns {Promise<Object>} - An object containing the quiz attempt and associated student answers.
  */
-const attemptFinalQuiz = async (studentCode, finalQuizId) => {
+const attemptFinalQuiz = async (studentCode, courseId) => {
     // for debugging
-    console.log('At quizAttemptService, attemptFinalQuiz is called for:', { studentCode, finalQuizId });
+    console.log('At quizAttemptService, attemptFinalQuiz is called for:', { studentCode, courseId });
+    // Find the final quiz ID for the course
+    const finalQuizId = await hasFinalQuizForRepository.getFinalQuizIdForCourse(courseId);
+    // for debugging
+    console.log('At quizAttemptService, attemptFinalQuiz, Found final quiz ID:', finalQuizId);
     // Create a new quiz attempt
     const quizAttempt = await createQuizAttempt(studentCode, finalQuizId);
     // for debugging
