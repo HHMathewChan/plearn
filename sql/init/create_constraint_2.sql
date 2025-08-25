@@ -85,22 +85,32 @@ ALTER TABLE LabelCourseWith
     ADD FOREIGN KEY (course_id) REFERENCES Course(id),
     ADD UNIQUE (topic_id, course_id);
 
--- LogActiveQuizAttemptForStudentAt
-ALTER TABLE LogActiveQuizAttemptForStudentAt
-    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
-    ADD FOREIGN KEY (student_code) REFERENCES Student(student_code);
-
 -- LogAnswerForAttemptWith
 ALTER TABLE LogAnswerForAttemptWith
     ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
     ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
 
--- LogAnswerForOptionWith
-ALTER TABLE LogAnswerForOptionWith
-    ADD FOREIGN KEY (question_option_id) REFERENCES QuestionOption(id),
+-- LogAnswerForQuestionWith
+ALTER TABLE LogAnswerForQuestionWith
+    ADD FOREIGN KEY (question_id) REFERENCES Question(id),
     ADD FOREIGN KEY (student_answer_id) REFERENCES StudentAnswer(id);
 
 --LogActiveAttemptForFinalQuizWith
 ALTER TABLE LogActiveAttemptForFinalQuizWith
     ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
     ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id);
+
+--LogPastAttemptForFinalQuizWith
+ALTER TABLE LogPastAttemptForFinalQuizWith
+    ADD FOREIGN KEY (final_quiz_id) REFERENCES FinalQuiz(id),
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id);
+
+--LogActiveAttemptForStudentAt
+ALTER TABLE LogActiveAttemptForStudentAt
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
+    ADD FOREIGN KEY (student_code) REFERENCES Student(student_code);
+
+--LogPastAttemptForStudentAt
+ALTER TABLE LogPastAttemptForStudentAt
+    ADD FOREIGN KEY (quiz_attempt_id) REFERENCES QuizAttempt(id),
+    ADD FOREIGN KEY (student_code) REFERENCES Student(student_code);
