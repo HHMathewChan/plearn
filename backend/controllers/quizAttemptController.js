@@ -70,15 +70,15 @@ const quizAttemptController = async (req, res) => {
  */
 const attemptFinalQuiz = async (req, res) => {
     try {
-        const { student_code, final_quiz_id } = req.body || {};
+        const { student_code, course_id } = req.body || {};
         // For debugging
-        console.log('At quizAttemptController, Attempting quiz for:', { student_code, final_quiz_id });
+        console.log('At quizAttemptController, Attempting quiz for:', { student_code, course_id });
 
-        if (!student_code || !final_quiz_id) {
-            return res.status(400).json({ error: 'student_code and final_quiz_id are required.' });
+        if (!student_code || !course_id) {
+            return res.status(400).json({ error: 'student_code and course_id are required.' });
         }
 
-        const result = await quizAttemptService.attemptFinalQuiz(student_code, final_quiz_id);
+        const result = await quizAttemptService.attemptFinalQuiz(student_code, course_id);
 
         return res.status(201).json({ data: result });
     } catch (err) {
