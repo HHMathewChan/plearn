@@ -109,6 +109,6 @@ CREATE TABLE QuizAttempt (
 
 CREATE TABLE StudentAnswer (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    selected_option_id UUID NOT NULL,
+    selected_option_id UUID,
     is_correct Boolean
 );
