@@ -8,6 +8,16 @@ const finalQuizRepo = require('../repositories/finalQuizRepository');
 const questionRepo = require('../repositories/questionRepository');
 
 /**
+ * Find out how many questions are in a final quiz.
+ * @param {string} finalQuizId - UUID of the final quiz
+ * @returns {Promise<number>} - The number of questions in the final quiz
+ */
+const getQuestionCountForFinalQuiz = async (finalQuizId) => {
+    const questions = await hasQuestionForRepo.getQuestionsForFinalQuiz(finalQuizId);
+    return questions.length;
+};
+
+/**
  * Get the final quiz for a course, including questions and each question's options.
  *
  * @param {string} courseId - UUID of the course
@@ -86,4 +96,5 @@ async function getFinalQuizWithQuestions(courseId) {
 
 module.exports = {
     getFinalQuizWithQuestions,
+    getQuestionCountForFinalQuiz
 };
