@@ -114,9 +114,9 @@ CREATE TABLE LogAnswerForAttemptWith (
     student_answer_id UUID PRIMARY KEY
 );
 
--- LogAnswerForOptionWith (QuestionOption <-> StudentAnswer)
-CREATE TABLE LogAnswerForOptionWith (
-    question_option_id UUID NOT NULL,
+-- LogAnswerForQuestionWith (Question <-> StudentAnswer)
+CREATE TABLE LogAnswerForQuestionWith (
+    question_id UUID NOT NULL,
     student_answer_id UUID PRIMARY KEY
 );
 
