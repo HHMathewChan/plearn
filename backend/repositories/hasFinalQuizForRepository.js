@@ -1,9 +1,10 @@
 const database = require('../database');
 /**
- * Find the final quiz for a given course.
- *
+ * Find the final quiz id for a given course.
+ *@param {string} courseId - UUID of the course
+ *@returns {Promise<string|null>} - The final quiz id or null if not found
  */
-async function getFinalQuizForCourse(courseId) {
+async function getFinalQuizIdForCourse(courseId) {
     const result = await database.oneOrNone(
         'SELECT final_quiz_id FROM HasFinalQuizFor WHERE course_id = $1',
         [courseId]
@@ -12,5 +13,5 @@ async function getFinalQuizForCourse(courseId) {
 }
 
 module.exports = {
-    getFinalQuizForCourse,
+    getFinalQuizIdForCourse,
 };
