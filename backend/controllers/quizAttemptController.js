@@ -56,11 +56,38 @@ const quizAttemptController = async (req, res) => {
             return createQuizAttempt(req, res);
         case 'complete':
             return completeQuizAttempt(req, res);
+        case 'attempt_final_quiz':
+            return attemptFinalQuiz(req, res);
         default:
             return res.status(400).json({ error: 'Invalid action.' });
     }
 };
 
+/**
+ * Attempt a quiz.
+ * Expects studentCode and finalQuizId in req.body
+ * @returns {Promise<Object>} - An object containing the quiz attempt and associated student answers.
+ */
+const attemptFinalQuiz = async (req, res) => {
+    try {
+        const { student_code, final_quiz_id } = req.body || {};
+        // For debugging
+        console.log('At quizAttemptController, Attempting quiz for:', { student_code, final_quiz_id });
+
+        if (!student_code || !final_quiz_id) {
+            return res.status(400).json({ error: 'student_code and final_quiz_id are required.' });
+        }
+
+        const result = await quizAttemptService.attemptFinalQuiz(student_code, final_quiz_id);
+
+        return res.status(201).json({ data: result });
+    } catch (err) {
+        console.error('[quizAttemptController.attemptFinalQuiz]', err);
+        return res.status(500).json({ error: 'An unexpected error occurred while attempting the quiz.' });
+    }
+};
+
 module.exports = {
-    quizAttemptController
+    quizAttemptController,
+    attemptFinalQuiz
 };
