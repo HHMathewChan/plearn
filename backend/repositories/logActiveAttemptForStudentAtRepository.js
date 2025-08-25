@@ -13,7 +13,9 @@ const createRecord = async (quizAttemptId, studentCode) => {
 
     try {
         const result = await database.query(
-            'INSERT INTO logactiveattemptforstudentat (quiz_attempt_id, student_code) VALUES ($1, $2)',
+            `INSERT INTO logactiveattemptforstudentat (quiz_attempt_id, student_code) 
+            VALUES ($1, $2)
+            RETURNING *`,
             [quizAttemptId, studentCode]
         );
         // for debugging
