@@ -42,7 +42,7 @@ const getQuestionCountForFinalQuiz = async (finalQuizId) => {
  */
 async function getFinalQuizWithQuestions(courseId) {
     // Find final quiz id for the course
-    const finalQuizId = await hasFinalQuizForRepo.getFinalQuizForCourse(courseId);
+    const finalQuizId = await hasFinalQuizForRepo.getFinalQuizIdForCourse(courseId);
     if (!finalQuizId) {
         return null;
     }
