@@ -25,10 +25,12 @@ const createQuizAttempt = async (score, startedAt, completedAt, attemptCount, at
  * @param {Date} updatedAt - The date when the quiz attempt was last updated.
  */
 const updateQuizAttempt = async (id, score, completedAt, attemptStatus, updatedAt) => {
+    console.log('At quizAttemptRepository first line, updateQuizAttempt is called for:', { id, score, completedAt, attemptStatus, updatedAt });
     // set score to null if no score is provided
-    if (!score) {
+    if (score === undefined || score === null) {
         score = null;
     }
+    console.log('At quizAttemptRepository, updateQuizAttempt is called for:', { id, score, completedAt, attemptStatus, updatedAt });
     const result = await database.query(
         `UPDATE quizattempt SET score = $1, completed_at = $2, attempt_status = $3, updated_at = $4
         WHERE id = $5
