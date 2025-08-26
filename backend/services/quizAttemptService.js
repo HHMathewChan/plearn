@@ -6,6 +6,7 @@ const logPastAttemptForFinalQuizWithRepository = require('../repositories/logPas
 const logPastAttemptForStudentAtRepository = require('../repositories/logPastAttemptForStudentAtRepository');
 const studentAnswerService = require('./studentAnswerService.js')
 const hasFinalQuizForRepository = require ('../repositories/hasFinalQuizForRepository');
+const studentAnswerRepository = require('../repositories/studentAnswerRepository');
 
 /**
  * Find all past quiz attempts for the student for a final quiz
@@ -87,8 +88,48 @@ const attemptFinalQuiz = async (studentCode, courseId) => {
  * @returns {Promise<Array>} - An array of student answers for the quiz attempt.
  */
 const getStudentAnswersForQuizAttempt = async (quizAttemptId) => {
-    return await logAnswerForAttemptWithRepository.getLogEntriesForQuizAttempt(quizAttemptId);
+    // for debugging
+    console.log('At quizAttemptService, getStudentAnswersForQuizAttempt is called for:', { quizAttemptId });
+    const links = await logAnswerForAttemptWithRepository.getRecordsForQuizAttempt(quizAttemptId);
+    console.log('At quizAttemptService, getStudentAnswersForQuizAttempt, Found links:', links);
+    // Find the student answers calling getRecordById the student_answer_id in the links
+    const studentAnswers = await Promise.all(links.map(link => studentAnswerRepository.getRecordById(link.student_answer_id)));
+    console.log('At quizAttemptService, getStudentAnswersForQuizAttempt, Found student answers:', studentAnswers);
+    return studentAnswers;
 }
+
+/**
+ * Update the student's answers for a quiz attempt.
+ * @param {number} quizAttemptId - The ID of the quiz attempt.
+ * @param {Array} studentAnswers - The updated student answers containing objects of question IDs and their selected options.
+ * @returns {Promise<boolean>} - True if the update was successful, false otherwise.
+ */
+// const updateStudentAnswersForQuizAttempt = async (quizAttemptId, studentAnswers) => {
+//     // for debugging
+//     console.log('At quizAttemptService, updateStudentAnswersForQuizAttempt is called for:', { quizAttemptId });
+//     // Find all the student answers for this quiz attempt
+//     const existingAnswers = await getStudentAnswersForQuizAttempt(quizAttemptId);
+//     // for debugging
+//     console.log('At quizAttemptService, updateStudentAnswersForQuizAttempt, Existing answers found:', existingAnswers);
+//     // Update the student answers in the repository
+//     await studentAnswerService.updateStudentAnswersForQuizAttempt(existingAnswers, studentAnswers);
+//     // Return true if all updates were successful
+//     return true;
+// }
+
+const updateStudentAnswersForQuizAttempt = async (quizAttemptId, studentAnswers) => {
+    try {
+        console.log('Updating student answers for quizAttemptId:', quizAttemptId);
+        const existingAnswers = await getStudentAnswersForQuizAttempt(quizAttemptId);
+        console.log('Existing answers:', existingAnswers);
+        await studentAnswerService.updateStudentAnswersForQuizAttempt(existingAnswers, studentAnswers);
+        console.log('At quizAttemptService, updateStudentAnswersForQuizAttempt, Student answers updated successfully.');
+        return true;
+    } catch (error) {
+        console.error('Error updating student answers:', error);
+        throw error;
+    }
+};
 
 /**
  * Calculate the score for a quiz attempt.
@@ -97,29 +138,45 @@ const getStudentAnswersForQuizAttempt = async (quizAttemptId) => {
  */
 const calculateScoreForQuizAttempt = async (quizAttemptId) => {
     const studentAnswers = await getStudentAnswersForQuizAttempt(quizAttemptId);
-    let score = 0;
+    let correctCount = 0;
+    let totalQuestions = studentAnswers.length;
     for (const studentAnswer of studentAnswers) {
         const isCorrect = await studentAnswerService.markStudentAnswerAndMore(studentAnswer.id);
         if (isCorrect) {
-            score++;
+            correctCount++;
         }
     }
-    return score;
+    return (correctCount / totalQuestions) * 100;
 }
 
 /**
  * Complete a quiz attempt.
+ * @param {number} courseId - The ID of the course.
+ * @param {string} studentCode - The code of the student.
+ * @param {Array} studentAnswers - The student's answers for the quiz.
+ * @returns {Promise<Object>} - The completed quiz attempt.
  */
-const completeQuizAttempt = async (finalQuizId, studentCode) => {
+const completeQuizAttempt = async (courseId, studentCode, studentAnswers) => {
     // for debugging
-    console.log('At quizAttemptService, Completing quiz attempt for:', { finalQuizId, studentCode });
+    console.log('At quizAttemptService, Completing quiz attempt for:', { courseId, studentCode });
+    // console.log('At quizAttemptService, Completing quiz attempt, student answers received:', studentAnswers);
+    // Find the final quiz ID for the course
+    const finalQuizId = await hasFinalQuizForRepository.getFinalQuizIdForCourse(courseId);
+    // for debugging
+    console.log('At quizAttemptService, Found final quiz ID:', finalQuizId);
     // Find the active attempt for this student and final quiz
     const activeQuizAttemptLink = await logActiveAttemptForStudentAtRepository.getRecord(studentCode);
     const activeQuizAttemptID = activeQuizAttemptLink.quiz_attempt_id;
     // for debugging
     console.log('At quizAttemptService, Found active quiz attempt ID:', activeQuizAttemptID);
+    // Update the student's answers for the quiz attempt
+    await updateStudentAnswersForQuizAttempt(activeQuizAttemptID, studentAnswers);
     // calculate the score for this attempt
+    //for debugging
+    console.log('At quizAttemptService, completeQuizAttempt, going to calculate score for quiz attempt:', { activeQuizAttemptID });
     const score = await calculateScoreForQuizAttempt(activeQuizAttemptID);
+    // for debugging
+    console.log('At quizAttemptService, completeQuizAttempt, Calculated score for quiz attempt:', { score });
     const completedAt = new Date();
     const attemptStatus = 'completed';
     const updatedAt = new Date();
