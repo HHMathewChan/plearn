@@ -9,6 +9,7 @@ const logPastAttemptForStudentAtRepository = require('../repositories/logPastAtt
 const questionOptionRepository = require('../repositories/questionOptionRepository');
 const hasFinalQuizForRepository = require('../repositories/hasFinalQuizForRepository');
 const hasQuestionForRepository = require('../repositories/hasQuestionForRepository');
+const questionService = require('./questionService');
 
 /**
  * Create a new student answer for each question option in a quiz attempt.
@@ -37,6 +38,33 @@ const createStudentAnswersAndRelatedForQuizAttempt = async (quizAttemptId, final
 }
 
 /**
+ * Update the student's answers for a quiz attempt.
+ * @param {Array} existingAnswers - The array of existing student answers objects.
+ * @param {Array} studentAnswers - The updated student answers containing objects of question IDs and their selected options.
+ * @returns {Promise<boolean>} - True if the update was successful, false otherwise.
+ */
+const updateStudentAnswersForQuizAttempt = async (existingAnswers, studentAnswers) => {
+    // for debugging
+    console.log('At studentAnswerService, updateStudentAnswersForQuizAttempt is called for:', { existingAnswers, studentAnswers });
+
+    // Update the student answers with the new selected options in the repository
+    for (const existingAnswer of existingAnswers) {
+        // First find the corresponding question from LogAnswerForQuestionWithRepository
+        const correspondingQuestion = await logAnswerForQuestionWithRepository.getRecord(existingAnswer.id);
+        console.log('At studentAnswerService, Found corresponding question for existing answer:', { existingAnswerId: existingAnswer.id, correspondingQuestion });
+        // Find the corresponding question_option_id in student answer
+        const updatedAnswer = studentAnswers.find(answer => answer.question_id === correspondingQuestion.question_id);
+        console.log('At studentAnswerService, Found updated answer for corresponding question:', { correspondingQuestionId: correspondingQuestion.question_id, updatedAnswer });
+        const updatedOptionId = updatedAnswer ? updatedAnswer.option_id : null;
+        console.log('At studentAnswerService, Updating existing answer with new option ID:', { existingAnswerId: existingAnswer.id, updatedOptionId });
+        // Update the existing answer with the new option ID
+        await studentAnswerRepository.updateRecord(existingAnswer.id, updatedOptionId);
+    }
+    // Return true if all updates were successful
+    return true;
+}
+
+/**
  * Marking the student answers. Update the student's answer status.
  * @param {number} studentAnswerId - The ID of the student answer.
  * @returns {Promise<boolean>} - true if the answer is correct, false otherwise
@@ -44,18 +72,27 @@ const createStudentAnswersAndRelatedForQuizAttempt = async (quizAttemptId, final
 const markStudentAnswerAndMore = async (studentAnswerId) => {
     // for debugging
     console.log('At studentAnswerService, markStudentAnswerAndMore is called for:', { studentAnswerId });
-    // Step 1 find out the correct answer for the question
-    // Step 1.1 Find the question based on the question_option_id
-    const question = await logAnswerForQuestionWithRepository.getQuestionByStudentAnswerId(studentAnswerId);
-    const correctAnswerId = question[0].correct_option_id;
-
+    // Find out the correct answer for the question
+    // Step 1 Find the links
+    const links = await logAnswerForQuestionWithRepository.getRecord(studentAnswerId);
+    console.log('At studentAnswerService, markStudentAnswerAndMore,Found links for student answer:', { studentAnswerId, links });
+    // Step 2 Retrieve the question
+    const question = await questionService.getQuestionById(links.question_id);
+    console.log('At studentAnswerService, markStudentAnswerAndMore, Found question for student answer:', { studentAnswerId, question });
+    const correctAnswerId = question.correct_option_id;
+    // Step 3 Find the student selected option
+    const studentAnswer = await studentAnswerRepository.getRecordById(studentAnswerId);
+    console.log('At studentAnswerService, markStudentAnswerAndMore, Found student answer:', { studentAnswerId, studentAnswer });
     // Then mark the student's answer as correct or incorrect
-    const isCorrect = studentAnswerId === correctAnswerId;
-    await studentAnswerRepository.updateRecord(studentAnswerId, isCorrect);
+    console.log('At studentAnswerService, markStudentAnswerAndMore, selected option ID and correct answer ID are:', { studentAnswerId, correctAnswerId });
+    const isCorrect = studentAnswer.selected_option_id === correctAnswerId;
+    console.log('At studentAnswerService, markStudentAnswerAndMore, Marking student answer as:', { studentAnswerId, isCorrect });
+    await studentAnswerRepository.updateCorrectness(studentAnswerId, isCorrect);
     return isCorrect;
 };
 
 module.exports = {
     createStudentAnswersAndRelatedForQuizAttempt,
-    markStudentAnswerAndMore
+    markStudentAnswerAndMore,
+    updateStudentAnswersForQuizAttempt
 };
