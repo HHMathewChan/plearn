@@ -49,3 +49,6 @@ coverage/
 backend/test.restbook
 Mathew on plearn.session.sql
 plearn.code-workspace
+
+# === debugging messages files ===
+debug.txt
