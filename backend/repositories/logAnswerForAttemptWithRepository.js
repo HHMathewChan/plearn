@@ -21,15 +21,18 @@ const createRecord = async (quizAttemptId, studentAnswerId) => {
  * @param {number} quizAttemptId - The ID of the quiz attempt.
  * @returns {Promise<Array>} - An array of log entries for the quiz attempt.
  */
-const getLogEntriesForQuizAttempt = async (quizAttemptId) => {
+const getRecordsForQuizAttempt = async (quizAttemptId) => {
+    // for debugging
+    console.log('At logAnswerForAttemptWithRepository, getRecordsForQuizAttempt is called for:', { quizAttemptId });
     const result = await database.any(
         'SELECT * FROM loganswerforattemptwith WHERE quiz_attempt_id = $1',
         [quizAttemptId]
     );
+    console.log('At logAnswerForAttemptWithRepository, getRecordsForQuizAttempt, Found records:', result);
     return result;
 }
 
 module.exports = {
     createRecord,
-    getLogEntriesForQuizAttempt
+    getRecordsForQuizAttempt
 };
