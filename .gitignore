@@ -52,3 +52,4 @@ plearn.code-workspace
 
 # === debugging messages files ===
 debug.txt
+debug.log
