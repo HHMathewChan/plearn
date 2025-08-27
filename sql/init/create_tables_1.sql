@@ -57,6 +57,7 @@ CREATE TABLE Enrolment (
 
 CREATE TABLE FinalQuiz (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    passing_score QuizScore NOT NULL,
     title ContentTitle NOT NULL
 );
 
