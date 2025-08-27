@@ -10,6 +10,17 @@ INSERT INTO logpastattemptforstudentat (quiz_attempt_id, student_code) VALUES
 INSERT INTO logpastattemptforfinalquizwith (final_quiz_id, quiz_attempt_id) VALUES
 ('99999999-0009-4e1a-9c1a-333333333339', 'b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa');
 
+-- The following are for testing the use case for content progress for STR20251
+--contentProgress
+INSERT INTO contentprogress (id, content_id, status, date_completed, last_updated) VALUES
+('2551e09a-625d-44bb-81a9-4106a735e6ec', 'b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'not_started', NULL, NOW()),
+('e65147de-e92b-4744-a426-c1bfd5137aab', 'b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'not_started', NULL, NOW());
+
+--hasContentProgress
+INSERT INTO hascontentprogressfor (student_code, content_progress_id) VALUES
+('STR20251', '2551e09a-625d-44bb-81a9-4106a735e6ec'),
+('STR20251', 'e65147de-e92b-4744-a426-c1bfd5137aab');
+
 -- The following are for testing the use case for complete a final quiz for STR20251
 -- -- Quiz attempt for STR20251
 -- INSERT INTO quizattempt (id, score, started_at, completed_at, attempt_count, attempt_status, updated_at) VALUES
