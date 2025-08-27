@@ -37,6 +37,8 @@ const updateQuizAttempt = async (id, score, completedAt, attemptStatus, updatedA
         RETURNING *`,
         [score, completedAt, attemptStatus, updatedAt, id]
     );
+    // Log the result for debugging
+    console.log('At quizAttemptRepository, updateQuizAttempt result:', result);
     return result;
 }
 
