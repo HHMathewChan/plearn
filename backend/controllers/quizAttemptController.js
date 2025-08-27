@@ -31,13 +31,18 @@ const completeQuizAttempt = async (req, res) => {
         const { course_id, student_code, student_answers } = req.body || {};
         //for debugging
         console.log('At quizAttemptController, Completing quiz attempt for:', { course_id, student_code });
-        // console.log('At quizAttemptController, Completing quiz attempt, student answers received:', student_answers);
+        console.log('At quizAttemptController, Completing quiz attempt, student answers received:', student_answers, typeof student_answers);
 
         if (!course_id || !student_code) {
             return res.status(400).json({ error: 'course_id and student_code are required.' });
         }
+        // Transform student_answers to the required format from an object to an array
+        const transformedAnswers = Object.entries(student_answers).map(([question_id, option_id]) => ({
+            question_id,
+            option_id
+        }));
 
-        const quizAttempt = await quizAttemptService.completeQuizAttempt(course_id, student_code, student_answers);
+        const quizAttempt = await quizAttemptService.completeQuizAttempt(course_id, student_code, transformedAnswers);
 
         return res.status(200).json({ data: quizAttempt });
     } catch (err) {
