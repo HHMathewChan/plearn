@@ -1,8 +1,8 @@
 -- The following data is for the course:('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'CRS1', 'Introduction to Nuclear Engineering and Ionizing Radiation')
 
 --Final quiz
-INSERT INTO finalquiz (id, title) VALUES
-('99999999-0009-4e1a-9c1a-333333333339', 'Final Quiz for Introduction to Nuclear Engineering and Ionizing Radiation');
+INSERT INTO finalquiz (id,passing_score, title) VALUES
+('99999999-0009-4e1a-9c1a-333333333339', 50, 'Final Quiz for Introduction to Nuclear Engineering and Ionizing Radiation');
 
 --hasfinalquizfor table
 INSERT INTO hasfinalquizfor (final_quiz_id, course_id) VALUES
