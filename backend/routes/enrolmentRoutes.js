@@ -6,5 +6,6 @@ const router = express.Router();
 const enrolmentController = require('../controllers/enrolmentController');
 
 router.post('/enrolments', enrolmentController.enrols);
+router.post('/enrolment', enrolmentController.enrolmentUsecase);
 
 module.exports = router;
