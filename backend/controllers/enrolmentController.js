@@ -37,6 +37,37 @@ const enrols = async (request, response) => {
 };
 
 /**
+ * handlers for the enrolmentUsecase function
+ * @param {object} request - The request object containing the enrolment data.
+ * @param {object} response - The response object to send the result.
+ * @returns {Promise<void>} A promise that resolves when the enrolment is created. contain A promise that resolves to an object containing the enrolment and course progress if success
+ * @property {object} enrolment - The enrolment object containing its id and enrolment_code.
+ * @property {object} courseProgress - The course progress object containing its id and progress details.
+ */
+const enrolmentUsecase = async (request, response) => {
+  // for debugging purpose
+  console.log("enrolmentUsecase called");
+  console.log("Raw request body:", request.body);
+
+  try {
+    const { student_code, course_id } = request.body;
+    
+    // Sanitise the input strings
+    const sanitisedStudentCode = sanitiseText(student_code || '');
+    const sanitisedCourseId = sanitiseText(course_id || '');
+
+    const Response = await enrolmentService.enrolmentUsecase({
+      student_code: sanitisedStudentCode,
+      course_id: sanitisedCourseId
+    });
+    response.status(201).json(Response);
+  } catch (error) {
+    console.log("Error details:", error.message);
+    response.status(500).json({ error: error.message });
+  }
+};
+
+/**
  * Get all enrolled courses for a student.
  * @function getEnrolledCoursesByStudentCode
  * @param {object} request - The request object containing the student_code.
@@ -66,5 +97,6 @@ const getEnrolledCoursesByStudentCode = async (request, response) => {
 
 module.exports = {
   enrols,
-  getEnrolledCoursesByStudentCode
+  getEnrolledCoursesByStudentCode,
+  enrolmentUsecase
 };
