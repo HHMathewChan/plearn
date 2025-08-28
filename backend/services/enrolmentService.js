@@ -5,6 +5,7 @@ const enrolmentRepository = require('../repositories/enrolmentRepository');
 const enrolsInRepository = require('../repositories/enrolsInRepository');
 const hasCourseReferenceToRepository = require('../repositories/hasCourseReferenceToRepository');
 const courseRepository = require('../repositories/courseRepository');
+const courseProgressService = require('./courseProgressService');
 
 /**
  * A student enroled in a course.
@@ -16,7 +17,7 @@ const courseRepository = require('../repositories/courseRepository');
 const enrols = async (enrolmentData) => {
     const { student_code, course_id } = enrolmentData;
     
-    console.log(`[enrols] Processing enrolment for student_code: "${student_code}", course_id: "${course_id}"`);
+    console.log(`[enrolmentService, enrols] Processing enrolment for student_code: "${student_code}", course_id: "${course_id}"`);
     
     // Create a new enrolment record, assign the returned id and enrolment_code to the enrolment object
     const enrolmentResponse = await enrolmentRepository.createEnrolment(student_code, course_id);
@@ -78,7 +79,31 @@ const getEnrolledCoursesByStudentCode = async (student_code) => {
     }
 };
 
+/**
+ * The whole enrolment use case of a student.
+ * This includes enrolling the student in a course and creating their course progress.
+ * @param {object} enrolmentData - The enrolment object containing student_code and course_id.
+ * @returns {Promise<object>} A promise that resolves to an object containing the enrolment and course progress.
+ */
+const enrolmentUsecase = async (enrolmentData) => {
+    const { student_code, course_id } = enrolmentData;
+    console.log(`[enrolmentUsecase] Called with student_code: "${student_code}", course_id: "${course_id}"`);
+    try {
+        // Enrol the student in the course
+        const enrolment = await enrols(enrolmentData);
+        console.log(`[enrolmentUsecase] Successfully enrolled student: "${student_code}" in course: "${course_id}"`);
+        // Create course progress for the student
+        const courseProgress = await courseProgressService.createCourseProgressUseCase(student_code, course_id);
+        return { enrolment, courseProgress };
+    } catch (error) {
+        console.error(`[enrolmentUsecase] Error during enrolment process for student: "${student_code}", course: "${course_id}"`);
+        console.error(`[enrolmentUsecase] Full error details:`, error);
+        throw error;
+    }
+}
+
 module.exports = {
     enrols,
-    getEnrolledCoursesByStudentCode
+    getEnrolledCoursesByStudentCode,
+    enrolmentUsecase
 };
