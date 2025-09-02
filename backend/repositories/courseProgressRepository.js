@@ -18,6 +18,15 @@ async function createRecord(studentCode, courseId, status, date_completed, last_
     return result;
 }
 
+async function findRecord(studentCode, courseId) {
+    const result = await database.oneOrNone(
+        `SELECT * FROM courseprogress WHERE student_code = $1 AND course_id = $2`,
+        [studentCode, courseId]
+    );
+    return result;
+}
+
 module.exports = {
-    createRecord
+    createRecord,
+    findRecord
 };
