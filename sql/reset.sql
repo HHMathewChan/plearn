@@ -14,6 +14,7 @@
 \i /Users/mathewchan/plearn/sql/init/triggers/all_xxxcode_trg.sql
 
 -- Step three: insert initial data
+\i /Users/mathewchan/plearn/sql/seed/insert_learning_preference_data.sql
 \i /Users/mathewchan/plearn/sql/seed/insert_course_data.sql
 \i /Users/mathewchan/plearn/sql/seed/insert_platformuser_data.sql
 \i /Users/mathewchan/plearn/sql/seed/insert_final_quiz_related.sql
