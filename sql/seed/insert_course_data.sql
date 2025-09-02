@@ -20,6 +20,8 @@ INSERT INTO owncourseby (course_id, copyright_owner_id) VALUES
 ('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-9999-4e1a-9c1a-cccc99999999');
 
 -- Topic
--- INSERT INTO topic (id, name) VALUES
--- ('b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa', 'JavaScript'),
--- ('b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb', 'Python');
+INSERT INTO topic (id, name) VALUES
+('b3b1c7e2-aaaa-4e1a-9c1a-aaaaaaaaaaaa', 'JavaScript'),
+('b3b1c7e2-bbbb-4e1a-9c1a-bbbbbbbbbbbb', 'Python'),
+('69f19cd3-a324-44a7-ba9d-757330f6953f', 'Nuclear Physics'),
+('d1f5c8e2-1c4b-4f3e-9c1a-123456789012', 'Energy Economics');
