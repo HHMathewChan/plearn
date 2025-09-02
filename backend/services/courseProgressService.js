@@ -19,6 +19,19 @@ async function createCourseProgressUseCase(studentCode, courseId) {
     return courseProgress;
 }
 
+/**
+ * Get the course progress for a student
+ * @param {string} studentCode - The code of the student
+ * @param {number} courseId - The ID of the course
+ */
+async function getCourseProgressUseCase(studentCode, courseId) {
+    // for debugging
+    console.log(`At courseProgressService, Getting course progress for student ${studentCode} in course ${courseId}`);
+    const courseProgress = await courseProgressRepository.findRecord(studentCode, courseId);
+    return courseProgress;
+}
+
 module.exports = {
-    createCourseProgressUseCase
+    createCourseProgressUseCase,
+    getCourseProgressUseCase
 };
