@@ -37,15 +37,13 @@ const enrols = async (enrolmentData) => {
 };
 
 /**
- * Get all enrolled courses for a student.
+ * Get all enrolled courses and its corresponding progress for a student.
  * @function getEnrolledCoursesByStudentCode
  * @param {string} student_code - The unique identifier for the student.
- * @returns {Promise<Array<object>>} A promise that resolves to an array of course objects
+ * @returns {Promise<Array<object>>} A promise that resolves to an array of course objects the student is enrolled in.
  * @throws {Error} Throws an error if there's a database connection or query issue.
- * @property {string} course.id - The unique identifier for the course.
- * @property {string} course.course_code - The unique code for the course.
- * @property {string} course.title - The title of the course.
- * @property {string} course.description - A brief description of the course.
+ * @property {Array<object>} courses - An array of course objects.
+ * @property {Array<object>} courseProgress - An array of course progress objects.
  */
 const getEnrolledCoursesByStudentCode = async (student_code) => {
     try {
@@ -67,7 +65,12 @@ const getEnrolledCoursesByStudentCode = async (student_code) => {
             const enrolmentRecord = await enrolmentRepository.getEnrolmentById(enrolmentId);
             // Then get the course details using the course_id
             const course = await courseRepository.getCourseById(enrolmentRecord.course_id);
-            return course;
+            const courseProgress = await courseProgressService.getCourseProgressUseCase(student_code, enrolmentRecord.course_id);
+            const enroledCourseWithMetaData = {
+                course,
+                courseProgress
+            };
+            return enroledCourseWithMetaData;
         }));
         
         console.log(`[getEnrolledCoursesByStudentCode] Successfully fetched courses for student_code: "${student_code}"`);
