@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
  * Shows course details and provides access to course content.
  */
 const EnrolledCoursesTable: React.FC = () => {
-    const { enrolledCourses, loading, error } = useEnrolledCourses();
+    const { enrolledCoursesWithMetaData, loading, error } = useEnrolledCourses();
     const navigate = useNavigate();
 
     if (loading) {
@@ -28,7 +28,7 @@ const EnrolledCoursesTable: React.FC = () => {
         );
     }
 
-    if (!enrolledCourses || enrolledCourses.length === 0) {
+    if (!enrolledCoursesWithMetaData || enrolledCoursesWithMetaData.length === 0) {
         return (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-centre" role="status">
                 <div className="text-blue-800">
@@ -62,27 +62,27 @@ const EnrolledCoursesTable: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {enrolledCourses.map((course, index) => (
-                        <tr key={course.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    {enrolledCoursesWithMetaData.map((enrolledCoursesWithMetaData, index) => (
+                        <tr key={enrolledCoursesWithMetaData.course.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             {/* Course Details */}
                             <td className="px-6 py-4">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900">{course.title}</h3>
-                                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">{course.description}</p>
+                                    <h3 className="text-lg font-semibold text-gray-900">{enrolledCoursesWithMetaData.course.title}</h3>
+                                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">{enrolledCoursesWithMetaData.course.description}</p>
                                 </div>
                             </td>
                             
                             {/* Course Code */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 <span className="bg-gray-100 px-2 py-1 rounded text-xs">
-                                    {course.course_code}
+                                    {enrolledCoursesWithMetaData.course.course_code}
                                 </span>
                             </td>
                                                         
                             {/* Status - Placeholder for now */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Active
+                                    {enrolledCoursesWithMetaData.courseProgress.status}
                                 </span>
                             </td>
                             
@@ -90,10 +90,10 @@ const EnrolledCoursesTable: React.FC = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button
                                     onClick={() => {
-                                        navigate(`/courses/${course.id}`);
+                                        navigate(`/courses/${enrolledCoursesWithMetaData.course.id}`);
                                     }}
                                     className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colours"
-                                    aria-label={`Go to ${course.title} course`}
+                                    aria-label={`Go to ${enrolledCoursesWithMetaData.course.title} course`}
                                 >
                                     Go to Course
                                 </button>
