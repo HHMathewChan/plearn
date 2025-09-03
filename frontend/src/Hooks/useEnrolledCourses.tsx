@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Courses } from "../Types/CourseType";
+import type { EnroledCoursesWithMetaData } from "../Types/StudentType";
 import { getEnrolledCourses } from "../Services/StudentService";
 
 /**
@@ -7,7 +7,7 @@ import { getEnrolledCourses } from "../Services/StudentService";
  * @returns {Object} An object containing enrolled courses, loading state, and error state.
  */
 export function useEnrolledCourses() {
-    const [enrolledCourses, setEnrolledCourses] = useState<Courses>([]);
+    const [enrolledCoursesWithMetaData, setEnrolledCoursesWithMetaData] = useState<EnroledCoursesWithMetaData>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -16,8 +16,8 @@ export function useEnrolledCourses() {
         try {
             setLoading(true);
             setError(null);
-            const courses = await getEnrolledCourses();
-            setEnrolledCourses(courses);
+            const enrolledCoursesWithMetaData = await getEnrolledCourses();
+            setEnrolledCoursesWithMetaData(enrolledCoursesWithMetaData);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch enrolled courses');
             console.error('Error fetching enrolled courses:', err);
@@ -35,7 +35,7 @@ export function useEnrolledCourses() {
     };
 
     return { 
-        enrolledCourses, 
+        enrolledCoursesWithMetaData, 
         loading, 
         error, 
         refreshEnrolledCourses 
