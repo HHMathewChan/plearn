@@ -23,6 +23,7 @@ async function createCourseProgressUseCase(studentCode, courseId) {
  * Get the course progress for a student
  * @param {string} studentCode - The code of the student
  * @param {number} courseId - The ID of the course
+ * @returns {object} The course progress object if found, otherwise null.
  */
 async function getCourseProgressUseCase(studentCode, courseId) {
     // for debugging
