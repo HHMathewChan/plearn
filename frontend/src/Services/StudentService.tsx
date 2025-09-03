@@ -1,15 +1,15 @@
 import { AuthToken } from './AuthToken';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
-import type { Courses } from '../Types/CourseType';
+import type { EnroledCoursesWithMetaData } from '../Types/StudentType';
 
 const API_BASE_URL = 'http://localhost:3001/api/student-routes';
 
 /**
  * Fetches enrolled courses for the current student.
- * @returns {Promise<Courses>} A promise that resolves to an array of enrolled courses.
+ * @returns {Promise<EnroledCoursesWithMetaData[]>} 
  * @throws {Error} Throws an error if the request fails or user is not authenticated.
  */
-export async function getEnrolledCourses(): Promise<Courses> {
+export async function getEnrolledCourses(): Promise<EnroledCoursesWithMetaData> {
     // Get the student code from the repository
     const studentCode = PlatformUserRepository.getStudentCode();
     
