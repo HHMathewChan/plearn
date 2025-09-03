@@ -18,6 +18,12 @@ async function createRecord(studentCode, courseId, status, date_completed, last_
     return result;
 }
 
+/**
+ * Find a course progress record by student code and course ID.
+ * @param {string} studentCode - The code of the student.
+ * @param {number} courseId - The ID of the course.
+ * @returns {Promise<object|null>} The course progress record or null if not found.
+ */
 async function findRecord(studentCode, courseId) {
     const result = await database.oneOrNone(
         `SELECT * FROM courseprogress WHERE student_code = $1 AND course_id = $2`,
