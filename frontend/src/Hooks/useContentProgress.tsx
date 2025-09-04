@@ -4,7 +4,7 @@ import {  createContentProgress as createContentProgressService,
   getContentProgress as getContentProgressService
 } from '../Services/ContentProgressService';
 
-type ProgressStatus = 'not_started' | 'in_progress' | 'complete' | null;
+type ProgressStatus = 'not_started' | 'in_progress' | 'completed' | null;
 
 interface UseContentProgressProps {
   studentCode: string;
@@ -30,7 +30,7 @@ export const useContentProgress = ({ studentCode, contentId }: UseContentProgres
    * This is used to ensure that the value returned from the service is one of the expected types(exclude null when the value is true).
   */
   const isProgressStatus = (value: unknown): value is Exclude<ProgressStatus, null> => {
-    return value === 'not_started' || value === 'in_progress' || value === 'complete';
+    return value === 'not_started' || value === 'in_progress' || value === 'completed';
   };
 
   /**
@@ -50,7 +50,7 @@ export const useContentProgress = ({ studentCode, contentId }: UseContentProgres
       console.log('Progress Status:', progressStatus);
       setState(prev => ({ ...prev,
         status: progressStatus,
-        isCompleted: progressStatus === 'complete',
+        isCompleted: progressStatus === 'completed',
         isLoading: false
       }));
       return progressStatus;
@@ -104,8 +104,8 @@ export const useContentProgress = ({ studentCode, contentId }: UseContentProgres
       const effectiveProgressStatus: ProgressStatus = currentProgressStatus ?? 'not_started';
 
       // Step 2: Toggle completion status
-      // If currently 'complete' -> set to 'not_started', otherwise set to 'complete'
-      const newProgressStatus: ProgressStatus = effectiveProgressStatus === 'complete' ? 'not_started' : 'complete';
+      // If currently 'completed' -> set to 'not_started', otherwise set to 'completed'
+      const newProgressStatus: ProgressStatus = effectiveProgressStatus === 'completed' ? 'not_started' : 'completed';
       console.log('New Progress Status:', newProgressStatus);
       await updateContentProgressService(studentCode, contentId, newProgressStatus);
 
@@ -113,7 +113,7 @@ export const useContentProgress = ({ studentCode, contentId }: UseContentProgres
       setState(prev => ({
         ...prev,
         status: newProgressStatus,
-        isCompleted: newProgressStatus === 'complete',
+        isCompleted: newProgressStatus === 'completed',
         isLoading: false,
       }));
     } catch (error) {
