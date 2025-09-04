@@ -22,7 +22,21 @@ async function createRecord(finalQuizId, quizAttemptId) {
     return result[0];
 }
 
+/**
+ * get the final quiz id using the quiz attempt id
+ * @param {number} quizAttemptId - The ID of the quiz attempt.
+ * @returns {Promise<number|null>} - The ID of the final quiz or null if not found.
+ */
+async function getFinalQuizIdForQuizAttempt(quizAttemptId) {
+    const result = await database.oneOrNone(
+        'SELECT final_quiz_id FROM logpastattemptforfinalquizwith WHERE quiz_attempt_id = $1',
+        [quizAttemptId]
+    );
+    return result ? result.final_quiz_id : null;
+}
+
 module.exports = {
     checkFinalQuizAttemptsPair,
-    createRecord
+    createRecord,
+    getFinalQuizIdForQuizAttempt
 };
