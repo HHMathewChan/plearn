@@ -1,5 +1,6 @@
 const contentProgressService = require('../services/contentProgressService');
 const { sanitiseText } = require('../validation/textSanitiser');
+const completeContentProgress = require('../useCases/completeContentProgress');
 
 /**
  * Retrieves all content progress records for a specific student.
@@ -73,6 +74,19 @@ async function updateContentProgress(req, res) {
         const sanitisedStatus = sanitiseText(status);
         // for debugging
         console.log("Updating content progress for student after sanitisation:", sanitisedStudentCode, "with content ID:", sanitisedContentId, "to status:", sanitisedStatus);
+        // if status is completed call completeContentProgress
+        if (sanitisedStatus === "completed") {
+            const { updatedContentProgress, areAllCompleted } = await completeContentProgress.completeContentProgressUseCase(sanitisedStudentCode, sanitisedContentId);
+            if (!updatedContentProgress) {
+                return res.status(404).json({ message: 'Content progress not found.' });
+            }
+            if (areAllCompleted) {
+                console.log("All content completed.");
+                return res.status(200).json({ updatedContentProgress, areAllCompleted });
+            }
+            return res.status(200).json({ updatedContentProgress, areAllCompleted: false });
+        }
+        // for other cases
         const updatedProgress = await contentProgressService.updateContentProgress(sanitisedStudentCode, sanitisedContentId, sanitisedStatus);
         if (!updatedProgress) {
             return res.status(404).json({ message: 'Content progress not found.' });
