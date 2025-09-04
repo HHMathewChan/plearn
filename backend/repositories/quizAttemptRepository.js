@@ -42,7 +42,19 @@ const updateQuizAttempt = async (id, score, completedAt, attemptStatus, updatedA
     return result;
 }
 
+/**
+ * get quiz attempt using its id
+ */
+const getQuizAttemptById = async (id) => {
+    const result = await database.oneOrNone(
+        `SELECT * FROM quizattempt WHERE id = $1`,
+        [id]
+    );
+    return result;
+}
+
 module.exports = {
     createQuizAttempt,
-    updateQuizAttempt
+    updateQuizAttempt,
+    getQuizAttemptById
 };
