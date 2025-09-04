@@ -1,5 +1,7 @@
 const hasContentProgressForRepository = require('../repositories/hasContentProgressForRepository');
 const contentProgressRepository = require('../repositories/ContentProgressRepository');
+const courseContentService = require('./courseContentService');
+const comprisesRepository = require('../repositories/comprisesRepository')
 
 /**
  * Retrieves all detailed content progress records for a specific student.
@@ -92,7 +94,7 @@ async function updateContentProgress(studentCode, contentId, status) {
     if (status === "not_started") {
         return uncompleteContentProgress(contentProgressId, contentId);
     }
-    //otherwise, call the completeContentProgress function
+    //otherwise, call the completeContentProgressUsecase function
     return completeContentProgress(contentProgressId, contentId);
 }
 
@@ -112,7 +114,7 @@ async function completeContentProgress(contentProgressId, contentId) {
     return updatedContentProgress;
 }
 
-/**
+ /**
  * Marks a content item as not started for a student.
  * @param {string} studentCode - The code identifying the student.
  * @param {string} contentProgressId - The ID of the content progress item.
