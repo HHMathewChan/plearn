@@ -4,6 +4,7 @@
 const courseRepository = require('../repositories/courseRepository');
 const ownCourseByRepository = require('../repositories/ownCourseByRepository');
 const copyRightOwnerRepository = require('../repositories/copyRightOwnerRepository');
+const hasFinalQuizForRepository = require('../repositories/hasFinalQuizForRepository');
 
 /**
  * @typedef {Object} CopyrightOwner
@@ -65,7 +66,26 @@ const getAllCoursesMetadata = async () => {
         throw error;
     }
 };
+/**
+ * get the final quiz id
+ * @param {string} courseId - The ID of the course.
+ * @returns {Promise<string|null>} - The ID of the final quiz, or null if not found.
+ */
+const getFinalQuizId = async (courseId) => {
+    try {
+        // for debugging
+        console.log('At courseService, getFinalQuizId, Fetching final quiz ID for course:', courseId);
+        const finalQuizID = await hasFinalQuizForRepository.getFinalQuizIdForCourse(courseId);
+        // for debugging
+        console.log('At courseService, getFinalQuizId, Fetched final quiz ID for course:', finalQuizID);
+        return finalQuizID ? finalQuizID : null;
+    } catch (error) {
+        console.error('Error fetching final quiz ID:', error);
+        throw error;
+    }
+};
 
 module.exports = {
-    getAllCoursesMetadata
+    getAllCoursesMetadata,
+    getFinalQuizId
 };
