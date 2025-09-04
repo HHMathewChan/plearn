@@ -32,7 +32,25 @@ async function findRecord(studentCode, courseId) {
     return result;
 }
 
+/**
+ * Complete a course progress record.
+ * @param {string} studentCode - The code of the student.
+ * @param {number} courseId - The ID of the course.
+ * @returns {Promise<object|null>} The updated course progress record or null if not found.
+ */
+async function completeCourseProgress(studentCode, courseId) {
+    const result = await database.oneOrNone(
+        `UPDATE courseprogress 
+        SET status = $1, date_completed = $2, last_updated = $3 
+        WHERE student_code = $4 AND course_id = $5 
+        RETURNING *`,
+        ['completed', new Date(), new Date(), studentCode, courseId]
+    );
+    return result;
+}
+
 module.exports = {
     createRecord,
-    findRecord
+    findRecord,
+    completeCourseProgress
 };
