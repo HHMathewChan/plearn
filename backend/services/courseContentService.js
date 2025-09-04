@@ -4,6 +4,7 @@
  */
 const courseContentRepository = require('../repositories/courseContentRepository');
 const courseRepository = require('../repositories/courseRepository');
+const comprisesRepository = require('../repositories/comprisesRepository');
 
 /**
  * Get all course content for a specific course.
@@ -51,7 +52,29 @@ const getCourseContentById = async (contentId) => {
     }
 };
 
+/**
+ * Get a course by content id
+ * @param {string} contentId - The ID of the content item.
+ * @returns {Promise<string|null>} - The course ID, or null if not found.
+ */
+const getCourseIdByContentId = async (contentId) => {
+    try {
+        console.log(`[getCourseIdByContentId] Fetching course ID for content: "${contentId}"`);
+        // first get the content record
+        const contentRecord = await courseContentRepository.getCourseContentById(contentId);
+        if (!contentRecord) {
+            return null;
+        }
+        const courseId = contentRecord.course_id;
+        return courseId;
+    } catch (error) {
+        console.error(`[getCourseIdByContentId] Error in service layer:`, error);
+        throw error;
+    }
+};
+
 module.exports = {
     getCourseContentByCourseId,
-    getCourseContentById
+    getCourseContentById,
+    getCourseIdByContentId
 };
