@@ -94,7 +94,31 @@ async function getFinalQuizWithQuestions(courseId) {
     };
 }
 
+/**
+ * Check if any of the final quiz attempts were passed for the given course.
+ * @param {Array} pastAttemptsWithFinalQuiz - An array of objects containing past quiz attempts with their final quiz IDs.
+ * @param {string} courseId - The ID of the course.
+ * @returns {Promise<boolean>} - True if any final quiz was attempted and passed, false otherwise.
+ */
+const checkIfFinalQuizAttemptedAndPassed = async (pastAttemptsWithFinalQuiz, courseId) => {
+    // for debugging
+    console.log('At finalQuizService, Checking past attempts for final quiz:', { pastAttemptsWithFinalQuiz, courseId });
+    // For each pastAttemptsWithFinalQuiz, check if it was passed by first get the final quiz by its id, then check if its course id matches the given course id
+    for (const { attempt, finalQuizId } of pastAttemptsWithFinalQuiz) {
+        //for debugging
+        console.log('At finalQuizService, checkIfFinalQuizAttemptedAndPassed:', { attempt, finalQuizId });
+        const finalQuiz = await finalQuizRepo.getFinalQuizById(finalQuizId);
+        if (finalQuiz && finalQuiz.course_id === courseId) {
+            if (attempt.status === 'passed' && attempt.score > finalQuiz.passing_score) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
 module.exports = {
     getFinalQuizWithQuestions,
-    getQuestionCountForFinalQuiz
+    getQuestionCountForFinalQuiz,
+    checkIfFinalQuizAttemptedAndPassed
 };
