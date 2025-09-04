@@ -75,13 +75,13 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
         }
     };
 
-    const handleUpdateStatus = async (contentId: string, newStatus: 'complete' | 'not_started') => {
+    const handleUpdateStatus = async (contentId: string, newStatus: 'completed' | 'not_started') => {
         try {
             setCheckingMap(prev => ({ ...prev, [contentId]: true }));
 
             // Update the status
-            await updateContentProgress(studentCode, contentId, newStatus);
-
+            const updatedResult = await updateContentProgress(studentCode, contentId, newStatus);
+            window.alert("Have you completed all of the contents?: " + updatedResult.areAllCompleted);
             // Refresh the current status
             const updatedStatus = await getContentProgress(studentCode, contentId);
             setStatusMap(prev => ({ ...prev, [contentId]: updatedStatus }));
@@ -140,11 +140,11 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                                 <button
                                     type="button"
                                     className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
-                                    onClick={() => handleUpdateStatus(content.id, 'complete')}
+                                    onClick={() => handleUpdateStatus(content.id, 'completed')}
                                     disabled={!!checkingMap[content.id]}
-                                    aria-label={`Mark ${content.title} as complete`}
+                                    aria-label={`Mark ${content.title} as completed`}
                                 >
-                                    Mark as Complete
+                                    Mark as Completed
                                 </button>
                                 <button
                                     type="button"
