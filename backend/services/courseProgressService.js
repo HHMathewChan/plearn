@@ -32,7 +32,27 @@ async function getCourseProgressUseCase(studentCode, courseId) {
     return courseProgress;
 }
 
+/**
+ * Complete the course progress for a student
+ * @param {string} studentCode - The code of the student
+ * @param {number} courseId - The ID of the course
+ * @returns {object|null} The updated course progress object if found and updated, otherwise null.
+ */
+async function completeCourseProgressUseCase(studentCode, courseId) {
+    // for debugging
+    console.log(`At courseProgressService, Completing course progress for student ${studentCode} in course ${courseId}`);
+    const courseProgress = await getCourseProgressUseCase(studentCode, courseId);
+    console.log(`At courseProgressService, completeCourseProgressUseCase, Course progress found:`, courseProgress);
+    if (courseProgress) {
+        const updatedCourseProgress = await courseProgressRepository.completeCourseProgress(studentCode, courseId);
+        console.log(`At courseProgressService, completeCourseProgressUseCase, Course progress updated:`, updatedCourseProgress);
+        return updatedCourseProgress;
+    }
+    return null;
+}
+
 module.exports = {
     createCourseProgressUseCase,
-    getCourseProgressUseCase
+    getCourseProgressUseCase,
+    completeCourseProgressUseCase
 };
