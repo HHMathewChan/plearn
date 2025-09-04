@@ -81,7 +81,7 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
 
             // Update the status
             const updatedResult = await updateContentProgress(studentCode, contentId, newStatus);
-            window.alert("Have you completed all of the contents?: " + updatedResult.areAllCompleted);
+            window.alert("Update successful: " + updatedResult.message);
             // Refresh the current status
             const updatedStatus = await getContentProgress(studentCode, contentId);
             setStatusMap(prev => ({ ...prev, [contentId]: updatedStatus }));
