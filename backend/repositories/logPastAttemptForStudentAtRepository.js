@@ -3,7 +3,7 @@ const database = require('../database');
 /**
  * get all attempts for a student
  * @param {*} studentCode 
- * @returns 
+ * @returns {Promise<Array>} - Array of past attempts
  */
 async function getAllPastAttemptsForStudent(studentCode) {
     const result = await database.any(
