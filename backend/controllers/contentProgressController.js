@@ -91,7 +91,7 @@ async function updateContentProgress(req, res) {
         if (!updatedProgress) {
             return res.status(404).json({ message: 'Content progress not found.' });
         }
-        res.status(200).json(updatedProgress);
+        res.status(200).json({updatedProgress, areAllCompleted: false });
     } catch (error) {
         console.error('Error updating content progress:', error);
         res.status(500).json({ message: 'Failed to update content progress.' });
