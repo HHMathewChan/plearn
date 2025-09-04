@@ -82,16 +82,22 @@ async function updateContentProgress(req, res) {
             }
             if (areAllCompleted) {
                 console.log("All content completed.");
-                return res.status(200).json({ updatedContentProgress, areAllCompleted });
+                //message
+                const message = 'Congratulations! You have completed all content items.';
+                return res.status(200).json({ updatedContentProgress, areAllCompleted, message });
             }
-            return res.status(200).json({ updatedContentProgress, areAllCompleted: false });
+            //message
+            const message = 'Content progress updated successfully.';
+            return res.status(200).json({ updatedContentProgress, areAllCompleted: false, message });
         }
         // for other cases
         const updatedProgress = await contentProgressService.updateContentProgress(sanitisedStudentCode, sanitisedContentId, sanitisedStatus);
         if (!updatedProgress) {
             return res.status(404).json({ message: 'Content progress not found.' });
         }
-        res.status(200).json({updatedProgress, areAllCompleted: false });
+        //message
+        const message = 'Content progress updated successfully.';
+        res.status(200).json({ updatedProgress, areAllCompleted: false, message });
     } catch (error) {
         console.error('Error updating content progress:', error);
         res.status(500).json({ message: 'Failed to update content progress.' });
