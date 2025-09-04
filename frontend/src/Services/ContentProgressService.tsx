@@ -1,4 +1,5 @@
 const API_BASE_URL = 'http://localhost:3001/api/content-progress-routes';
+import type { updatedResult } from "../Types/ContentProgressResult";
 
 export async function hasContentProgress(studentCode: string, contentId: string): Promise<boolean> {
   try {
@@ -52,8 +53,8 @@ export async function createContentProgress(studentCode: string, contentId: stri
 export async function updateContentProgress(
   studentCode: string,
   contentId: string,
-  status: 'complete' | 'not_started'
-): Promise<void> {
+  status: 'completed' | 'not_started'
+): Promise<updatedResult> {
   try {
     const response = await fetch(`${API_BASE_URL}/content-progress`, {
       method: 'PUT',
@@ -70,6 +71,10 @@ export async function updateContentProgress(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const data: updatedResult = await response.json();
+    console.log("Update content progress response data:", data);
+    return data;
+
   } catch (error) {
     console.error('Error updating content progress:', error);
     throw error;
