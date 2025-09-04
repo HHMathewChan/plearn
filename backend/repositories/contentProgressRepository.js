@@ -3,6 +3,11 @@
  */
 const database = require('../database');
 
+/**
+ * Retrieves a content progress record by its ID.
+ * @param {string} contentProgressId - The ID of the content progress record.
+ * @returns {Promise<Object|null>} - The content progress record, or null if not found.
+ */
 async function getContentProgress(contentProgressId) {
     const result = await database.oneOrNone(
         'SELECT * FROM ContentProgress WHERE id = $1',
@@ -10,6 +15,21 @@ async function getContentProgress(contentProgressId) {
     );
     // for debugging
     console.log("At ContentProgressRepository - Fetched content progress:", result);
+    return result;
+}
+
+/**
+ * Retrieves a content progress record by its content ID.
+ * @param {string} contentId - The ID of the content item.
+ * @returns {Promise<Object|null>} - The content progress record, or null if not found.
+ */
+async function getContentProgressByContentId(contentId) {
+    const result = await database.oneOrNone(
+        'SELECT * FROM ContentProgress WHERE content_id = $1',
+        [contentId]
+    );
+    // for debugging
+    console.log("At ContentProgressRepository - Fetched content progress by content ID:", result);
     return result;
 }
 
@@ -51,4 +71,5 @@ module.exports = {
     getContentProgress,
     createContentProgress,
     updateContentProgress,
+    getContentProgressByContentId
 };
