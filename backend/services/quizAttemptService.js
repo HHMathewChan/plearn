@@ -7,6 +7,8 @@ const logPastAttemptForStudentAtRepository = require('../repositories/logPastAtt
 const studentAnswerService = require('./studentAnswerService.js')
 const hasFinalQuizForRepository = require ('../repositories/hasFinalQuizForRepository');
 const studentAnswerRepository = require('../repositories/studentAnswerRepository');
+const courseService = require('./courseService');
+const finalQuizService = require('./finalQuizService');
 
 /**
  * Find all past quiz attempts for the student for a final quiz
@@ -190,10 +192,32 @@ const completeQuizAttempt = async (courseId, studentCode, studentAnswers) => {
     return quizAttempt;
 }
 
+/**
+ * Check if a student has attempted and passed a quiz.
+ * @param {Array} pastAttemptIds - The past attempt IDs for the student.
+ * @param {number} courseId - The ID of the course.
+ * @returns {Promise<boolean>} - True if the quiz was attempted and passed, false otherwise.
+ */
+const checkIfQuizAttemptedAndPassed = async (pastAttemptIds, courseId) => {
+    // for debugging
+    console.log('At quizAttemptService, Checking if quiz attempted and passed for:', { pastAttemptIds, courseId });
+    // First fetch the past attempts
+    const pastAttempts = await Promise.all(pastAttemptIds.map(attemptId => quizAttemptRepository.getQuizAttemptById(attemptId)));
+    // Find the final quiz ID for each past attempt and map them together, an array of objects should be produced, each object contain the past attempt and its final quiz ID
+    const pastAttemptsWithFinalQuiz = await Promise.all(pastAttempts.map(async attempt => {
+        const finalQuizId = await logPastAttemptForFinalQuizWithRepository.getFinalQuizIdForQuizAttempt(attempt.id);
+        return { attempt, finalQuizId };
+    }));
+    // Ask final quiz service to check if any of the past attempts are for the course and were passed
+    const result = await finalQuizService.checkIfFinalQuizAttemptedAndPassed(pastAttemptsWithFinalQuiz, courseId);
+    return result;
+};
+
 module.exports = {
     getQuizAttemptsForStudent,
     createQuizAttempt,
     completeQuizAttempt,
     getStudentAnswersForQuizAttempt,
-    attemptFinalQuiz
+    attemptFinalQuiz,
+    checkIfQuizAttemptedAndPassed
 };
