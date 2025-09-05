@@ -105,11 +105,6 @@ const studentHasLearningPreferences = async (req, res) => {
     // for debugging
     console.log('At studentLearningPerferenceController, studentHasLearningPreferences result:', result);
 
-    // If service indicates no preferences found, respond with 404
-    if (!result || result.success === false) {
-      return res.status(404).json(result);
-    }
-
     return res.status(200).json(result);
   } catch (error) {
     console.error('Error in studentHasLearningPreferences controller:', error);
