@@ -18,6 +18,20 @@ const createRecord = async (studentCode, learningModeID) => {
   return result;
 };
 
+/**
+ * Get a record for a given student code.
+ * @param {string} studentCode - The code of the student.
+ * @returns {Promise} - A promise that resolves with the found record or null.
+ */
+const getRecordByStudentCode = async (studentCode) => {
+  const result = await database.oneOrNone(
+    'SELECT * FROM haslearningmodefor WHERE student_code = $1',
+    [studentCode]
+  );
+  return result;
+};
+
 module.exports = {
   createRecord,
+  getRecordByStudentCode,
 };
