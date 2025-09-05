@@ -79,6 +79,72 @@ const createStudentLearningPreferences = async (req, res) => {
   }
 };
 
+/**
+ * Controller to confirm whether a student has learning preferences
+ * Expects student_code in req.params or req.query
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>}
+ */
+const studentHasLearningPreferences = async (req, res) => {
+  try {
+    const student_code = req.body.student_code;
+
+    if (!student_code) {
+      return res.status(400).json({
+        success: false,
+        message: 'Student code is required'
+      });
+    }
+
+    // for debugging
+    console.log('At studentLearningPerferenceController, Checking learning preferences for Student Code:', student_code);
+
+    const result = await studentLearningPreferenceService.studentHasLearningPreferences(student_code);
+
+    // for debugging
+    console.log('At studentLearningPerferenceController, studentHasLearningPreferences result:', result);
+
+    // If service indicates no preferences found, respond with 404
+    if (!result || result.success === false) {
+      return res.status(404).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error in studentHasLearningPreferences controller:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred whilst retrieving learning preferences',
+      error: 'Internal server error'
+    });
+  }
+};
+
+/**
+ * A function to call other contollers function based on the action parameter in the body
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>}
+ */
+const studentLearningPerferenceController = async (req, res) => {
+  const action = req.body.action;
+  
+  switch (action) {
+    case 'create':
+      await createStudentLearningPreferences(req, res);
+      break;
+    case 'check':
+      await studentHasLearningPreferences(req, res);
+      break;
+    default:
+      res.status(400).json({
+        success: false,
+        message: 'Invalid action'
+      });
+  }
+};
+
 module.exports = {
-  createStudentLearningPreferences
+  studentLearningPerferenceController
 };
