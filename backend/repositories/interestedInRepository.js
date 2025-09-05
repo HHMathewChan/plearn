@@ -18,6 +18,29 @@ const createRecord = async(chosenTopicID, studentCode) => {
     return result;
 };
 
+/**
+ * Finds all records for a given student code.
+ * @param {string} studentCode - The code of the student.
+ * @returns {Promise} - A promise that resolves with the found records or an empty array.
+ */
+const findRecordsByStudentCode = async (studentCode) => {
+  try {
+    //for debugging
+    console.log('Finding interestedin records by student code:', studentCode);
+    const result = await database.any(
+      'SELECT * FROM interestedin WHERE student_code = $1',
+      [studentCode]
+    );
+    //for debugging
+    console.log('Found interestedin records by student code:', result);
+    return result;
+  } catch (error) {
+    console.error('Error finding interestedin records by student code:', error);
+    throw new Error(`Failed to find interestedin records: ${error.message}`);
+  }
+};
+
 module.exports = {
   createRecord,
+  findRecordsByStudentCode
 };
