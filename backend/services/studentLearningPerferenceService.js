@@ -63,6 +63,40 @@ const createStudentLearningPreferences = async (studentCode, learningModeID, top
   }
 };
 
+/**
+ * Confirm student has learning preferences
+ * @param {string} studentCode - The code of the student.
+ * @returns {Promise} - A promise that resolves with the confirmation result.
+ */
+const studentHasLearningPreferences = async (studentCode) => {
+  try {
+    // Fetch the student's learning preferences from the database
+    //confirm both if the student has any learning preferences and chosen topic by checking thier links
+    const hasLearningModeLinked = await hasLearningModeForRepository.getRecordByStudentCode(studentCode);
+    const hasChosenTopicsLinked = await interestedInRepository.findRecordsByStudentCode(studentCode);
+
+    if (!hasLearningModeLinked || !hasChosenTopicsLinked) {
+      return {
+        success: false,
+        message: 'No learning preferences found for the student',
+        result: null
+      };
+    }
+    return {
+      success: true,
+      message: 'Student has learning preferences',
+      result: {
+        "hasLearningModeLinked": hasLearningModeLinked,
+        "hasChosenTopicsLinked": hasChosenTopicsLinked
+      }
+    };
+  } catch (error) {
+    console.error('Error retrieving student learning preferences at studentHasLearningPreferences, studentLearningPreferencesService:', error);
+    throw new Error(`Failed to get learning preferences at studentHasLearningPreferences, studentLearningPreferencesService: ${error.message}`);
+  }
+};
+
 module.exports = {
-  createStudentLearningPreferences
+  createStudentLearningPreferences,
+  studentHasLearningPreferences
 };
