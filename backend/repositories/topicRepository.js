@@ -7,7 +7,7 @@ const database = require('../database');
 const getAllTopics = async () => {
   // for debugging
   console.log('At topicRepository, Retrieving all topics from database...');
-  const result = await database.any('SELECT * FROM topics');
+  const result = await database.any('SELECT * FROM topic');
   // for debugging
   console.log('Retrieved all topics from database:', result);
   return result;
