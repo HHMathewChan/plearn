@@ -8,6 +8,7 @@ import ProtectedLayout from './Components/ProtectedLayout';
 import RegisterFacade from './UseCases/RegisterFacade';
 import CourseContentPage from './Pages/CourseContentPage';
 import FinalQuizPage from './Pages/FinalQuizPage';
+import StudentLearningPreferenceSurvey from './Pages/StudentLearningPreferenceSurvey';
 
 
 function App() {
@@ -61,6 +62,17 @@ function App() {
             <ProtectedRoute>
               <ProtectedLayout>
                 <FinalQuizPage />
+              </ProtectedLayout>
+            </ProtectedRoute>
+          }
+        />
+        {/* This route is for the learning-preferences survey page */}
+        <Route
+          path="/learning-preferences"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout>
+                <StudentLearningPreferenceSurvey />
               </ProtectedLayout>
             </ProtectedRoute>
           }
