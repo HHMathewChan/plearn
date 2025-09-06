@@ -1,4 +1,3 @@
-// ...existing code...
 import { useEffect } from "react";
 import { useStudentLearningPreference } from "../Hooks/useStudentLearningPreference";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +11,8 @@ const RecommendedCourseTable: React.FC = () => {
         void (async () => {
             try {
                 await checkPreferences();
-            } catch (err) {
-                console.error('Error checking preferences on mount:', err);
+            } catch (error) {
+                console.error('Error checking preferences on mount:', error);
             }
         })();
     }, [checkPreferences]);
@@ -42,7 +41,7 @@ const RecommendedCourseTable: React.FC = () => {
                         {/* Not a button element — navigates to survey */}
                         <a
                             href="#"
-                            onClick={(e) => { e.preventDefault(); navigate('/learning-preferences'); }}
+                            onClick={(event) => { event.preventDefault(); navigate('/learning-preferences'); }}
                             className="text-blue-600 underline"
                         >
                             Take the learning-preferences survey
