@@ -6,6 +6,8 @@ const hasLearningModeForRepository = require('../repositories/hasLearningModeFor
 const chosenTopicRepository = require('../repositories/chosenTopicRepository');
 const interestedInRepository = require('../repositories/interestedInRepository');
 const hasTopicReferenceToRepository = require('../repositories/hasTopicReferenceToRepository');
+const learningModeService = require("../services/learningModeService");
+const topicService = require("../services/topicService");
 
 /**
  * This is the usecase to create learning preferences of the student
@@ -96,7 +98,32 @@ const studentHasLearningPreferences = async (studentCode) => {
   }
 };
 
+/**
+ * Get all learning modes and topics for the survey
+ * @returns {Promise} - A promise that resolves with the learning modes and topics.
+ */
+const getDataForLearningPreferencesSurvey = async () => {
+  try {
+    const [learningModes, topics] = await Promise.all([
+      learningModeService.getAllLearningModes(),
+      topicService.getAllTopics()
+    ]);
+    return {
+      success: true,
+      message: 'Successfully retrieved learning modes and topics',
+      result: {
+        learningModes,
+        topics
+      }
+    };
+  } catch (error) {
+    console.error('Error retrieving learning modes and topics at getAllLearningModesAndTopics, studentLearningPreferencesService:', error);
+    throw new Error(`Failed to get learning modes and topics at getAllLearningModesAndTopics, studentLearningPreferencesService: ${error.message}`);
+  }
+};
+
 module.exports = {
   createStudentLearningPreferences,
-  studentHasLearningPreferences
+  studentHasLearningPreferences,
+  getDataForLearningPreferencesSurvey
 };
