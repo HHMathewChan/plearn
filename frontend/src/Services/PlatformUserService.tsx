@@ -28,7 +28,6 @@ const RegisterPlatformUser = async (details: RegisterDetails) => {
  * Encapsulates business logic and interacts with the repository layer.
  */
 export const getStudentCode = () => {
-    // Add any business logic or validation here if needed
     return PlatformUserRepository.getStudentCode();
 };
 
