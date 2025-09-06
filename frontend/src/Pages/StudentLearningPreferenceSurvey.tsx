@@ -2,211 +2,226 @@ import { useEffect, useState } from "react";
 import { getDataForLearningPreferencesSurvey, createStudentLearningPreferences } from "../Services/StudentLearningPreferenceService";
 import type { LearningModes, Topic, ChosenTopic } from "../Types/StudentLearningPreferenceType";
 import { useNavigate } from "react-router-dom";
-import {getStudentCode} from "../Services/PlatformUserService";
+import { getStudentCode } from "../Services/PlatformUserService";
 
-/**
- * A simple learning-preferences survey page.
- * - Fetches survey data on mount.
- * - Lets the student choose a learning mode.
- * - Lets the student choose up to 3 topics and rate interest & knowledge for each.
- * - Submits preferences to the backend.
- */
+const MAX_TOPICS = 3;
+
 const StudentLearningPreferenceSurvey: React.FC = () => {
-    const [learningModes, setLearningModes] = useState<LearningModes[]>([]);
-    const [topics, setTopics] = useState<Topic[]>([]);
-    const [selectedLearningMode, setSelectedLearningMode] = useState<string>("");
-    const [selectedTopics, setSelectedTopics] = useState<Record<string, { interest_level: ChosenTopic["interest_level"]; knowledge_proficiency: ChosenTopic["knowledge_proficiency"] }>>({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        let mounted = true;
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const data = await getDataForLearningPreferencesSurvey();
-                if (!mounted) return;
-                setLearningModes(data.learningModes || []);
-                setTopics(data.topics || []);
-            } catch (err) {
-                console.error("Error fetching survey data:", err);
-                if (mounted) setError("Failed to load survey data.");
-            } finally {
-                if (mounted) setLoading(false);
-            }
-        };
-        fetchData();
-        return () => { mounted = false; };
-    }, []);
+  const [learningModes, setLearningModes] = useState<LearningModes[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [selectedLearningModeId, setSelectedLearningModeId] = useState<string>("");
+  const [selections, setSelections] = useState<Record<string, { knowledge_proficiency: ChosenTopic["knowledge_proficiency"]; interest_level: ChosenTopic["interest_level"] }>>({});
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const toggleTopic = (topicId: string) => {
-        const alreadySelected = Object.prototype.hasOwnProperty.call(selectedTopics, topicId);
-        if (alreadySelected) {
-            const newSelection = { ...selectedTopics };
-            delete newSelection[topicId];
-            setSelectedTopics(newSelection);
-            return;
-        }
-        if (Object.keys(selectedTopics).length >= 3) {
-            setError("You may select up to three preferred topics.");
-            return;
-        }
-        setSelectedTopics({
-            ...selectedTopics,
-            [topicId]: { interest_level: "medium", knowledge_proficiency: "novice" }
-        });
-        setError(null);
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getDataForLearningPreferencesSurvey();
+        // data expected shape: { learningModes: LearningModes[], topics: Topic[] }
+        setLearningModes(data.learningModes ?? []);
+        setTopics(data.topics ?? []);
+      } catch (err) {
+        setError("Failed to load survey data.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
+    void load();
+  }, []);
 
-    const updateTopicDetail = (topicId: string, field: "interest_level" | "knowledge_proficiency", value: string) => {
-        if (!selectedTopics[topicId]) return;
-        setSelectedTopics({
-            ...selectedTopics,
-            [topicId]: {
-                ...selectedTopics[topicId],
-                [field]: value as any
-            }
-        });
-    };
+  const selectedCount = Object.keys(selections).length;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setSuccessMessage(null);
-
-        const studentCode = getStudentCode();
-        if (!studentCode) {
-            setError("Cannot determine student code. Please sign in again.");
-            return;
+  const toggleTopic = (topicId: string, checked: boolean) => {
+    setSelections(prev => {
+      const next = { ...prev };
+      if (checked) {
+        // add with default values if not present
+        if (!next[topicId]) {
+          next[topicId] = { knowledge_proficiency: "novice", interest_level: "medium" };
         }
-        if (!selectedLearningMode) {
-            setError("Please select a learning mode.");
-            return;
-        }
-        const chosen: ChosenTopic[] = Object.keys(selectedTopics).map((topic_id) => ({
-            topic_id,
-            interest_level: selectedTopics[topic_id].interest_level,
-            knowledge_proficiency: selectedTopics[topic_id].knowledge_proficiency
-        }));
+      } else {
+        delete next[topicId];
+      }
+      return next;
+    });
+  };
 
-        if (chosen.length === 0) {
-            setError("Please select at least one preferred topic (up to three).");
-            return;
-        }
+  const setKnowledgeForTopic = (topicId: string, value: ChosenTopic["knowledge_proficiency"]) => {
+    setSelections(prev => ({ ...prev, [topicId]: { ...(prev[topicId] ?? { interest_level: "medium" }), knowledge_proficiency: value } }));
+  };
 
-        setLoading(true);
-        try {
-            const resp = await createStudentLearningPreferences(studentCode, selectedLearningMode, chosen);
-            console.log("Create preferences response:", resp);
-            setSuccessMessage("Preferences saved. You will be redirected shortly.");
-            // small delay then navigate back to courses
-            setTimeout(() => navigate("/courses"), 10000);
-        } catch (err) {
-            console.error("Error submitting preferences:", err);
-            setError("Failed to save preferences. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+  const setInterestForTopic = (topicId: string, value: ChosenTopic["interest_level"]) => {
+    setSelections(prev => ({ ...prev, [topicId]: { ...(prev[topicId] ?? { knowledge_proficiency: "novice" }), interest_level: value } }));
+  };
 
-    return (
-        <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
-            <h1 className="text-2xl font-bold mb-4">Learning preferences survey</h1>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
 
-            {loading && <p>Loading…</p>}
-            {error && <p className="text-red-600 mb-3" role="alert">{error}</p>}
-            {successMessage && <p className="text-green-600 mb-3">{successMessage}</p>}
+    if (!selectedLearningModeId) {
+      setError("Please select a learning mode.");
+      return;
+    }
+    if (selectedCount === 0) {
+      setError("Please select at least one topic (up to three).");
+      return;
+    }
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <section>
-                    <h2 className="font-semibold mb-2">Select a learning mode</h2>
-                    <div className="space-y-2">
-                        {learningModes.length === 0 && <p className="text-sm text-gray-600">No learning modes available.</p>}
-                        {learningModes.map((mode) => (
-                            <label key={mode.id} className="flex items-centre space-x-2">
-                                <input
-                                    type="radio"
-                                    name="learningMode"
-                                    value={mode.id}
-                                    checked={selectedLearningMode === mode.id}
-                                    onChange={() => setSelectedLearningMode(mode.id)}
-                                />
-                                <span>
-                                    <strong>{mode.mode_name}</strong>
-                                    {mode.description && <span className="text-sm text-gray-600 ml-2">— {mode.description}</span>}
-                                </span>
-                            </label>
-                        ))}
-                    </div>
-                </section>
+    const chosenTopics: ChosenTopic[] = Object.entries(selections).map(([topic_id, vals]) => ({
+      topic_id,
+      interest_level: vals.interest_level,
+      knowledge_proficiency: vals.knowledge_proficiency,
+    }));
 
-                <section>
-                    <h2 className="font-semibold mb-2">Choose up to three preferred topics</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {topics.map((t) => {
-                            const checked = Boolean(selectedTopics[t.id]);
-                            return (
-                                <div key={t.id} className="border rounded p-2">
-                                    <label className="flex items-centre space-x-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={checked}
-                                            onChange={() => toggleTopic(t.id)}
-                                        />
-                                        <span className="font-medium">{t.name}</span>
-                                    </label>
+    setSaving(true);
+    try {
+      const studentCode = await getStudentCode();
+      if (!studentCode) {
+        setError("Failed to retrieve student code.");
+        return;
+      }
+      const success = await createStudentLearningPreferences(studentCode, selectedLearningModeId, chosenTopics);
+      if (success) {
+        setSuccessMessage("Preferences saved. Redirecting…");
+        // small delay so user can read message
+        setTimeout(() => navigate("/student-home"), 800);
+      } else {
+        setError("Failed to save preferences.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while saving preferences.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
-                                    {checked && (
-                                        <div className="mt-2 space-y-2">
-                                            <label className="block">
-                                                <span className="text-sm">Knowledge proficiency</span>
-                                                <select
-                                                    value={selectedTopics[t.id].knowledge_proficiency}
-                                                    onChange={(e) => updateTopicDetail(t.id, "knowledge_proficiency", e.target.value)}
-                                                    className="mt-1 block w-full border rounded p-1"
-                                                >
-                                                    <option value="novice">Novice</option>
-                                                    <option value="intermediate">Intermediate</option>
-                                                    <option value="proficient">Proficient</option>
-                                                </select>
-                                            </label>
+  return (
+    <div className="max-w-3xl mx-auto">
+      <h1 className="text-2xl font-semibold mb-4">Learning preferences survey</h1>
 
-                                            <label className="block">
-                                                <span className="text-sm">Interest level</span>
-                                                <select
-                                                    value={selectedTopics[t.id].interest_level}
-                                                    onChange={(e) => updateTopicDetail(t.id, "interest_level", e.target.value)}
-                                                    className="mt-1 block w-full border rounded p-1"
-                                                >
-                                                    <option value="high">High</option>
-                                                    <option value="medium">Medium</option>
-                                                    <option value="low">Low</option>
-                                                </select>
-                                            </label>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </section>
+      {loading ? (
+        <p>Loading survey…</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="learningMode" className="block font-medium mb-1">Select a learning mode</label>
+            <select
+              id="learningMode"
+              value={selectedLearningModeId}
+              onChange={(e) => setSelectedLearningModeId(e.target.value)}
+              className="w-full border px-3 py-2 rounded"
+              required
+            >
+              <option value="">-- Choose a mode --</option>
+              {learningModes.map(mode => (
+                <option key={mode.id} value={mode.id}>
+                  {mode.mode_name}{mode.description ? ` — ${mode.description}` : ""}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                <div className="flex items-centre space-x-3">
-                    <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">
-                        {loading ? "Submitting…" : "Save preferences"}
-                    </button>
-                    <button type="button" onClick={() => navigate(-1)} className="px-3 py-2 border rounded">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-            {loading && <p>Loading…</p>}
-            {error && <p className="text-red-600 mb-3" role="alert">{error}</p>}
-            {successMessage && <p className="text-green-600 mb-3">{successMessage}</p>}
-        </div>
-    );
+          <div>
+            <p className="font-medium mb-2">Select up to three preferred topics</p>
+            <div className="overflow-x-auto border rounded">
+              <table className="w-full table-fixed">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="w-1/12 p-2 text-left">Select</th>
+                    <th className="w-5/12 p-2 text-left">Topic</th>
+                    <th className="w-3/12 p-2 text-left">Knowledge</th>
+                    <th className="w-3/12 p-2 text-left">Interest</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topics.map(topic => {
+                    const isSelected = !!selections[topic.id];
+                    const disableCheckbox = !isSelected && selectedCount >= MAX_TOPICS;
+                    return (
+                      <tr key={topic.id} className="border-t">
+                        <td className="p-2">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={(e) => toggleTopic(topic.id, e.target.checked)}
+                            disabled={disableCheckbox}
+                            aria-label={`Select topic ${topic.name}`}
+                          />
+                        </td>
+                        <td className="p-2">{topic.name}</td>
+                        <td className="p-2">
+                          <select
+                            aria-label="Select a knowledge proficiency"
+                            value={selections[topic.id]?.knowledge_proficiency ?? "novice"}
+                            onChange={(e) => setKnowledgeForTopic(topic.id, e.target.value as ChosenTopic["knowledge_proficiency"])}
+                            disabled={!isSelected}
+                            className="w-full border px-2 py-1 rounded"
+                          >
+                            <option value="novice">Novice</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="proficient">Proficient</option>
+                          </select>
+                        </td>
+                        <td className="p-2">
+                          <select
+                            aria-label="Select an interest level"
+                            value={selections[topic.id]?.interest_level ?? "medium"}
+                            onChange={(e) => setInterestForTopic(topic.id, e.target.value as ChosenTopic["interest_level"])}
+                            disabled={!isSelected}
+                            className="w-full border px-2 py-1 rounded"
+                          >
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                          </select>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {topics.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="p-4 text-centre">No topics available.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-sm text-gray-600 mt-2">Selected {selectedCount} of {MAX_TOPICS} allowed.</p>
+          </div>
+
+          {error && <p className="text-red-600" role="alert">{error}</p>}
+          {successMessage && <p className="text-green-600" role="status">{successMessage}</p>}
+
+          <div className="flex items-center space-x-3">
+            <button
+              type="submit"
+              disabled={saving}
+              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-60"
+            >
+              {saving ? "Saving…" : "Save preferences"}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/student-home")}
+              className="px-4 py-2 border rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
 };
 
 export default StudentLearningPreferenceSurvey;
