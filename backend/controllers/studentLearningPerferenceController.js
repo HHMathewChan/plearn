@@ -117,6 +117,26 @@ const studentHasLearningPreferences = async (req, res) => {
 };
 
 /**
+ * Controller to get data for learning preferences survey
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>}
+ */
+const getDataForLearningPreferencesSurvey = async (req, res) => {
+  try {
+    const result = await studentLearningPreferenceService.getDataForLearningPreferencesSurvey();
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error in getDataForLearningPreferencesSurvey controller:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred whilst retrieving data for learning preferences survey',
+      error: 'Internal server error'
+    });
+  }
+};
+
+/**
  * A function to call other contollers function based on the action parameter in the body
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -131,6 +151,9 @@ const studentLearningPerferenceController = async (req, res) => {
       break;
     case 'check':
       await studentHasLearningPreferences(req, res);
+      break;
+    case 'getSurveyData':
+      await getDataForLearningPreferencesSurvey(req, res);
       break;
     default:
       res.status(400).json({
