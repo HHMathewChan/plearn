@@ -34,6 +34,7 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
         setLoading(false);
       }
     };
+    // discard the promise to fulfill the rule about not using async directly in useEffect
     void load();
   }, []);
 
