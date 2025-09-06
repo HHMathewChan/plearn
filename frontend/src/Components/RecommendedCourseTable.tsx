@@ -9,8 +9,8 @@ const RecommendedCourseTable: React.FC = () => {
         try {
             await checkPreferences();
             console.log('Preferences check result:', result);
-        } catch (err) {
-            console.error('Error checking preferences:', err);
+        } catch (error) {
+            console.error('Error checking preferences:', error);
         }
     };
 
