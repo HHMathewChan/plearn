@@ -27,9 +27,9 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
         // data expected shape: { learningModes: LearningModes[], topics: Topic[] }
         setLearningModes(data.learningModes ?? []);
         setTopics(data.topics ?? []);
-      } catch (err) {
+      } catch (error) {
         setError("Failed to load survey data.");
-        console.error(err);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -37,11 +37,12 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
     void load();
   }, []);
 
+  // Count the number of selected topics by checking the number of keys in selections
   const selectedCount = Object.keys(selections).length;
 
-  const toggleTopic = (topicId: string, checked: boolean) => {
-    setSelections(prev => {
-      const next = { ...prev };
+  const handleTopicSelection = (topicId: string, checked: boolean) => {
+    setSelections(previous => {
+      const next = { ...previous };
       if (checked) {
         // add with default values if not present
         if (!next[topicId]) {
@@ -55,15 +56,15 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
   };
 
   const setKnowledgeForTopic = (topicId: string, value: ChosenTopic["knowledge_proficiency"]) => {
-    setSelections(prev => ({ ...prev, [topicId]: { ...(prev[topicId] ?? { interest_level: "medium" }), knowledge_proficiency: value } }));
+    setSelections(previous => ({ ...previous, [topicId]: { ...(previous[topicId] ?? { interest_level: "medium" }), knowledge_proficiency: value } }));
   };
 
   const setInterestForTopic = (topicId: string, value: ChosenTopic["interest_level"]) => {
-    setSelections(prev => ({ ...prev, [topicId]: { ...(prev[topicId] ?? { knowledge_proficiency: "novice" }), interest_level: value } }));
+    setSelections(previous => ({ ...previous, [topicId]: { ...(previous[topicId] ?? { knowledge_proficiency: "novice" }), interest_level: value } }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError(null);
     setSuccessMessage(null);
 
@@ -97,8 +98,8 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
       } else {
         setError("Failed to save preferences.");
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       setError("An error occurred while saving preferences.");
     } finally {
       setSaving(false);
@@ -118,7 +119,7 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
             <select
               id="learningMode"
               value={selectedLearningModeId}
-              onChange={(e) => setSelectedLearningModeId(e.target.value)}
+              onChange={(event) => setSelectedLearningModeId(event.target.value)}
               className="w-full border px-3 py-2 rounded"
               required
             >
@@ -145,15 +146,17 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
                 </thead>
                 <tbody>
                   {topics.map(topic => {
+                    // Determine if this topic is selected by checking if it exists in selections, it returns a boolean with !!
                     const isSelected = !!selections[topic.id];
-                    const disableCheckbox = !isSelected && selectedCount >= MAX_TOPICS;
+                    // Disable checkbox if not selected and already reached max
+                    const disableCheckbox = (!isSelected) && (selectedCount >= MAX_TOPICS);
                     return (
                       <tr key={topic.id} className="border-t">
                         <td className="p-2">
                           <input
                             type="checkbox"
                             checked={isSelected}
-                            onChange={(e) => toggleTopic(topic.id, e.target.checked)}
+                            onChange={(event) => handleTopicSelection(topic.id, event.target.checked)}
                             disabled={disableCheckbox}
                             aria-label={`Select topic ${topic.name}`}
                           />
@@ -163,7 +166,7 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
                           <select
                             aria-label="Select a knowledge proficiency"
                             value={selections[topic.id]?.knowledge_proficiency ?? "novice"}
-                            onChange={(e) => setKnowledgeForTopic(topic.id, e.target.value as ChosenTopic["knowledge_proficiency"])}
+                            onChange={(event) => setKnowledgeForTopic(topic.id, event.target.value as ChosenTopic["knowledge_proficiency"])}
                             disabled={!isSelected}
                             className="w-full border px-2 py-1 rounded"
                           >
@@ -176,7 +179,7 @@ const StudentLearningPreferenceSurvey: React.FC = () => {
                           <select
                             aria-label="Select an interest level"
                             value={selections[topic.id]?.interest_level ?? "medium"}
-                            onChange={(e) => setInterestForTopic(topic.id, e.target.value as ChosenTopic["interest_level"])}
+                            onChange={(event) => setInterestForTopic(topic.id, event.target.value as ChosenTopic["interest_level"])}
                             disabled={!isSelected}
                             className="w-full border px-2 py-1 rounded"
                           >
