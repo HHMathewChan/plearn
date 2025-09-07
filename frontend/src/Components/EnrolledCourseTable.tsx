@@ -79,7 +79,7 @@ const EnrolledCoursesTable: React.FC = () => {
                                 </span>
                             </td>
                                                         
-                            {/* Status - Placeholder for now */}
+                            {/* Status */}
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
                                     {enrolledCoursesWithMetaData.courseProgress.status}
