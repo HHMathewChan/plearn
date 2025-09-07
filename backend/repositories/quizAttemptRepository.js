@@ -1,6 +1,6 @@
 const database = require('../database');
 /**
- * Repository for managing quiz attempts.
+ * @fileoverview Repository for managing quiz attempts.
  */
 
 /**
@@ -44,6 +44,8 @@ const updateQuizAttempt = async (id, score, completedAt, attemptStatus, updatedA
 
 /**
  * get quiz attempt using its id
+ * @param {number} id - The ID of the quiz attempt to retrieve.
+ * @returns {Promise<Object|null>} - The quiz attempt object if found, otherwise null.
  */
 const getQuizAttemptById = async (id) => {
     const result = await database.oneOrNone(
