@@ -20,6 +20,21 @@ const createRecord = async (topicId, studentCode, interestLevel, knowledgeProfic
     return result;
 };
 
+/**
+ * Gets the chosen topic record by its ID.
+ * @param {number} id - The ID of the chosen topic record.
+ * @returns {Promise} - A promise that resolves to the chosen topic record, or null if not found.
+ */
+const getRecordById = async (id) => {
+    // for debugging
+    console.log('Fetching chosen topic record by ID:', id);
+    const result = await database.oneOrNone('SELECT * FROM chosentopic WHERE id = $1', [id]);
+    // for debugging
+    console.log('Fetched chosen topic record:', result);
+    return result;
+};
+
 module.exports = {
   createRecord,
+  getRecordById,
 };
