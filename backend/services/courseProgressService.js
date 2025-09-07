@@ -51,8 +51,30 @@ async function completeCourseProgressUseCase(studentCode, courseId) {
     return null;
 }
 
+/**
+ * Return completed courses for a student.
+ * @param {string} studentCode
+ * @returns {Promise<Array>} resolves to an array of completed courses objects.
+ */
+async function getCompletedCoursesForStudent(studentCode) {
+    if (!studentCode || typeof studentCode !== 'string') {
+        throw new TypeError('studentCode must be a non-empty string');
+    }
+    if (!courseProgressRepository || typeof courseProgressRepository.getCompletedCoursesForStudent !== 'function') {
+        throw new Error('courseProgressRepository is not available');
+    }
+
+    try {
+        const completedCourses = await courseProgressRepository.getCompletedCoursesForStudent(studentCode);
+        return completedCourses;
+    } catch (err) {
+        throw new Error(`Failed to get completed courses for student ${studentCode}: ${err.message}`);
+    }
+}
+
 module.exports = {
     createCourseProgressUseCase,
     getCourseProgressUseCase,
-    completeCourseProgressUseCase
+    completeCourseProgressUseCase,
+    getCompletedCoursesForStudent
 };
