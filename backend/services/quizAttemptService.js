@@ -216,11 +216,42 @@ const checkIfQuizAttemptedAndPassed = async (pastAttemptIds, courseId) => {
     return result;
 };
 
+/**
+ * Find All quiz attempts for a student for a final quiz.
+ * @param {string} studentCode - The code of the student.
+ * @param {number} finalQuizId - The ID of the final quiz.
+ * @returns {Promise<Array>} - The array of quiz attempts for the student for the final quiz.
+ * @property {Object} quizAttempt - The quiz attempt information
+ * @property {number} finalQuizID - The ID of the final quiz
+ */
+const getPastQuizAttemptsForStudent = async (studentCode, finalQuizId) => {
+    // for debugging
+    console.log('At quizAttemptService, Finding quiz attempts for student:', { studentCode, finalQuizId });
+    // Fetch all quiz attempts for the student
+    // First, get all links of past attempts for the student
+    const pastAttemptLinks = await logPastAttemptForStudentAtRepository.getAllPastAttemptsForStudent(studentCode);
+    // for debugging
+    console.log('At quizAttemptService, Found past attempt links for student:', pastAttemptLinks);
+    // Then check each attempt to see if it is for the final quiz, if yes return the attempt with the final quiz id
+    const QuizAttempts = [];
+    for (const link of pastAttemptLinks) {
+        const finalQuizLink = await logPastAttemptForFinalQuizWithRepository.checkFinalQuizAttemptsPair(finalQuizId, link.quiz_attempt_id);
+        if (finalQuizLink) {
+            const quizAttempt = await quizAttemptRepository.getQuizAttemptById(link.quiz_attempt_id);
+            QuizAttempts.push({finalQuizID: finalQuizId, quizAttempt: quizAttempt });
+        }
+    }
+    // for debugging
+    console.log('At quizAttemptService, Found quiz attempts for student for the final quiz:', QuizAttempts);
+    return QuizAttempts;
+};
+
 module.exports = {
     CountPastQuizAttemptsForStudent,
     createQuizAttempt,
     completeQuizAttempt,
     getStudentAnswersForQuizAttempt,
     attemptFinalQuiz,
-    checkIfQuizAttemptedAndPassed
+    checkIfQuizAttemptedAndPassed,
+    getPastQuizAttemptsForStudent
 };
