@@ -1,8 +1,8 @@
-import type { CourseWithOwner } from "./CourseType";
+import type { CourseWithMetadata } from "./CourseType";
 import type { CourseProgress } from "./CourseProgressType";
 
 export type EnroledCourseWithMetaData = {
-  course: CourseWithOwner;
+  course: CourseWithMetadata;
   courseProgress: CourseProgress;
 };
 
