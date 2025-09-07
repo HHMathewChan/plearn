@@ -68,7 +68,6 @@ const EnrolledCoursesTable: React.FC = () => {
                             <td className="px-6 py-4">
                                 <div>
                                     <h3 className="text-lg font-semibold text-gray-900">{enrolledCoursesWithMetaData.course.title}</h3>
-                                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">{enrolledCoursesWithMetaData.course.description}</p>
                                 </div>
                             </td>
                             
