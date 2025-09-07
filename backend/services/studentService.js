@@ -4,6 +4,9 @@ const hasStudentProfileInRepository = require('../repositories/hasStudentProfile
 const logPastAttemptForStudentAtRepository = require('../repositories/logPastAttemptForStudentAtRepository');
 const quizAttemptService = require('./quizAttemptService');
 const courseProgressService = require('./courseProgressService');
+const studentLearningPerferenceService = require('./studentLearningPerferenceService');
+const courseService = require('./courseService');
+
 
 const getAllStudents = async () => {
   return await studentRepository.queryAllStudents();
@@ -46,8 +49,54 @@ const completeCourse = async (studentCode, courseId) => {
   return result;
 };
 
+/**
+ * Getting all required information for recommendations of a student
+ */
+const getStudentProfileForRecommendations = async (studentCode) => {
+  const learningPreference = await studentLearningPerferenceService.getLearningPreferenceOfStudent(studentCode);
+  // for debugging
+  console.log('At studentService, getStudentProfileForRecommendations, Fetched learning preferences for student:', learningPreference);
+  // Get all completed courses for the student
+  const completedCourses = await courseProgressService.getCompletedCoursesForStudent(studentCode);
+  // for each completed course, we find its final quiz id and to get the score
+  const completedCoursesWithScores = [];
+  // example of completedCoursesWithScores: [{ "courseId": "CRS1", "finalScore": 88, "completedAt": "2025-06-05T09:00:00Z" }]
+  const finalQuizResults = [];
+  // example of finalQuizResults: [{ "finalQuizId": 1, "finalScore": 88,"attemptCount": 2, "completedAt": "2025-06-05T09:00:00Z" }]
+  for (const courseProgress of completedCourses) {
+    const courseId = courseProgress.course_id;
+    // ask course service to get the final quiz id for the course
+    const finalQuizId = await courseService.getFinalQuizId(courseId);
+    if (finalQuizId) {
+      // find all quiz attempts for the student for the final quiz
+      const quizAttemptsWithFinalQuizID = await quizAttemptService.getPastQuizAttemptsForStudent(studentCode, finalQuizId);
+      for (const { finalQuizID, quizAttempt } of quizAttemptsWithFinalQuizID) {
+        // Push each attempt with the courseid, score and completedAt to the result array
+        completedCoursesWithScores.push({
+          courseId: courseId,
+          finalScore: quizAttempt.score,
+          completedAt: quizAttempt.completed_at
+        });
+        // also push a final quiz result
+        finalQuizResults.push({
+          finalQuizId: finalQuizID,
+          finalScore: quizAttempt.score,
+          attemptCount: quizAttempt.attempt_count,
+          completedAt: quizAttempt.completed_at
+        });
+      }
+    }
+  }
+  return {
+    learningPreference,
+    completedCoursesWithScores,
+    finalQuizResults
+  };
+};
+
 module.exports = {
   getAllStudents,
   checkFinalQuizCompletion,
-  completeCourse
+  completeCourse,
+  getStudentProfileForRecommendations
 };
