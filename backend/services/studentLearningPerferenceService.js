@@ -122,8 +122,49 @@ const getDataForLearningPreferencesSurvey = async () => {
   }
 };
 
+/**
+ * Get the learning preference of the student
+ * @param {string} studentCode - The code of the student.
+ * @returns {Promise} - A promise that resolves with the learning preference.
+ * @property {string} learningModeName - The name of the learning mode.
+ * @property {Array} chosenTopics - An array of objects containing topic_id, interest_level, and knowledge_proficiency.
+ */
+const getLearningPreferenceOfStudent = async (studentCode) => {
+  try {
+    // Fetch the student's learning preferences from the database
+    const learningModeLink = await hasLearningModeForRepository.getRecordByStudentCode(studentCode);
+    // Get the learning mode name
+    const learningModeName = await learningModeService.getLearningModeNameById(learningModeLink.learning_mode_id);
+    const chosenTopicsLinks = await interestedInRepository.findRecordsByStudentCode(studentCode);
+    // for each chosen topic link, get the chosentopic details and put its topic_id, interest_level and knowledge_proficiency into a object
+    const chosenTopicsDetails = await Promise.all(chosenTopicsLinks.map(async (link) => {
+      const chosenTopic = await chosenTopicRepository.getRecordById(link.chosen_topic_id);
+      return {
+        topic_id: chosenTopic.topic_id,
+        interest_level: chosenTopic.interest_level,
+        knowledge_proficiency: chosenTopic.knowledge_proficiency
+      };
+    }));
+    // for debugging
+    console.log('At studentLearningPreferencesService, getLearningPreferenceOfStudent, Retrieved learning preferences for student:', studentCode);
+    console.log('Learning Mode Link:', learningModeLink);
+    console.log('Learning Mode Name:', learningModeName);
+    console.log('Chosen Topics Details:', chosenTopicsDetails);
+    return {
+      result: {
+        learningModeName: learningModeName,
+        chosenTopics: chosenTopicsDetails
+      }
+    };
+  } catch (error) {
+    console.error('Error retrieving learning preferences at getLearningPreferenceOfStudent, studentLearningPreferencesService:', error);
+    throw new Error(`Failed to get learning preferences at getLearningPreferenceOfStudent, studentLearningPreferencesService: ${error.message}`);
+  }
+};
+
 module.exports = {
   createStudentLearningPreferences,
   studentHasLearningPreferences,
-  getDataForLearningPreferencesSurvey
+  getDataForLearningPreferencesSurvey,
+  getLearningPreferenceOfStudent
 };
