@@ -10,6 +10,17 @@ const getAllStudents = async (request, response) => {
   }
 };
 
+const getStudentProfileForRecommendations = async (request, response) => {
+  const { studentCode } = request.params;
+  try {
+    const profile = await studentService.getStudentProfileForRecommendations(studentCode);
+    response.json(profile);
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
-  getAllStudents
+  getAllStudents,
+  getStudentProfileForRecommendations
 };
