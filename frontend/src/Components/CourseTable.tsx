@@ -81,7 +81,7 @@ const CourseTable: React.FC = () => {
               {/* First column for course details
               The following css means to add horizontal padding of 1.5rem, vertical padding of 1rem, 
               and a text to wrap normally within an element. Newlines and spaces will be collapsed. */}
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-normal break-words">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{CourseWithMetaData.title}</h3>
                   <p className="text-sm text-gray-600 mt-1">{CourseWithMetaData.description}</p>
