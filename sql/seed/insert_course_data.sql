@@ -40,3 +40,10 @@ INSERT INTO topic (id, name) VALUES
 ('5a9d1f83-7e42-4a2a-b4c1-61b822d4c008', 'Data Structures and Algorithms'),
 ('44e8b7f4-32bb-4c9b-8895-f781c5d1a009', 'Artificial Intelligence'),
 ('6fd3b3c1-1c2f-46b1-82a2-31b9d88a000a', 'Computer Networks');
+
+-- LabelCourseWith
+INSERT INTO labelcoursewith (id, topic_id, course_id) VALUES
+-- CRS1 and Nuclear Physics
+('99775da7-55bc-4ff7-a109-3fc6f6407e4f','69f19cd3-a324-44a7-ba9d-757330f6953f','b3b1c7e2-3333-4e1a-9c1a-cccc33333333'),
+-- CRS2 and Energy Economics
+('801ed164-86f5-45bf-bff2-5280c714825b','d1f5c8e2-1c4b-4f3e-9c1a-123456789012','b3b1c7e2-4444-4e1a-9c1a-dddd44444444');
