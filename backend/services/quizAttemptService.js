@@ -11,9 +11,12 @@ const courseService = require('./courseService');
 const finalQuizService = require('./finalQuizService');
 
 /**
- * Find all past quiz attempts for the student for a final quiz
+ * Count the number of past quiz attempts for the student for a final quiz
+ * @param {string} studentCode - The code of the student.
+ * @param {number} finalQuizId - The ID of the final quiz.
+ * @returns {Promise<number>} - The count of past quiz attempts for the student for the final quiz.
  */
-const getQuizAttemptsForStudent = async (studentCode, finalQuizId) => {
+const CountPastQuizAttemptsForStudent = async (studentCode, finalQuizId) => {
     // First find all quiz attempts of the student
     const quizAttempts = await logPastAttemptForStudentAtRepository.getAllPastAttemptsForStudent(studentCode);
     // Second, for each quiz attempt, find its associated final quiz and increase the attempt count
@@ -44,7 +47,7 @@ const createQuizAttempt = async (studentCode, finalQuizId) => {
     const attemptStatus = 'in_progress';
     const updatedAt = new Date();
     // Count the number of past attempts of this final quiz
-    const pastAttemptCount = await getQuizAttemptsForStudent(studentCode, finalQuizId);
+    const pastAttemptCount = await CountPastQuizAttemptsForStudent(studentCode, finalQuizId);
     // initiate the attempt count by increase the pastAttemptCount by 1 to represent the current attempt
     const attemptCount = pastAttemptCount + 1;
     // create the quiz attempt
@@ -214,7 +217,7 @@ const checkIfQuizAttemptedAndPassed = async (pastAttemptIds, courseId) => {
 };
 
 module.exports = {
-    getQuizAttemptsForStudent,
+    CountPastQuizAttemptsForStudent,
     createQuizAttempt,
     completeQuizAttempt,
     getStudentAnswersForQuizAttempt,
