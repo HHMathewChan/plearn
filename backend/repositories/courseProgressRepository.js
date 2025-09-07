@@ -49,8 +49,22 @@ async function completeCourseProgress(studentCode, courseId) {
     return result;
 }
 
+/**
+ * Get all completed courses for a student
+ * @param {string} studentCode - The code of the student
+ * @returns {Array} An array of completed course progress objects.
+ */
+async function getCompletedCoursesForStudent(studentCode) {
+    const results = await database.manyOrNone(
+        `SELECT * FROM courseprogress WHERE student_code = $1 AND status = $2`,
+        [studentCode, 'completed']
+    );
+    return results;
+}
+
 module.exports = {
     createRecord,
     findRecord,
-    completeCourseProgress
+    completeCourseProgress,
+    getCompletedCoursesForStudent
 };
