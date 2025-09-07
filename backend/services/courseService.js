@@ -5,6 +5,8 @@ const courseRepository = require('../repositories/courseRepository');
 const ownCourseByRepository = require('../repositories/ownCourseByRepository');
 const copyRightOwnerRepository = require('../repositories/copyRightOwnerRepository');
 const hasFinalQuizForRepository = require('../repositories/hasFinalQuizForRepository');
+const labelCourseWithRepository = require('../repositories/labelCourseWithRepository');
+const topicRepository = require('../repositories/topicRepository');
 
 /**
  * @typedef {Object} CopyrightOwner
@@ -17,19 +19,20 @@ const hasFinalQuizForRepository = require('../repositories/hasFinalQuizForReposi
  */
 
 /**
- * @typedef {Object} CourseWithOwner
+ * @typedef {Object} CourseWithMetadata
  * @property {string} id - The course ID
  * @property {string} course_code - The unique code for the course
  * @property {string} title - The course title
  * @property {string} description - The course description
  * @property {CopyrightOwner} copyrightOwner - The copyright owner information
+ * @property {Object} topic - The topic information
  */
 
 /**
  * Get the metadata of all courses. This includes the data from the Course and its copyright owner.
  * @async
  * @function getAllCoursesMetadata
- * @returns {Promise<Array<CourseWithOwner>>} A promise that resolves to an array of course objects, each enriched with copyright owner data.
+ * @returns {Promise<Array<CourseWithMetadata>>} A promise that resolves to an array of course objects, each enriched with copyright owner data.
  * @throws {Error} Throws an error if there's an issue fetching courses, copyright owner relationships, or copyright owner data.
  * @example
  * // Get all courses with their copyright owners
@@ -42,22 +45,27 @@ const getAllCoursesMetadata = async () => {
         const courses = await courseRepository.getAllCourses();
         
         /**
-         * @function enrichCourseWithOwner
+         * @function enrichCourseData
          * Enrich a course with its copyright owner data.
          * @param {Object} course - The course object to enrich.
          * @returns {Promise<Object>} A promise that resolves to the enriched course object.
          */
-        const enrichCourseWithOwner = async (course) => {
+        const enrichCourseData = async (course) => {
             const copyrightOwnerId = await ownCourseByRepository.getCopyrightOwnerByCourseId(course.id);
             const copyrightOwner = await copyRightOwnerRepository.getCopyrightOwnerById(copyrightOwnerId);
+            // Get the topic ID for the course
+            const topicId = await labelCourseWithRepository.getTopicIdByCourseId(course.id);
+            // Get the topic
+            const topic = await topicRepository.getTopicById(topicId);
             return {
                 // Spread the course data and add the copyright owner
                 ...course,
+                topic,
                 copyrightOwner // intentionally not using spread operator to avoid overwriting course properties
             };
         };
 
-        const coursePromises = courses.map(enrichCourseWithOwner);
+        const coursePromises = courses.map(enrichCourseData);
         // use Promise.all to resolve all promises concurrently
         const coursesWithOwners = await Promise.all(coursePromises);
         return coursesWithOwners;
