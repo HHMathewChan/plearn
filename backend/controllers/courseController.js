@@ -17,6 +17,8 @@ const courseService = require('../services/courseService');
  * @throws {Error} Throws an error if there's an issue fetching courses or copyright owner data.
  */
 const getAllCoursesMetadata = async (request, response, next) => {
+    // for debugging
+    console.log('At courseController, getAllCoursesMetadata, Fetching all courses metadata');
     try {
         const courses = await courseService.getAllCoursesMetadata();
         response.json({ courses });
