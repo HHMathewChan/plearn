@@ -12,6 +12,7 @@ const finalQuizRoutes = require('./routes/finalQuizRoutes');
 const quizAttemptRoutes = require('./routes/quizAttemptRoutes');
 const courseProgressRoutes = require('./routes/courseProgressRoutes.js');
 const studentLearningPerferenceRoutes = require('./routes/studentLearningPerferenceRoutes');
+const personaliseLearningRoutes = require('./routes/personaliseLearningRoutes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -31,6 +32,7 @@ app.use('/api/final-quiz-routes', finalQuizRoutes);
 app.use('/api/quiz-attempt-routes', quizAttemptRoutes);
 app.use('/api/course-progress-routes', courseProgressRoutes);
 app.use('/api/student-learning-preference-routes', studentLearningPerferenceRoutes);
+app.use('/api/personalise-learning-routes', personaliseLearningRoutes);
 
 // Serve course resources statically
 app.use('/course-resources', express.static(path.join(__dirname, 'courseResources')));
