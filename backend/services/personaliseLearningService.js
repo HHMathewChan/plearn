@@ -1,5 +1,6 @@
 const studentService = require('./studentService');
 const courseService = require('./courseService');
+const e = require('cors');
 /*
   Simple course recommender using:
    - student learning preference
@@ -87,6 +88,8 @@ async function recommendCourses(
     const studentProfile = await studentService.getStudentProfileForRecommendations(studentCode);
     // studentProfile.completedCourses: [{ courseId, finalScore (0..100), completedAt (ISO) }]
     const completedCourses = studentProfile.completedCoursesWithScores || [];
+    const effectiveWeights = (completedCourses.length === 0)
+        ? { topic: 0.2, mode: 0.25, difficulty: 0.1, popularity: 0 } : weights;
 
     // Precompute topic performance map { topic -> { weightedScoreSum, weightSum } }
     const topicStats = new Map();
@@ -174,13 +177,25 @@ async function recommendCourses(
         const diffScore = difficultyAdjustment(course, topicAffinity);
         const popularityScore = normalise(course.popularity || 0, 0, 1000); // adjust max as needed
 
-        const finalScore =
-            weights.topic * topicAffinity +
-            weights.mode * modeScore +
-            weights.difficulty * diffScore +
-            weights.popularity * popularityScore;
-
-        scored.push({ courseId: course.id, course, score: finalScore });
+        // split case: no completed courses -> use cold-start weights for final score
+        if (completedCourses.length === 0) {
+            console.log(`Cold-start for student ${studentCode}, using adjusted weights:`, effectiveWeights);
+            const finalScore =
+                effectiveWeights.topic * topicAffinity +
+                effectiveWeights.mode * modeScore +
+                effectiveWeights.difficulty * diffScore +
+                effectiveWeights.popularity * popularityScore;
+            scored.push({ courseId: course.id, course, score: finalScore });
+        }
+        else {
+            console.log(`Normal case for student ${studentCode}, using standard weights:`, weights);
+            const finalScore =
+                weights.topic * topicAffinity +
+                weights.mode * modeScore +
+                weights.difficulty * diffScore +
+                weights.popularity * popularityScore;
+            scored.push({ courseId: course.id, course, score: finalScore });
+        }
     }
 
     scored.sort((a, b) => b.score - a.score);
