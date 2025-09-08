@@ -43,6 +43,8 @@ const getAllCoursesMetadata = async () => {
     try {
         // Get all courses
         const courses = await courseRepository.getAllCourses();
+        // for debugging
+        console.log('At courseService, getAllCoursesMetadata, Fetched courses:', courses);
         
         /**
          * @function enrichCourseData
@@ -52,11 +54,29 @@ const getAllCoursesMetadata = async () => {
          */
         const enrichCourseData = async (course) => {
             const copyrightOwnerId = await ownCourseByRepository.getCopyrightOwnerByCourseId(course.id);
+            if (!copyrightOwnerId) {
+                return { "no copyrightOwnerId is found": course.id };
+            }
             const copyrightOwner = await copyRightOwnerRepository.getCopyrightOwnerById(copyrightOwnerId);
+            if (!copyrightOwner) {
+                return { "no copyrightOwner is found": course.id };
+            }
             // Get the topic ID for the course
             const topicId = await labelCourseWithRepository.getTopicIdByCourseId(course.id);
+            if (!topicId) {
+                return { "no topicId is found": course.id };
+            }
             // Get the topic
             const topic = await topicRepository.getTopicById(topicId);
+            if (!topic) {
+                return { "no topic is found": course.id };
+            }
+            // for debugging
+            console.log('At courseService, getAllCoursesMetadata, Enriched course data:', {
+                ...course,
+                topic,
+                copyrightOwner
+            });
             return {
                 // Spread the course data and add the copyright owner
                 ...course,
@@ -93,7 +113,28 @@ const getFinalQuizId = async (courseId) => {
     }
 };
 
+/**
+ * Get the topics id associated with a course
+ * @param {string} courseId - The ID of the course
+ * @returns {Promise<Array<string>>} - An array of topic IDs associated with the course
+ */
+
+const getCourseTopicIDs = async (courseId) => {
+    try {
+        // for debugging
+        console.log('At courseService, getCourseTopics, Fetching topic IDs for course:', courseId);
+        const topicIDs = await labelCourseWithRepository.getTopicIdByCourseId(courseId);
+        // for debugging
+        console.log('At courseService, getCourseTopics, Fetched topic IDs for course:', topicIDs);
+        return topicIDs;
+    } catch (error) {
+        console.error('Error fetching topic IDs:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getAllCoursesMetadata,
-    getFinalQuizId
+    getFinalQuizId,
+    getCourseTopicIDs
 };
