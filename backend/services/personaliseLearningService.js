@@ -78,7 +78,7 @@ async function recommendCourses(
 ) {
     const {
         halfLifeDays = 90,
-        weights = { topic: 0.5, mode: 0.2, difficulty: 0.2, popularity: 0.1 },
+        weights = { topic: 0.5, mode: 0.2, difficulty: 0.2, popularity: 0 },
         goodThreshold = 0.8,
         poorThreshold = 0.5
     } = config;
