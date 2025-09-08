@@ -19,4 +19,5 @@
 \i /Users/mathewchan/plearn/sql/seed/insert_platformuser_data.sql
 \i /Users/mathewchan/plearn/sql/seed/insert_final_quiz_related.sql
 \i /Users/mathewchan/plearn/sql/seed/insert_progress_data.sql
-\i /Users/mathewchan/plearn/sql/seed/insert_student_profolio_test_data.sql
+-- \i /Users/mathewchan/plearn/sql/seed/insert_student_profolio_test_data.sql
+\i /Users/mathewchan/plearn/sql/seed/insert_student_profolio_test_data_2.sql
