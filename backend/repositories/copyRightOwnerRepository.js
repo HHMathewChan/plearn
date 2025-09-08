@@ -17,6 +17,7 @@ const database = require('../database');
  * @property {string} license_url - The URL to the license information.
  */
 const getCopyrightOwnerById = async (copyrightOwnerId) => {
+    console.log('Fetching copyright owner by ID:', copyrightOwnerId);
     try {
         // Use .one() since exactly one copyright owner by ID is expected
         const result = await database.one(
