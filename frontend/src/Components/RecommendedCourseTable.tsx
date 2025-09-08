@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useStudentLearningPreference } from "../Hooks/useStudentLearningPreference";
 import { useNavigate } from "react-router-dom";
+import RecommendedCourseList from "./ReccomendedCourseList";
 
 const RecommendedCourseTable: React.FC = () => {
     const { checkPreferences, loading, error, result } = useStudentLearningPreference();
@@ -32,7 +33,7 @@ const RecommendedCourseTable: React.FC = () => {
             {result?.success ? (
                 <div>
                     {/* Placeholder for actual recommended course list */}
-                    <p>Personalised recommendations will appear here.</p>
+                    <RecommendedCourseList />
                 </div>
             ) : (
                 <div>
