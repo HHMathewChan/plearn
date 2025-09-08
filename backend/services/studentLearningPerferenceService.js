@@ -130,9 +130,13 @@ const getDataForLearningPreferencesSurvey = async () => {
  * @property {Array} chosenTopics - An array of objects containing topic_id, interest_level, and knowledge_proficiency.
  */
 const getLearningPreferenceOfStudent = async (studentCode) => {
+  // for debugging 
+  console.log('At studentLearningPreferencesService, getLearningPreferenceOfStudent, Received request to get learning preferences for student:', studentCode);
   try {
     // Fetch the student's learning preferences from the database
     const learningModeLink = await hasLearningModeForRepository.getRecordByStudentCode(studentCode);
+    // for debugging
+    console.log('At studentLearningPreferencesService, getLearningPreferenceOfStudent, Retrieved learning mode link :', learningModeLink);
     // Get the learning mode name
     const learningModeName = await learningModeService.getLearningModeNameById(learningModeLink.learning_mode_id);
     const chosenTopicsLinks = await interestedInRepository.findRecordsByStudentCode(studentCode);
