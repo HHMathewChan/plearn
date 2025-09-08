@@ -27,6 +27,7 @@ CREATE TABLE Course (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     course_code CourseCode NOT NULL UNIQUE,
     title CourseTitle NOT NULL,
+    difficulty CourseDifficulty NOT NULL,
     description TEXT
 );
 
