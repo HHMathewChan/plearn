@@ -98,3 +98,7 @@ CHECK (VALUE >= 1);
 --  numeric with two decimals constrained to 0–100
 CREATE DOMAIN QuizScore AS NUMERIC(5,2) 
 CHECK (VALUE >= 0 AND VALUE <= 100);
+
+-- DOMAIN: CourseDifficulty
+CREATE DOMAIN CourseDifficulty AS TEXT
+CHECK (VALUE IN ('easy', 'medium', 'hard'));
