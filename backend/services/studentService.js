@@ -58,6 +58,14 @@ const getStudentProfileForRecommendations = async (studentCode) => {
   console.log('At studentService, getStudentProfileForRecommendations, Fetched learning preferences for student:', learningPreference);
   // Get all completed courses for the student
   const completedCourses = await courseProgressService.getCompletedCoursesForStudent(studentCode);
+  // if no completed courses, return empty array
+  if (!completedCourses || completedCourses.length === 0) {
+    return {
+      learningPreference,
+      completedCoursesWithScores: [],
+      finalQuizResults: []
+    };
+  }
   // for each completed course, we find its final quiz id and to get the score
   const completedCoursesWithScores = [];
   // example of completedCoursesWithScores: [{ "courseId": "CRS1", "finalScore": 88, "completedAt": "2025-06-05T09:00:00Z" }]
