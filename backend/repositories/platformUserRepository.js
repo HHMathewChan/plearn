@@ -33,16 +33,6 @@ Represents a user registered on the platform */
  *   - Example: "123e4567-e89b-12d3-a456-426614174000"
  */
 const createPlatformUser = async (name, email, password_hash, role) => {
-    // for debugging purpose
-    // console.log("createPlatformUser called");
-    // console.log("name:", name);
-    // console.log("name type:", typeof name);
-    // console.log("name length:", name?.length);
-    // console.log("name JSON:", JSON.stringify(name));
-    // console.log("name char codes:", name ? [...name].map(c => c.charCodeAt(0)) : 'undefined');
-    // console.log("email:", email);
-    // console.log("password_hash:", password_hash);
-    // console.log("role:", role);
     const result = await database.one(
         `INSERT INTO platformuser 
             (id, name, email, password_hash, role, registered_at)
