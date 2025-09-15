@@ -25,22 +25,6 @@ function normalise(value, min = 0, max = 100) {
 }
 
 /**
- * Compute preference match:
- * returns 1 for strong match, 0.5 for partial, 0 for no match
- */
-function preferenceMatchScore(studentPref, courseModes) {
-    if (!studentPref) return 0.5;
-    // studentPref could be array or single string
-    const prefs = Array.isArray(studentPref) ? studentPref : [studentPref];
-    const modes = new Set(courseModes || []);
-    let matchCount = 0;
-    for (const p of prefs) if (modes.has(p)) matchCount++;
-    if (matchCount === 0) return 0;
-    if (matchCount === prefs.length) return 1;
-    return 0.5;
-}
-
-/**
  * Compute learning-mode match:
  * studentMode: 'beginner' | 'intermediate' | 'challenging'
  * courseDifficulty: 'easy' | 'medium' | 'hard'
