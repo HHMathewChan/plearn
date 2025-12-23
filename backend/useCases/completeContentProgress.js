@@ -3,7 +3,7 @@
  */
 
 const hasContentProgressForRepository = require('../repositories/hasContentProgressForRepository');
-const contentProgressRepository = require('../repositories/ContentProgressRepository');
+const contentProgressRepository = require('../repositories/contentProgressRepository');
 const courseContentService = require('../services/courseContentService');
 const comprisesRepository = require('../repositories/comprisesRepository');
 const contentProgressService = require('../services/contentProgressService');
