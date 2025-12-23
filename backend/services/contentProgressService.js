@@ -1,5 +1,5 @@
 const hasContentProgressForRepository = require('../repositories/hasContentProgressForRepository');
-const contentProgressRepository = require('../repositories/ContentProgressRepository');
+const contentProgressRepository = require('../repositories/contentProgressRepository');
 
 /**
  * Retrieves all detailed content progress records for a specific student.
