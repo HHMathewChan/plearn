@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchFinalQuizWithQuestions } from '../Services/FinalQuizService';
-import { FinalQuizType } from '../Types/FinalQuizType';
+import type { FinalQuizStructure } from '../Types/FinalQuizTypes';
 
 /**
  * Custom hook to fetch final quiz data based on course ID.
@@ -8,7 +8,7 @@ import { FinalQuizType } from '../Types/FinalQuizType';
  * @returns An object containing the quiz data and loading state.
  */
 export const useFinalQuiz = (courseId: string) => {
-    const [quizData, setQuizData] = useState<FinalQuizType | null>(null);
+    const [quizData, setQuizData] = useState<FinalQuizStructure | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
