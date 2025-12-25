@@ -1,13 +1,13 @@
-const API_BASE_URL = 'http://localhost:3001/api/personalise-learning-routes';
-
 import type{ RecommendedCourses } from '../Types/CourseType';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Get personalised course recommendations for a student.
  */
 export const getPersonalisedCourseRecommendations = async (studentCode: string): Promise<RecommendedCourses> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/recommend-courses/`, {
+        const response = await fetch(`${API_BASE}/personalise-learning-routes/recommend-courses/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
