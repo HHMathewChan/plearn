@@ -1,7 +1,7 @@
-const API_BASE_URL = 'http://localhost:3001/api/enrolment-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export async function enrols(studentCode: string, courseId: string): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/enrolment`, {
+    const response = await fetch(`${API_BASE}/enrolment-routes/enrolment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
