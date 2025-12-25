@@ -1,7 +1,7 @@
 import {AuthService} from './AuthService';
 import type { FinalQuizStructure } from '../Types/FinalQuizTypes';
 
-const API_BASE_URL = 'http://localhost:3001/api/final-quiz-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export async function fetchFinalQuizWithQuestions(courseId: string): Promise<FinalQuizStructure | null> {
     const isAuth = AuthService.isAuthenticated();
@@ -9,7 +9,7 @@ export async function fetchFinalQuizWithQuestions(courseId: string): Promise<Fin
         throw new Error('User is not authenticated. Please log in again.');
     }
     try {
-        const response = await fetch(`${API_BASE_URL}/final-quiz`, {
+        const response = await fetch(`${API_BASE}/final-quiz-routes/final-quiz`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
