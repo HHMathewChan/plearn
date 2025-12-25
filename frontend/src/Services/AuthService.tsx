@@ -2,14 +2,14 @@ import type { AuthenticationResponse, Credentials } from '../Types/Authenticatio
 import { AuthToken } from './AuthToken';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 
-const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
 
 /**
  * Handles login API requests to the backend authentication service.
  */
 export async function LoginRequest(credentials: Credentials): Promise<AuthenticationResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}/platform-users/email`, {
+        const response = await fetch(`${API_BASE}/platform-user-routes/platform-users/email`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
