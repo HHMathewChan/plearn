@@ -2,7 +2,7 @@ import type { AuthenticationResponse, Credentials } from '../Types/Authenticatio
 import { AuthToken } from './AuthToken';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Handles login API requests to the backend authentication service.
