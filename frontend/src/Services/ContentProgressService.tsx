@@ -1,6 +1,6 @@
 import type { updatedResult } from "../Types/ContentProgressResult";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export async function hasContentProgress(studentCode: string, contentId: string): Promise<boolean> {
   try {
