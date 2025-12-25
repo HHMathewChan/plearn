@@ -55,6 +55,8 @@ const completeQuizAttempt = async (req, res) => {
  *  A function to called different quiz attempt controllers based on the action parameter in the body.
  */
 const quizAttemptController = async (req, res) => {
+    //for debugging
+    console.log('At quizAttemptController, Received request body:', req.body);
     const { action } = req.body;
 
     switch (action) {
