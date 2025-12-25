@@ -1,6 +1,6 @@
 import {AuthService} from './AuthService';
 
-const API_BASE_URL = 'http://localhost:3001/api/quiz-attempt-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 type optionId = string;
 
@@ -10,7 +10,7 @@ export const createQuizAttempt = async (studentCode: string, courseId: string) =
         throw new Error('User is not authenticated. Please log in again.');
     }
     try {
-        const response = await fetch(`${API_BASE_URL}/quiz-attempt`, {
+        const response = await fetch(`${API_BASE}/quiz-attempt-routes/quiz-attempt`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export const submitQuizAttempt = async (courseId: string, studentCode: string, a
         throw new Error('User is not authenticated. Please log in again.');
     }
     try {
-        const response = await fetch(`${API_BASE_URL}/quiz-attempt`, {
+        const response = await fetch(`${API_BASE}/quiz-attempt-routes/quiz-attempt`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
