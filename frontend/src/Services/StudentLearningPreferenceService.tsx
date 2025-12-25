@@ -1,5 +1,6 @@
 import type {ChosenTopic,LearningModes, Topic } from '../Types/StudentLearningPreferenceType';
-const API_BASE_URL = 'http://localhost:3001/api/student-learning-preference-routes';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Checks if a student has set their learning preferences.
@@ -7,7 +8,7 @@ const API_BASE_URL = 'http://localhost:3001/api/student-learning-preference-rout
  */
 export const studentHasLearningPreferences = async (studentCode: string): Promise<any> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/student-learning-preference`, {
+        const response = await fetch(`${API_BASE}/student-learning-preference-routes/student-learning-preference`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +35,7 @@ export const studentHasLearningPreferences = async (studentCode: string): Promis
  */
 export const getDataForLearningPreferencesSurvey = async (): Promise<{learningModes: LearningModes[], topics: Topic[]}> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/student-learning-preference`, {
+        const response = await fetch(`${API_BASE}/student-learning-preference-routes/student-learning-preference`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,7 +63,7 @@ export const getDataForLearningPreferencesSurvey = async (): Promise<{learningMo
  */
 export const createStudentLearningPreferences = async (studentCode: string, learningModeId: string, chosenTopics: ChosenTopic[]): Promise<any> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/student-learning-preference`, {
+        const response = await fetch(`${API_BASE}/student-learning-preference-routes/student-learning-preference`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
