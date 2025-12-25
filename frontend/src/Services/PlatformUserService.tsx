@@ -1,14 +1,14 @@
 import type {RegisterDetails} from '../Types/RegisterUCType';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 
-const API_BASE_URL = 'http://localhost:3001/api/platform-user-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 
  * @returns response object containing student_code which is a string
  */
 const RegisterPlatformUser = async (details: RegisterDetails) => {
-    const response = await fetch(`${API_BASE_URL}/platform-users`, {
+    const response = await fetch(`${API_BASE}/platform-user-routes/platform-users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
