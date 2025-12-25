@@ -2,7 +2,7 @@ import { AuthToken } from './AuthToken';
 import { PlatformUserRepository } from '../Repositories/PlatformUserRepository';
 import type { EnroledCoursesWithMetaData } from '../Types/StudentType';
 
-const API_BASE_URL = 'http://localhost:3001/api/student-routes';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Fetches enrolled courses for the current student.
@@ -22,7 +22,7 @@ export async function getEnrolledCourses(): Promise<EnroledCoursesWithMetaData> 
         throw new Error('Authentication token not found. Please log in again.');
     }
 
-    const response = await fetch(`${API_BASE_URL}/${studentCode}/enrolled-courses`, {
+    const response = await fetch(`${API_BASE}/student-routes/${studentCode}/enrolled-courses`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
