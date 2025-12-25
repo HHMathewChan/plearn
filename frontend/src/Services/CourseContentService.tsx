@@ -1,6 +1,6 @@
 import { AuthToken } from "./AuthToken";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Course content type definition
@@ -26,7 +26,7 @@ export async function getCourseContent(courseId: string): Promise<CourseContent[
     }
 
     const response = await fetch(
-        `${API_BASE_URL}/course-content-routes/${courseId}/course-contents`,
+        `${API_BASE}/course-content-routes/${courseId}/course-contents`,
         {
             method: 'GET',
             headers: {
