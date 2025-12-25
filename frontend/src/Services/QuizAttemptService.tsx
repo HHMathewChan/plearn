@@ -46,7 +46,7 @@ export const submitQuizAttempt = async (courseId: string, studentCode: string, a
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 
-                action: 'completed',
+                action: 'complete',
                 course_id: courseId, 
                 student_code: studentCode,
                 student_answers: answers
