@@ -81,11 +81,18 @@ const enrolmentUsecase = async (request, response) => {
  * @property {string} course.description - A brief description of the course.
  */
 const getEnrolledCoursesByStudentCode = async (request, response) => {
+  //for debugging purpose
+  console.log("getEnrolledCoursesByStudentCode called");
+  console.log("Raw request params:", request.params);
+
   try {
-    const { student_code } = request.params;
+    const { studentCode } = request.params;
     
     // Sanitise the input string
-    const sanitisedStudentCode = sanitiseText(student_code || '');
+    const sanitisedStudentCode = sanitiseText(studentCode || '');
+
+    //for debugging purpose
+    console.log("Sanitised student_code:", sanitisedStudentCode);
     
     const courses = await enrolmentService.getEnrolledCoursesByStudentCode(sanitisedStudentCode);
     response.status(200).json(courses);
