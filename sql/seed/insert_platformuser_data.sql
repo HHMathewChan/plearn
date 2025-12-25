@@ -22,7 +22,7 @@ INSERT INTO student (student_code) VALUES
 
 -- Enrolment
 INSERT INTO enrolment (id, enrolment_code, student_code, course_id, enrolled_at) VALUES
-('b3b1c7e2-3333-4e1a-9c1a-cccc33333333', 'ENR20251', 'STR20251', 'b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', NOW());
+('b3b1c7e2-1111-4e1a-9c1a-aaaa11111111', 'ENR20251', 'STR20251', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', NOW());
 
 --hasStudentProfileIn
 INSERT INTO hasstudentprofilein (student_code, platform_user_id) VALUES
