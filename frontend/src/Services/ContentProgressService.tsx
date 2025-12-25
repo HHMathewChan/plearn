@@ -1,9 +1,10 @@
-const API_BASE_URL = 'http://localhost:3001/api/content-progress-routes';
 import type { updatedResult } from "../Types/ContentProgressResult";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
 
 export async function hasContentProgress(studentCode: string, contentId: string): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/content-progress`, {
+    const response = await fetch(`${API_BASE}/content-progress-routes/content-progress`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ export async function hasContentProgress(studentCode: string, contentId: string)
 
 export async function createContentProgress(studentCode: string, contentId: string): Promise<void> {
   try {
-    const response = await fetch(`${API_BASE_URL}/content-progress`, {
+    const response = await fetch(`${API_BASE}/content-progress-routes/content-progress`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ export async function updateContentProgress(
   status: 'completed' | 'not_started'
 ): Promise<updatedResult> {
   try {
-    const response = await fetch(`${API_BASE_URL}/content-progress`, {
+    const response = await fetch(`${API_BASE}/content-progress-routes/content-progress`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ export async function updateContentProgress(
  */
 export async function getContentProgress(studentCode: string, contentId: string): Promise<string | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/content-progress`, {
+    const response = await fetch(`${API_BASE}/content-progress-routes/content-progress`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
