@@ -25,7 +25,8 @@ app.use(cors({
     "https://plearn-mathew-chans-projects-9f00d025.vercel.app"
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', "OPTIONS"],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 
