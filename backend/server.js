@@ -19,7 +19,7 @@ const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3001',
+  origin: ['http://localhost:5173',
     "https://plearn.vercel.app",
     "https://plearn-seven.vercel.app",
     "https://plearn-mathew-chans-projects-9f00d025.vercel.app"
