@@ -18,7 +18,14 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3001',
+    "https://plearn.vercel.app",
+    "https://plearn-mathew-chans-projects-9f00d025.vercel.app"
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', "OPTIONS"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
