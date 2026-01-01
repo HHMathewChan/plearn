@@ -5,5 +5,6 @@ const courseContentController = require('../controllers/courseContentController'
 // Course content routes
 router.get('/:courseId/course-contents', courseContentController.getCourseContentByCourseId);
 router.get('/course-contents/:contentId', courseContentController.getCourseContentById);
+router.get('/course-materials/*contentUrl', courseContentController.getCourseMaterialUrl);
 
 module.exports = router;
