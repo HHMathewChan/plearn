@@ -5,6 +5,7 @@
  */
 const courseContentService = require('../services/courseContentService');
 const { sanitiseText } = require('../validation/textSanitiser');
+const { generateSignedCourseUrl } = require('../infrastructure/storage/r2Service');
 
 /**
  * Get all course content for a specific course.
@@ -58,8 +59,27 @@ const getCourseContentById = async (request, response) => {
     }
 };
 
+const getCourseMaterialUrl = async (request, response) => {
+    // for debugging purpose
+    console.log("getCourseMaterialUrl called");
+    console.log("Raw request params:", request.params);
+    const {contentUrl} = request.params;
+    console.log("Extracted contentUrl:", contentUrl);
+    const joinedContentUrl = Array.isArray(contentUrl) ? contentUrl.join('/') : contentUrl;
+    console.log("Constructed contentPath:", joinedContentUrl);
+
+    try {
+    const signedUrl = await generateSignedCourseUrl(joinedContentUrl);
+    response.json({ signedUrl });
+    } 
+    catch (error) {
+    console.error('R2 fetch error:', error);
+    response.status(500).json({ error: 'Failed to get course material' });
+    }
+}
 
 module.exports = {
     getCourseContentByCourseId,
-    getCourseContentById
+    getCourseContentById,
+    getCourseMaterialUrl
 };
