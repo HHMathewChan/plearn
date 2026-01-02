@@ -5,8 +5,8 @@ INSERT INTO course (id, course_code, title, difficulty, description) VALUES
 
 -- CourseContent
 INSERT INTO coursecontent (id, course_id, title, content_type, content_url) VALUES
-('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 01: Radiation History to the Present', 'pdf', '/courseResources/CRS1/mit22_01_s24_radiation_history.pdf'),
-('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', '/courseResources/CRS1/mit22_01_s24_radiation_utilizing_tech.pdf');
+('b3b1c7e2-4444-4e1a-9c1a-dddd44444444', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 01: Radiation History to the Present', 'pdf', 'courseResources/CRS1/mit22_01_s24_radiation_history.pdf'),
+('b3b1c7e2-5555-4e1a-9c1a-eeee55555555', 'b3b1c7e2-3333-4e1a-9c1a-cccc33333333', '22.01 Spring 2024 Lecture 02: Radiation-Utilizing Technology Overview', 'pdf', 'courseResources/CRS1/mit22_01_s24_radiation_utilizing_tech.pdf');
 
 -- Comprises
 INSERT INTO comprises (course_id, course_content_id) VALUES
