@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCourseContent } from "../Hooks/useCourseContent";
 import { getContentProgress, createContentProgress,updateContentProgress } from "../Services/ContentProgressService";
+import { getSignedContentUrl } from "../Services/CourseContentService";
 
 type CourseContentTableProps = {
     courseId: string;
@@ -15,6 +16,7 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
     const [statusMap, setStatusMap] = useState<Record<string, string | null>>({});
     // track loading state per content id for the "Check status" button
     const [checkingMap, setCheckingMap] = useState<Record<string, boolean>>({});
+    const [viewingMap, setViewingMap] = useState<Record<string, boolean>>({});
 
     if (loading) {
         return (
@@ -93,6 +95,22 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
         }
     };
 
+    const handleViewContent = async (contentId: string) => {
+        try {
+            setViewingMap(prev => ({ ...prev, [contentId]: true }));
+
+            const {signedUrl} = await getSignedContentUrl(contentId);
+            console.log('at courseContentTable Signed URL received in component:', signedUrl);
+            // Open in new window/tab
+            window.open(signedUrl, '_blank', 'noopener,noreferrer');
+        } catch (error) {
+            console.error("Error fetching signed URL:", error);
+            window.alert("An error occurred whilst retrieving the content. Please try again.");
+        } finally {
+            setViewingMap(prev => ({ ...prev, [contentId]: false }));
+        }
+    };
+
     return (
         <div className="overflow-x-auto mt-8">
             <h2 className="text-2xl font-bold mb-4 text-centre text-gray-900">{courseTitle}</h2>
@@ -112,14 +130,15 @@ const CourseContentTable: React.FC<CourseContentTableProps> = ({ courseId, cours
                         <tr key={content.id}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{content.title}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700 underline">
-                                <a
-                                    href={`http://localhost:3001/course-resources/${content.content_url.replace(/^.*courseResources\//, '')}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`Open content: ${content.title}`}
+                                <button
+                                type="button"
+                                className="text-blue-700 underline hover:text-blue-900 disabled:opacity-50"
+                                onClick={() => handleViewContent(content.id)}
+                                disabled={!!viewingMap[content.id]}
+                                aria-label={`Open content: ${content.title}`}
                                 >
-                                    View Content
-                                </a>
+                                    {viewingMap[content.id] ? 'Loading...' : 'View Content'}
+                                </button>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button
