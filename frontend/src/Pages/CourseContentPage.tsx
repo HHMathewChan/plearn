@@ -22,7 +22,7 @@ const CourseContentPage: React.FC = () => {
         }
 
         // Find the course title from the courses data
-        const course = courses.find(c => c.id === courseId);
+        const course = courses.find(course => course.id === courseId);
         if (course) {
             setCourseTitle(course.title);
         }
