@@ -12,7 +12,6 @@ const { generateSignedCourseUrl } = require('../infrastructure/storage/r2Service
  * @async
  * @function getCourseContentByCourseId
  * @param {Object} request - Express request object with courseId parameter
- * @param {Object} response - Express response object
  * @returns {Promise<void>}
  */
 const getCourseContentByCourseId = async (request, response) => {
@@ -38,7 +37,6 @@ const getCourseContentByCourseId = async (request, response) => {
  * @async
  * @function getCourseContentById
  * @param {Object} request - Express request object with contentId parameter
- * @param {Object} response - Express response object
  * @returns {Promise<void>}
  */
 const getCourseContentById = async (request, response) => {
@@ -59,6 +57,14 @@ const getCourseContentById = async (request, response) => {
     }
 };
 
+/**
+ * 
+* Get a signed URL for accessing course material.
+* @async
+* @function getCourseMaterialUrl
+* @param {Object} request - Express request object with contentUrl parameter
+* @returns {Promise<void>} - A promise that resolves to the signed URL
+*/
 const getCourseMaterialUrl = async (request, response) => {
     // for debugging purpose
     console.log("getCourseMaterialUrl called");
