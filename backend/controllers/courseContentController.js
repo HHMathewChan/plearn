@@ -84,8 +84,34 @@ const getCourseMaterialUrl = async (request, response) => {
     }
 }
 
+/**
+ * 
+* Get a signed URL for accessing course material.
+* @async
+* @function getCourseMaterialUrl
+* @param {Object} request - Express request object with contentUrl parameter
+* @returns {Promise<void>} - A promise that resolves to the signed URL
+*/
+const getSignedContentUrl = async (request, response) => {
+    // for debugging purpose
+    console.log("getSignedContentUrl called");
+    console.log("Raw request params:", request.params);
+    const {contentId} = request.params;
+    console.log("Extracted contentId:", contentId);
+
+    try {
+    const signedUrl = await courseContentService.getSignedContentUrl(contentId);
+    response.json({ signedUrl });
+    } 
+    catch (error) {
+    console.error('R2 fetch error:', error);
+    response.status(500).json({ error: 'Failed to get course material' });
+    }
+}
+
 module.exports = {
     getCourseContentByCourseId,
     getCourseContentById,
-    getCourseMaterialUrl
+    getCourseMaterialUrl,
+    getSignedContentUrl
 };
