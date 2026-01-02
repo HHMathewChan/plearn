@@ -5,6 +5,7 @@
 const courseContentRepository = require('../repositories/courseContentRepository');
 const courseRepository = require('../repositories/courseRepository');
 const comprisesRepository = require('../repositories/comprisesRepository');
+const { generateSignedCourseUrl } = require('../infrastructure/storage/r2Service');
 
 /**
  * Get all course content for a specific course.
@@ -73,8 +74,28 @@ const getCourseIdByContentId = async (contentId) => {
     }
 };
 
+const getSignedContentUrl = async (contentId) => {
+    try {
+        console.log(`[getSignedContentUrl] Fetching signed URL for content ID: "${contentId}"`);
+        
+        const courseContent = await courseContentRepository.getCourseContentById(contentId);
+        if (!courseContent) {
+            throw new Error(`Course content not found with ID: ${contentId}`);
+        }
+        
+        const contentUrl = courseContent.content_url;
+        console.log(`[getSignedContentUrl] Retrieved content URL: "${contentUrl}"`);
+        const signedUrl = await generateSignedCourseUrl(contentUrl);
+        return signedUrl;
+    } catch (error) {
+        console.error(`[getSignedContentUrl] Error in service layer:`, error);
+        throw error;
+    }
+}
+
 module.exports = {
     getCourseContentByCourseId,
     getCourseContentById,
-    getCourseIdByContentId
+    getCourseIdByContentId,
+    getSignedContentUrl
 };
