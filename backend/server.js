@@ -43,9 +43,6 @@ app.use('/api/course-progress-routes', courseProgressRoutes);
 app.use('/api/student-learning-preference-routes', studentLearningPerferenceRoutes);
 app.use('/api/personalise-learning-routes', personaliseLearningRoutes);
 
-// Serve course resources statically
-app.use('/course-resources', express.static(path.join(__dirname, 'courseResources')));
-
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
