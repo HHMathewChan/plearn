@@ -1,4 +1,3 @@
-// filepath: /Users/mathewchan/plearn/frontend/src/Hooks/useCourseContent.tsx
 import { useEffect, useState } from "react";
 import { getCourseContent, type CourseContent } from "../Services/CourseContentService";
 
