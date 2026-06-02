@@ -25,7 +25,6 @@ const LandingPage = () => {
                 </p>
             </section>
 
-            {/* Features section extracted to a separate component (short mode on landing) */}
             <FeaturesSection />
 
             <nav 
