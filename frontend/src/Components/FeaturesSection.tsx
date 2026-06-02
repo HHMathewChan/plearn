@@ -1,3 +1,6 @@
+import React from 'react';
+import { FaGithub } from 'react-icons/fa';
+
 type FeaturesSectionProps = {
     mode?: 'short' | 'long';
     title?: string;
@@ -61,6 +64,23 @@ function FeaturesSection({
                     {paragraph}
                 </p>
             ))}
+
+            <div className="mt-6">
+                <p className="text-base text-gray-700 leading-7 mb-3">
+                    For more details about this project, please refer to the GitHub project page.
+                </p>
+
+                <a
+                    href="https://github.com/HHMathewChan/plearn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-purple-700 font-semibold hover:text-purple-900 transition-colors"
+                    aria-label="View this project on GitHub"
+                >
+                    <FaGithub className="text-2xl" />
+                    <span>View on GitHub</span>
+                </a>
+            </div>
         </section>
     );
 }
