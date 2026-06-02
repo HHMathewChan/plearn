@@ -26,7 +26,7 @@ const LandingPage = () => {
             </section>
 
             {/* Features section extracted to a separate component (short mode on landing) */}
-            <FeaturesSection mode="short" />
+            <FeaturesSection />
 
             <nav 
                 aria-label="Authentication navigation"
