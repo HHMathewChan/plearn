@@ -4,12 +4,11 @@ The project responds to this problem by proposing a personalised, adaptive, and 
 
 Core Features
 1. User Authentication & Management
-- User registration with role-based access (student, tutor, admin)
+- User registration with role-based access (currently only student is avaible)
 - Secure login with JWT token-based authentication
-- Platform user profile management
 - Session management with persistent authentication state
 
-2. Course Management
+2. Course enrolment
 - Browse and view all available courses with metadata
 - Course catalogue displaying course details, descriptions, and copyright information
 - Course filtering and search capabilities
@@ -66,7 +65,7 @@ Core Features
 - Navigation between course materials
 - Final quiz access after content completion
 
-10. Responsive UI Design
+10.  Responsive UI Design
 - Tailwind CSS-based responsive interface
 - Mobile-friendly layout (flex, grid-based design)
 - Accessibility features (ARIA labels, semantic HTML)
@@ -88,6 +87,6 @@ Core Features
 - State Management: React hooks for local state
 - Data & Storage
 - PostgreSQL relational database with proper schema
-Encrypted storage for sensitive data
-Session storage for temporary user data
-File storage integration for course resources (R2 cloud storage)
+- Encrypted storage for sensitive data
+- Session storage for temporary user data
+- File storage integration for course resources (R2 cloud storage)
