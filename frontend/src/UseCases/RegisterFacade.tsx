@@ -78,8 +78,6 @@ const RegisterFacade = () => {
                     className="w-full p-2 border border-gray-300 rounded"
                 >
                     <option value="student">Student</option>
-                    <option value="tutor">Tutor</option>
-                    <option value="admin">Admin</option>
                 </select>
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? "Registering..." : "Submit"}
