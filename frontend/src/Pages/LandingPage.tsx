@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import FeaturesSection from '../Components/FeaturesSection';
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -7,11 +8,11 @@ const LandingPage = () => {
         <main 
             role="main" 
             aria-label="Landing page"
-            className="min-h-screen bg-white flex flex-col justify-centre items-centre px-4"
+            className="min-h-screen bg-white flex flex-col justify-center items-center px-4 py-12"
         >
             <section 
                 aria-labelledby="welcome-heading"
-                className="text-centre mb-12"
+                className="text-center mb-10 max-w-3xl"
             >
                 <h1 
                     id="welcome-heading"
@@ -19,14 +20,17 @@ const LandingPage = () => {
                 >
                     Welcome to the plearn platform
                 </h1>
-                <p className="text-xl text-grey-700">
+                <p className="text-xl text-gray-700">
                     Choose an option below to get started.
                 </p>
             </section>
 
+            {/* Features section extracted to a separate component (short mode on landing) */}
+            <FeaturesSection mode="short" />
+
             <nav 
                 aria-label="Authentication navigation"
-                className="flex gap-6 flex-wrap justify-centre"
+                className="flex gap-6 flex-wrap justify-center"
             >
                 <button 
                     onClick={() => navigate('/login')}
